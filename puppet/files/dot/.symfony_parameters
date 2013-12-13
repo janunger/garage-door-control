@@ -1,0 +1,4 @@
+export SYMFONY__DATABASE__NAME=dev
+export SYMFONY__DATABASE__USER=dev
+export SYMFONY__DATABASE__PASSWORD=dev
+export SYMFONY_ENV=dev
