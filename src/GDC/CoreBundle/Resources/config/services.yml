@@ -21,3 +21,15 @@ services:
         class: GDC\Door
         arguments:
             - @gdc_core.piface
+
+    gdc_core.watchdog_messenger:
+        class: GDC\WatchDog\Messenger
+        arguments:
+            - @mailer
+            - %kernel.environment%
+
+    gdc_core.watchdog:
+        class: GDC\WatchDog\WatchDog
+        arguments:
+            - @gdc_core.door
+            - @gdc_core.watchdog_messenger

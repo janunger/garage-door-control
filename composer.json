@@ -23,7 +23,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
-        "pkj/raspberry-piface-api": "dev-master"
+        "pkj/raspberry-piface-api": "dev-master",
+        "nesbot/carbon": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
