@@ -1,4 +1,19 @@
-<div>Door state: {{ doorState }}</div>
-<div>
-    <a href="{{ path('gdc_core_trigger') }}">Trigger</a>
-</div>
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div>
+        Status:
+        {% if 'opened' == doorState %}
+            offen
+        {% elseif 'closed' == doorState %}
+            geschlossen
+        {% elseif 'error' == doorState %}
+            Fehler
+        {% else %}
+            unbekannt
+        {% endif %}
+    </div>
+    <div>
+        <a class="btn btn-primary btn-lg" href="{{ path('gdc_core_trigger') }}">Öffnen/Schließen</a>
+    </div>
+{% endblock %}

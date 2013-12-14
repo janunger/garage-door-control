@@ -16,8 +16,14 @@ class DefaultController extends Controller
         /** @var $door Door */
         $door = $this->get('gdc_core.door');
 
+        try {
+            $doorState = $door->getState();
+        } catch (Door\HardwareErrorException $e) {
+            $doorState = 'error';
+        }
+
         return array(
-            'doorState' => $door->getState()
+            'doorState' => $doorState
         );
     }
 
