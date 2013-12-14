@@ -2,8 +2,6 @@
 
 namespace GDC\CoreBundle\Command;
 
-use GDC\WatchDog\Messenger;
-use GDC\WatchDog\WatchDog;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
