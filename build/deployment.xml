@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="..">
+
+    <target name="push-to-production"
+            description="Deploys to production host"
+            >
+        <property file="${basedir}/build/deployment/production"/>
+        <antcall target="-push"/>
+    </target>
+
+    <target name="-push"
+            depends="
+                -rsync-source-code,
+                -clear-cache
+                "
+            />
+
+    <target name="-rsync-source-code">
+        <exec dir="${basedir}" executable="rsync">
+            <arg line="-e 'ssh -p ${port} -i ${keyfile} -o StrictHostKeyChecking=no'"/>
+            <arg line="--partial --delete -av --no-perms --no-owner --no-group"/>
+            <arg line="--exclude-from=${basedir}/build/deployment/rsync.exclude"/>
+            <arg line="."/>
+            <arg line="${user}@${host}:${path}"/>
+        </exec>
+    </target>
+
+    <target name="-clear-cache">
+        <antcall target="-sshexec">
+            <param name="command" value="${path}/app/console cache:clear --env=prod"/>
+        </antcall>
+    </target>
+
+    <target name="-sshexec">
+        <sshexec
+                host="${host}"
+                port="${port}"
+                username="${user}"
+                keyfile="${keyfile}"
+                trust="true"
+                command="${command}"
+                />
+    </target>
+
+</project>
