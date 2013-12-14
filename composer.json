@@ -22,7 +22,8 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/migrations": "dev-master",
-        "doctrine/doctrine-migrations-bundle": "dev-master"
+        "doctrine/doctrine-migrations-bundle": "dev-master",
+        "pkj/raspberry-piface-api": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
@@ -58,5 +59,11 @@
             "dev-master": "2.4-dev"
         },
         "symfony-assets-install": "relative"
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/janunger/raspberry-piface-api.git"
+        }
+    ]
 }

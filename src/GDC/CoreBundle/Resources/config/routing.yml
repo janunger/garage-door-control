@@ -1,0 +1,7 @@
+gdc_core_homepage:
+    pattern:  /
+    defaults: { _controller: GDCCoreBundle:Default:index }
+
+gdc_core_trigger:
+    pattern:  /trigger
+    defaults: { _controller: GDCCoreBundle:Default:trigger }

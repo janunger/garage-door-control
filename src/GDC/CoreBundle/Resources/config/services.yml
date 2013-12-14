@@ -1,0 +1,23 @@
+parameters:
+#    gdc_core.example.class: GDC\CoreBundle\Example
+
+services:
+#    gdc_core.example:
+#        class: %gdc_core.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    gdc_core.piface_factory:
+        class: GDC\Door\PiFaceFactory
+        arguments:
+            - %kernel.root_dir%/var/emulator
+            - %gdc_use_piface_hardware%
+
+    gdc_core.piface:
+        class: Pkj\Raspberry\PiFace
+        factory_service: gdc_core.piface_factory
+        factory_method: createInstance
+
+    gdc_core.door:
+        class: GDC\Door
+        arguments:
+            - @gdc_core.piface

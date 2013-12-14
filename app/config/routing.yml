@@ -1,0 +1,4 @@
+gdc_core:
+    resource: "@GDCCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+

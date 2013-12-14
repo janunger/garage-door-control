@@ -11,3 +11,4 @@ parameters:
     mailer_password: null
     locale: de
     secret: jq2qugJBW5ibxKlTHqwqvIzo
+    gdc_use_piface_hardware: true
