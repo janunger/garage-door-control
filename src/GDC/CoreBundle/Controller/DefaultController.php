@@ -2,8 +2,8 @@
 
 namespace GDC\CoreBundle\Controller;
 
+use GDC\Camera;
 use GDC\Door;
-use Guzzle\Http\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,10 +40,8 @@ class DefaultController extends Controller
 
     public function snapshotAction()
     {
-        $client = new Client('http://192.168.73.229');
-        $request = $client->get('/snapshot.cgi')->setAuth('visitor', 'lvp3k4XiPcnV');
-        $response = $request->send();
+        $camera = new Camera();
 
-        return new Response($response->getBody(true), 200, array('Content-Type' => 'image/jpeg'));
+        return new Response($camera->getSnapshot(), 200, array('Content-Type' => 'image/jpeg'));
     }
 }
