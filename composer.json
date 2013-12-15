@@ -24,7 +24,8 @@
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "pkj/raspberry-piface-api": "dev-master",
-        "nesbot/carbon": "@stable"
+        "nesbot/carbon": "@stable",
+        "guzzle/guzzle": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",

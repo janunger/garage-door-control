@@ -5,3 +5,7 @@ gdc_core_homepage:
 gdc_core_trigger:
     pattern:  /trigger
     defaults: { _controller: GDCCoreBundle:Default:trigger }
+
+gdc_core_snapshot:
+    pattern:  /snapshot
+    defaults: { _controller: GDCCoreBundle:Default:snapshot }
