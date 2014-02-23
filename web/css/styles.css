@@ -1,0 +1,35 @@
+.ui-element {
+    padding: 20px 10px 0 10px;
+    text-align: center;
+}
+
+.status {
+    border: 2px solid #aaa;
+    padding: 10px 0;
+}
+.status .message {
+    font-size: 150%;
+}
+
+.status-closed {
+    background-color: #afa;
+    border-color: #0f0;
+}
+.status-opened {
+    background-color: #faa;
+    border-color: #f00;
+}
+.status-unknown {
+    background-color: #ffa;
+    border-color: #ff0;
+}
+
+.snapshot {
+    width: 320px;
+    height: 240px;
+}
+
+.btn-open-close {
+    width: 100%;
+    padding: 30px 16px;
+}

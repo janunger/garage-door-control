@@ -1,22 +1,36 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-    <div>
-        Status:
-        {% if 'opened' == doorState %}
-            offen
-        {% elseif 'closed' == doorState %}
-            geschlossen
-        {% elseif 'error' == doorState %}
-            Fehler
-        {% else %}
-            unbekannt
-        {% endif %}
+    <div class="ui-element">
+        <div class="status status-{{ doorState }}">
+            <div class="message">
+                Status:
+                {% if 'opened' == doorState %}
+                    offen
+                {% elseif 'closed' == doorState %}
+                    geschlossen
+                {% elseif 'error' == doorState %}
+                    Fehler
+                {% else %}
+                    unbekannt
+                {% endif %}
+            </div>
+            <div>{{ now|date('d.m.Y H:i:s') }}</div>
+        </div>
     </div>
-    <div>
-        <a class="btn btn-primary btn-lg" href="{{ path('gdc_core_trigger') }}">Öffnen/Schließen</a>
+    <div class="ui-element">
+        <img class="snapshot" src="{{ path('gdc_core_snapshot') }}" alt=""/>
     </div>
-    <div>
-        <img src="{{ path('gdc_core_snapshot') }}" alt=""/>
+    <div class="ui-element">
+        <a class="btn btn-primary btn-lg btn-open-close" href="{{ path('gdc_core_trigger') }}">Öffnen/Schließen</a>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        window.setTimeout(function () {
+            // window.location.reload(true);
+        }, 3000);
+    </script>
 {% endblock %}

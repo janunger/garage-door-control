@@ -2,6 +2,7 @@
 
 namespace GDC\CoreBundle\Controller;
 
+use DateTime;
 use GDC\Camera;
 use GDC\Door;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -24,9 +25,10 @@ class DefaultController extends Controller
             $doorState = 'error';
         }
 
-        return array(
+        return [
+            'now' => new DateTime(),
             'doorState' => $doorState
-        );
+        ];
     }
 
     public function triggerAction()
