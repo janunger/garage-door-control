@@ -1,3 +1,8 @@
+alias sf='/var/www/app/console'
+alias sfcc='sf cache:clear'
+alias sfdmd='sf doctrine:migrations:diff'
+alias sfdmm='sf doctrine:migrations:migrate'
+
 export SYMFONY__DATABASE__NAME=dev
 export SYMFONY__DATABASE__USER=dev
 export SYMFONY__DATABASE__PASSWORD=dev
