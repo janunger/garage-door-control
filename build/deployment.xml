@@ -5,7 +5,15 @@
             description="Deploys to production host"
             >
         <property file="${basedir}/build/deployment/production"/>
+        <antcall target="-stop-watchdog"/>
         <antcall target="-push"/>
+        <antcall target="-restart-watchdog"/>
+    </target>
+
+    <target name="-stop-watchdog">
+        <antcall target="-sshexec">
+            <param name="command" value="sudo supervisorctl stop gdc_watchdog"/>
+        </antcall>
     </target>
 
     <target name="-push"
@@ -16,7 +24,7 @@
             />
 
     <target name="-rsync-source-code">
-        <exec dir="${basedir}" executable="rsync">
+        <exec dir="${basedir}" executable="rsync" failonerror="true">
             <arg line="-e 'ssh -p ${port} -i ${keyfile} -o StrictHostKeyChecking=no'"/>
             <arg line="--partial --delete -av --no-perms --no-owner --no-group"/>
             <arg line="--exclude-from=${basedir}/build/deployment/rsync.exclude"/>
@@ -31,6 +39,12 @@
         </antcall>
         <antcall target="-sshexec">
             <param name="command" value="chmod -R uga+rw ${path}/app/cache/prod"/>
+        </antcall>
+    </target>
+
+    <target name="-restart-watchdog">
+        <antcall target="-sshexec">
+            <param name="command" value="sudo supervisorctl start gdc_watchdog"/>
         </antcall>
     </target>
 
