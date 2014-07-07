@@ -46,15 +46,11 @@ class RunWatchdogCommand extends ContainerAwareCommand
 
     private function sendMails()
     {
+        /** @var $transport \Swift_SpoolTransport */
         $transport = $this->getContainer()->get('mailer')->getTransport();
-        if (!$transport instanceof \Swift_Transport_SpoolTransport) {
-            return;
-        }
 
+        /** @var $spool \Swift_Spool */
         $spool = $transport->getSpool();
-        if (!$spool instanceof \Swift_MemorySpool) {
-            return;
-        }
 
         $spool->flushQueue($this->getContainer()->get('swiftmailer.transport.real'));
     }
