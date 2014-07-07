@@ -5,7 +5,6 @@ namespace GDC\CoreBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 class RunWatchdogCommand extends ContainerAwareCommand
 {
@@ -22,13 +21,6 @@ class RunWatchdogCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->isOtherInstanceRunning()) {
-            if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
-                $output->writeln('Other instance detected, aborting');
-            }
-            return;
-        }
-
         $this->startDate = new \DateTime();
 
         $watchdog = $this->getContainer()->get('gdc_core.watchdog');
@@ -53,22 +45,6 @@ class RunWatchdogCommand extends ContainerAwareCommand
         $spool = $transport->getSpool();
 
         $spool->flushQueue($this->getContainer()->get('swiftmailer.transport.real'));
-    }
-
-    /**
-     * @return bool
-     * @throws \RuntimeException
-     */
-    private function isOtherInstanceRunning()
-    {
-        $process = new Process('ps ax | grep gdc:watchdog:run');
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
-        }
-        $outputLines = explode("\n", trim($process->getOutput()));
-
-        return count($outputLines) > 3;
     }
 
     /**
