@@ -7,6 +7,7 @@ use GDC\Camera;
 use GDC\Door;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -16,19 +17,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        /** @var $door Door */
-        $door = $this->get('gdc_core.door');
-
-        try {
-            $doorState = $door->getState();
-        } catch (Door\HardwareErrorException $e) {
-            $doorState = 'error';
-        }
-
-        return [
-            'now' => new DateTime(),
-            'doorState' => $doorState
-        ];
+        return [];
     }
 
     public function triggerAction()
@@ -45,5 +34,12 @@ class DefaultController extends Controller
         $camera = new Camera();
 
         return new Response($camera->getSnapshot(), 200, array('Content-Type' => 'image/jpeg'));
+    }
+
+    public function doorStateAction()
+    {
+        return new JsonResponse([
+            'doorState' => $this->get('gdc_core.door')->getState()
+        ]);
     }
 }

@@ -1,36 +1,28 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-    <div class="ui-element">
-        <div class="status status-{{ doorState }}">
-            <div class="message">
-                Status:
-                {% if 'opened' == doorState %}
-                    offen
-                {% elseif 'closed' == doorState %}
-                    geschlossen
-                {% elseif 'error' == doorState %}
-                    Fehler
-                {% else %}
-                    unbekannt
-                {% endif %}
+    <div ng-app="doorApp" ng-controller="DoorStatusCtrl">
+        {% raw %}
+        <div class="ui-element">
+            <div class="status" ng-class="statusClass">
+                <div class="message">
+                    Status: <span>{{ statusMessage }}</span>
+                </div>
+                <div class="status-date">{{ statusDate | date: 'dd.MM.yyyy HH:mm:ss' }}</div>
             </div>
-            <div>{{ now|date('d.m.Y H:i:s') }}</div>
         </div>
-    </div>
-    <div class="ui-element">
-        <img class="snapshot" src="{{ path('gdc_core_snapshot') }}" alt=""/>
-    </div>
-    <div class="ui-element">
-        <a class="btn btn-primary btn-lg btn-open-close" href="{{ path('gdc_core_trigger') }}">Öffnen/Schließen</a>
+        {% endraw %}
+
+        <div class="ui-element">
+            <img class="snapshot" src="{{ path('gdc_core_snapshot') }}" alt=""/>
+        </div>
+        <div class="ui-element">
+            <a class="btn btn-primary btn-lg btn-open-close" href="{{ path('gdc_core_trigger') }}">Öffnen/Schließen</a>
+        </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-        window.setTimeout(function () {
-            // window.location.reload(true);
-        }, 3000);
-    </script>
+    <script src="{{ asset('js/controllers/DoorStatusCtrl.js') }}"></script>
 {% endblock %}

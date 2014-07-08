@@ -9,3 +9,7 @@ gdc_core_trigger:
 gdc_core_snapshot:
     pattern:  /snapshot
     defaults: { _controller: GDCCoreBundle:Default:snapshot }
+
+gdc_core_door_state:
+    pattern:  /door-state
+    defaults: { _controller: GDCCoreBundle:Default:doorState }
