@@ -60,8 +60,11 @@ class Camera
      */
     private function resize($imageResource)
     {
-        $resampledImage = imagecreatetruecolor(320, 240);
-        imagecopyresampled($resampledImage, $imageResource, 0, 0, 0, 0, 320, 240, 640, 480);
+        $targetWidth = 320;
+        $targetHeight = 240;
+        
+        $resampledImage = imagecreatetruecolor($targetWidth, $targetHeight);
+        imagecopyresampled($resampledImage, $imageResource, 0, 0, 0, 0, $targetWidth, $targetHeight, 640, 480);
 
         return $resampledImage;
     }
