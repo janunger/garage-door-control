@@ -2,6 +2,7 @@
 
 namespace GDC;
 
+use DateTime;
 use Guzzle\Http\Client;
 
 class Camera
@@ -35,6 +36,7 @@ class Camera
     {
         $image = $this->loadImageFromCamera();
         $resampledImage = $this->resize($image);
+        $this->addTimestamp($resampledImage);
 
         return $this->renderToJpeg($resampledImage);
     }
@@ -62,6 +64,24 @@ class Camera
         imagecopyresampled($resampledImage, $imageResource, 0, 0, 0, 0, 320, 240, 640, 480);
 
         return $resampledImage;
+    }
+
+    /**
+     * @param $imageResource
+     * @return resource
+     */
+    private function addTimestamp($imageResource)
+    {
+        $now = new DateTime();
+        $timestamp = $now->format('d.m.Y H:i:s');
+
+        $black = imagecolorallocate($imageResource, 0, 0, 0);
+        imagestring($imageResource, 5, 12, 12, $timestamp, $black);
+
+        $white = imagecolorallocate($imageResource, 255, 255, 255);
+        imagestring($imageResource, 5, 10, 10, $timestamp, $white);
+
+        return $imageResource;
     }
 
     /**
