@@ -54,7 +54,7 @@ class RunWatchdogCommand extends ContainerAwareCommand
     {
         $now = new \DateTime();
 
-        return $now->format('Hi') === '0700' && $this->calculateUpTime() > 2 * 60 * 60;
+        return $now->format('Hi') === '0500' && $this->calculateUpTime() > 2 * 60 * 60;
     }
 
     /**
