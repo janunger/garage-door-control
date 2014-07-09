@@ -2,7 +2,6 @@
 
 namespace GDC\CoreBundle\Controller;
 
-use DateTime;
 use GDC\Camera;
 use GDC\Door;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -31,7 +30,7 @@ class DefaultController extends Controller
 
     public function snapshotAction()
     {
-        $camera = new Camera();
+        $camera = $this->get('gdc_core.camera');
 
         return new Response($camera->getSnapshot(), 200, array('Content-Type' => 'image/jpeg'));
     }
