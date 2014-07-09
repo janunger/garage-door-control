@@ -62,7 +62,7 @@ class Camera
     {
         $targetWidth = 320;
         $targetHeight = 240;
-        
+
         $resampledImage = imagecreatetruecolor($targetWidth, $targetHeight);
         imagecopyresampled($resampledImage, $imageResource, 0, 0, 0, 0, $targetWidth, $targetHeight, 640, 480);
 

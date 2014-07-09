@@ -5,8 +5,23 @@ $(function () {
     var snapshotUrl = snapshotTag.attr('src');
 
     function reloadSnapshot() {
-        snapshotTag.attr('src', snapshotUrl + '?' + (new Date()).getTime());
-        setTimeout(reloadSnapshot, 5000);
+        var timestamp = (new Date()).getTime();
+        var newSrc = snapshotUrl + '?' + timestamp;
+        snapshotTag.attr('src', newSrc);
+        setTimeout(reloadSnapshot, 10000);
     }
     reloadSnapshot();
+});
+
+$(function () {
+    var triggerButton = $('.btn-trigger');
+
+    triggerButton.click(function () {
+        triggerButton.attr('disabled', 'disabled');
+        $.ajax('/trigger', {
+            complete: function () {
+                triggerButton.removeAttr('disabled');
+            }
+        });
+    });
 });

@@ -21,11 +21,10 @@ class DefaultController extends Controller
 
     public function triggerAction()
     {
-        /** @var $door Door */
         $door = $this->get('gdc_core.door');
         $door->triggerControl();
 
-        return $this->redirect($this->generateUrl('gdc_core_homepage'));
+        return new JsonResponse();
     }
 
     public function snapshotAction()
