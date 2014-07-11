@@ -41,10 +41,12 @@ class WatchDog
             $state = 'hardware_error';
         }
 
-        if ($state !== $this->state) {
-            $this->stateChangeDate = Carbon::now();
-            $this->state = $state;
-            $this->messenger->send($this->state, $this->stateChangeDate);
+        if ($state === $this->state) {
+            return;
         }
+
+        $this->stateChangeDate = Carbon::now();
+        $this->state = $state;
+        $this->messenger->send($this->state, $this->stateChangeDate);
     }
 }
