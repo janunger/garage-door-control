@@ -2,7 +2,7 @@
 
 $(function () {
     var snapshotTag = $('.snapshot');
-    var snapshotUrl = snapshotTag.attr('src');
+    var snapshotUrl = snapshotTag.data('default-src');
 
     function reloadSnapshot() {
         var timestamp = (new Date()).getTime();
