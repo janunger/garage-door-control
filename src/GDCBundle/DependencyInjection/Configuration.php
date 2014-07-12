@@ -1,6 +1,6 @@
 <?php
 
-namespace GDC\CoreBundle\DependencyInjection;
+namespace GDCBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace GDC\CoreBundle\Command;
+namespace GDCBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

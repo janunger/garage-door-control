@@ -1,6 +1,6 @@
 <?php
 
-namespace GDC\CoreBundle\Controller;
+namespace GDCBundle\Controller;
 
 use GDC\Camera;
 use GDC\Door;

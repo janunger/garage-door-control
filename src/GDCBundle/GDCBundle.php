@@ -1,9 +1,9 @@
 <?php
 
-namespace GDC\CoreBundle;
+namespace GDCBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class GDCCoreBundle extends Bundle
+class GDCBundle extends Bundle
 {
 }
