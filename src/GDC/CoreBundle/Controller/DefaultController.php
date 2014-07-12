@@ -22,7 +22,7 @@ class DefaultController extends Controller
     public function doorStateAction()
     {
         $door = $this->get('gdc_core.door');
-        
+
         return new JsonResponse([
             'doorState' => $door->getState()
         ]);

@@ -22,21 +22,18 @@ class RunWatchdogCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->startDate = new \DateTime();
-
         $watchdog = $this->getContainer()->get('gdc_core.watchdog');
         while (true) {
             $watchdog->execute();
-            $this->sendMails();
-
+            $this->flushMailQueue();
             if ($this->mustForceRestart()) {
                 break;
             }
-
             sleep(1);
         }
     }
 
-    private function sendMails()
+    private function flushMailQueue()
     {
         /** @var $transport \Swift_SpoolTransport */
         $transport = $this->getContainer()->get('mailer')->getTransport();
