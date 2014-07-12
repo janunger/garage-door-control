@@ -1,47 +1,47 @@
 parameters:
-#    gdc_core.example.class: GDC\CoreBundle\Example
+#    gdc.example.class: GDC\CoreBundle\Example
 
 services:
-#    gdc_core.example:
-#        class: %gdc_core.example.class%
+#    gdc.example:
+#        class: %gdc.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
-    gdc_core.piface_factory:
+    gdc.piface_factory:
         class: GDC\Door\PiFaceFactory
         arguments:
             - %kernel.root_dir%/var/emulator
             - %gdc_use_piface_hardware%
 
-    gdc_core.piface:
+    gdc.piface:
         class: Pkj\Raspberry\PiFace
-        factory_service: gdc_core.piface_factory
+        factory_service: gdc.piface_factory
         factory_method: createInstance
 
-    gdc_core.door:
+    gdc.door:
         class: GDC\Door
         arguments:
-            - @gdc_core.piface
+            - @gdc.piface
 
-    gdc_core.watchdog_messenger:
+    gdc.watchdog_messenger:
         class: GDC\WatchDog\Messenger
         arguments:
             - @mailer
             - %kernel.environment%
 
-    gdc_core.watchdog:
+    gdc.watchdog:
         class: GDC\WatchDog\WatchDog
         arguments:
-            - @gdc_core.door
-            - @gdc_core.watchdog_messenger
+            - @gdc.door
+            - @gdc.watchdog_messenger
 
-    gdc_core.camera_http_client:
+    gdc.camera_http_client:
         class: Guzzle\Http\Client
         arguments:
             - %camera_url%
 
-    gdc_core.camera:
+    gdc.camera:
         class: GDC\Camera
         arguments:
-            - @gdc_core.camera_http_client
+            - @gdc.camera_http_client
             - %camera_username%
             - %camera_password%

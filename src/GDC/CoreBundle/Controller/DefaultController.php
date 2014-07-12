@@ -21,7 +21,7 @@ class DefaultController extends Controller
 
     public function doorStateAction()
     {
-        $door = $this->get('gdc_core.door');
+        $door = $this->get('gdc.door');
 
         return new JsonResponse([
             'doorState' => $door->getState()
@@ -30,7 +30,7 @@ class DefaultController extends Controller
 
     public function triggerAction()
     {
-        $door = $this->get('gdc_core.door');
+        $door = $this->get('gdc.door');
         $door->triggerControl();
 
         return new JsonResponse();
@@ -38,7 +38,7 @@ class DefaultController extends Controller
 
     public function snapshotAction()
     {
-        $camera = $this->get('gdc_core.camera');
+        $camera = $this->get('gdc.camera');
 
         return new Response($camera->getSnapshot(), 200, array('Content-Type' => 'image/jpeg'));
     }

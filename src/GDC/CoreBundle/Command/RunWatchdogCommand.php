@@ -22,7 +22,7 @@ class RunWatchdogCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->startDate = new \DateTime();
-        $watchdog = $this->getContainer()->get('gdc_core.watchdog');
+        $watchdog = $this->getContainer()->get('gdc.watchdog');
         while (true) {
             $watchdog->execute();
             $this->flushMailQueue();
