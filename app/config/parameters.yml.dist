@@ -14,3 +14,7 @@ parameters:
     camera_url: http://192.168.1.1
     camera_username: ''
     camera_password: ''
+    messenger_sender_address: ''
+    messenger_sender_name: ''
+    messenger_recipient_address: ''
+    messenger_recipient_name: ''

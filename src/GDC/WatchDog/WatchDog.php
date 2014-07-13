@@ -2,7 +2,6 @@
 
 namespace GDC\WatchDog;
 
-use Carbon\Carbon;
 use GDC\Door;
 
 class WatchDog
@@ -18,11 +17,6 @@ class WatchDog
     private $state = null;
 
     /**
-     * @var \DateTime|null
-     */
-    private $stateChangeDate = null;
-
-    /**
      * @var Messenger
      */
     private $messenger;
@@ -36,17 +30,25 @@ class WatchDog
     public function execute()
     {
         try {
-            $state = $this->door->getState();
+            $currentState = $this->door->getState();
         } catch (Door\HardwareErrorException $e) {
-            $state = 'hardware_error';
-        }
-
-        if ($state === $this->state) {
+            $this->messenger->sendHardwareError();
             return;
         }
 
-        $this->stateChangeDate = Carbon::now();
-        $this->state = $state;
-        $this->messenger->send($this->state, $this->stateChangeDate);
+        $previousState = $this->state;
+        if ($currentState === $previousState) {
+            return;
+        }
+
+        if (null === $previousState) {
+            $this->messenger->sendMessageOnWatchdogRestart();
+        } elseif (Door::STATE_CLOSED === $previousState) {
+            $this->messenger->sendMessageOnDoorOpening();
+        } elseif (Door::STATE_UNKNOWN === $previousState && Door::STATE_CLOSED === $currentState) {
+            $this->messenger->sendMessageAfterDoorClosed();
+        }
+
+        $this->state = $currentState;
     }
 }

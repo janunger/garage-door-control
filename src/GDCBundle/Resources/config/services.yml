@@ -26,7 +26,10 @@ services:
         class: GDC\WatchDog\Messenger
         arguments:
             - @mailer
-            - %kernel.environment%
+            - %messenger_sender_address%
+            - %messenger_sender_name%
+            - %messenger_recipient_address%
+            - %messenger_recipient_name%
 
     gdc.watchdog:
         class: GDC\WatchDog\WatchDog
