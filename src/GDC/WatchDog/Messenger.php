@@ -62,12 +62,15 @@ class Messenger
 
     private function send($subject)
     {
+        $now = (new DateTime())->format('Y-m-d H:i:s');
+        $text = $subject . ' - ' . $now;
+
         $message = \Swift_Message::newInstance();
-        $message->setSubject($subject);
+        $message->setSubject($text);
         // TODO: Make dynamic
         $message->setFrom($this->senderAddress, $this->senderName);
         $message->setTo($this->recipientAddress, $this->recipientName);
-        $message->setBody((new DateTime())->format('Y-m-d H:i:s'));
+        $message->setBody($text);
 
         $this->mailer->send($message);
     }
