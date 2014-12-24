@@ -8,44 +8,34 @@ else
 end
 
 Vagrant.configure("2") do |config|
-  config.vm.box = $vm_box
-  config.vm.box_url = $vm_box_url
-
-  config.vm.network :private_network, ip: $ip
-  config.ssh.forward_agent = true
-  config.vm.hostname = $hostname
-  config.hostsupdater.aliases = ["pma." + $hostname]
 
   config.vm.provider :virtualbox do |v|
-    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--memory", 1024]
-    v.customize ["modifyvm", :id, "--name", $name]
+        v.name = $name
+        v.customize ["modifyvm", :id, "--memory", $memory_size]
   end
-
   config.vm.provider :vmware_fusion do |v|
-    v.vmx["memsize"] = "1024"
+        v.vmx["memsize"] = $memory_size
+        v.vmx["displayname"] = $name
   end
 
-  nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/
-  config.vm.synced_folder "../", "/var/www", id: "vagrant-root" , :nfs => nfs_setting
-  config.vm.provision :shell, :inline =>
-    "if [[ ! -f /apt-get-run ]]; then sudo apt-get update && sudo touch /apt-get-run; fi"
+    config.vm.box = $vm_box
+    config.vm.network :private_network, ip: $ip
+    config.ssh.forward_agent = true
+    config.vm.hostname = $hostname
+    config.hostsupdater.aliases = ["pma." + $hostname]
 
-
-  config.vm.provision :shell, :inline => 'echo -e "mysql_root_password=root
-controluser_password=awesome" > /etc/phpmyadmin.facts;'
-
-  config.vm.provision :puppet do |puppet|
-    if $puppet_verbose
-      puppet.options = ['--verbose', '--debug']
+    File.open('ansible/inventories/dev', 'w') do |f|
+        f.write "[phansible-web]\n"
+        f.write "#{$ip}\n"
     end
-    puppet.manifests_path = "puppet/manifests"
-    puppet.module_path = "puppet/modules"
-    puppet.facter = {
-        "hostname" => $hostname
-    }
+    config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "ansible/playbook.yml"
+        ansible.inventory_path = "ansible/inventories/dev"
+        ansible.limit = 'all'
   end
 
-  config.vm.provision :shell, :inline => 'if [ -f /var/www/index.html ]; then rm /var/www/index.html; fi'
-  config.vm.provision :shell, :inline => 'a2dissite default && /etc/init.d/apache2 reload'
+    config.vm.synced_folder "../", "/vagrant", type: "nfs"
+    if Dir.exists?(File.join(Dir.home, ".composer"))
+        config.vm.synced_folder "~/.composer", "/home/vagrant/.composer", type: "nfs"
+    end
 end

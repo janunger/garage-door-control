@@ -5,11 +5,9 @@ $name = "uit.garagedoorcontrol"
 $ip = "192.168.77.41"
 
 # Base Box
-$vm_box = "wheezy64"
-$vm_box_url = "http://puppet-vagrant-boxes.puppetlabs.com/debian-70rc1-x64-vf503.box"
+$vm_box = "puphpet/debian75-x64"
 
-# Puppet
-$puppet_verbose = false
+$memory_size = 512
 
 # Apache
 $hostname = "gdc.uit.dev"
