@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RunWatchdogCommand extends ContainerAwareCommand
+class RunEventLoopCommand extends ContainerAwareCommand
 {
     /**
      * @var \DateTime
@@ -15,7 +15,7 @@ class RunWatchdogCommand extends ContainerAwareCommand
 
     protected function configure()
     {
-        $this->setName('gdc:watchdog:run');
+        $this->setName('gdc:event-loop:run');
         $this->setDescription('Run watchdog and send mails about door state');
     }
 

@@ -6,8 +6,11 @@ parameters:
     database_user: dev
     database_password: dev
     mailer_host: 127.0.0.1
+    mailer_port: 1025
     mailer_user: null
     mailer_password: null
+    mailer_encryption: null
+    mailer_auth_mode: null
     locale: de
     secret: jq2qugJBW5ibxKlTHqwqvIzo
     gdc_use_piface_hardware: true
