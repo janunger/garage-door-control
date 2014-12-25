@@ -5,6 +5,6 @@
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 /bin/
-/tests/reports/
+/tests/reports/*
 /vendor/
-/web/bundles/
+/web/bundles/*

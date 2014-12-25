@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d578b2d50aa9fe39deb073344a8a09e2",
+    "hash": "a2b2fe31c190521815f759400de203a2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1183,6 +1183,47 @@
             "time": "2014-01-12 16:20:24"
         },
         {
+            "name": "juit/e-mail-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/janunger/juit-e-mail-bundle.git",
+                "reference": "1637d227c34328e3cff4f3f39e26d66434723250"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/janunger/juit-e-mail-bundle/zipball/1637d227c34328e3cff4f3f39e26d66434723250",
+                "reference": "1637d227c34328e3cff4f3f39e26d66434723250",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/swiftmailer-bundle": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Unger",
+                    "email": "ju@juit.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/janunger/juit-e-mail-bundle/tree/master",
+                "issues": "https://github.com/janunger/juit-e-mail-bundle/issues"
+            },
+            "time": "2014-08-28 19:39:52"
+        },
+        {
             "name": "kriswallsmith/assetic",
             "version": "v1.2.1",
             "source": {
@@ -2270,6 +2311,53 @@
     ],
     "packages-dev": [
         {
+            "name": "alexandresalome/mailcatcher",
+            "version": "dev-master",
+            "target-dir": "Alex/MailCatcher",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexandresalome/mailcatcher.git",
+                "reference": "34d8750192e5afd78c0a6ecd3aa52425e45943cb",
+                "mirrors": [
+                    {
+                        "url": "/%package%/%normalizedUrl%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexandresalome/mailcatcher/zipball/34d8750192e5afd78c0a6ecd3aa52425e45943cb",
+                "reference": "34d8750192e5afd78c0a6ecd3aa52425e45943cb",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "http://toran.mbju/repo/packagist/dists/%package%/%version%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "behat/behat": "~2.4",
+                "swiftmailer/swiftmailer": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Alex\\MailCatcher": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A library to access MailCatcher",
+            "time": "2014-12-17 23:32:47"
+        },
+        {
             "name": "doctrine/data-fixtures",
             "version": "dev-master",
             "source": {
@@ -3302,9 +3390,11 @@
         "pkj/raspberry-piface-api": 20,
         "nesbot/carbon": 0,
         "guzzle/guzzle": 0,
+        "juit/e-mail-bundle": 20,
         "phpunit/phpunit": 0,
         "doctrine/doctrine-fixtures-bundle": 20,
-        "doctrine/data-fixtures": 20
+        "doctrine/data-fixtures": 20,
+        "alexandresalome/mailcatcher": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -26,12 +26,14 @@
         "pkj/raspberry-piface-api": "dev-master",
         "nesbot/carbon": "@stable",
         "guzzle/guzzle": "@stable",
-        "myclabs/php-enum": "~1.2"
+        "myclabs/php-enum": "~1.2",
+        "juit/e-mail-bundle": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "doctrine/data-fixtures": "dev-master"
+        "doctrine/data-fixtures": "dev-master",
+        "alexandresalome/mailcatcher": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -67,6 +69,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/janunger/raspberry-piface-api.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/janunger/juit-e-mail-bundle.git"
         }
     ]
 }

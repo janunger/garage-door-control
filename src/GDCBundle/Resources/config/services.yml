@@ -48,3 +48,23 @@ services:
             - @gdc.camera_http_client
             - %camera_username%
             - %camera_password%
+
+    gdc.command_queue_entry_repository:
+        class: GDCBundle\Entity\CommandQueueEntryRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - GDCBundle:CommandQueueEntry
+
+    gdc.command_processor:
+        class: GDCBundle\Service\CommandProcessor
+        arguments:
+            - @gdc.command_queue_entry_repository
+            - @event_dispatcher
+
+    gdc.listener:
+        class: GDCBundle\Event\TriggerDoorListener
+        arguments:
+            - @gdc.door
+        tags:
+            - { name: kernel.event_listener, event: gdc.command_issued, method: onCommandIssued }
