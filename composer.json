@@ -25,7 +25,8 @@
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "pkj/raspberry-piface-api": "dev-master",
         "nesbot/carbon": "@stable",
-        "guzzle/guzzle": "@stable"
+        "guzzle/guzzle": "@stable",
+        "myclabs/php-enum": "~1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
