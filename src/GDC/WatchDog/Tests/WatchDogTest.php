@@ -3,8 +3,8 @@
 namespace GDC\WatchDog\Tests;
 
 use Carbon\Carbon;
-use GDC\Door;
 use GDC\Door\HardwareErrorException;
+use GDC\Door\State;
 use GDC\WatchDog\Messenger;
 use GDC\WatchDog\WatchDog;
 
@@ -21,7 +21,7 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
 
         $door
             ->expects($this->any())->method('getState')
-            ->will($this->returnValue(Door::STATE_CLOSED));
+            ->will($this->returnValue(State::CLOSED()));
         $messenger
             ->expects($this->once())->method('sendMessageOnWatchdogRestart');
 
@@ -45,9 +45,9 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())->method('getState')
             ->will($this->returnCallback(function () use ($date1, $date2) {
                 if (Carbon::now()->eq($date1)) {
-                    return Door::STATE_CLOSED;
+                    return State::CLOSED();
                 }
-                return Door::STATE_UNKNOWN;
+                return State::UNKNOWN();
             }));
         $messenger
             ->expects($this->once())->method('sendMessageOnDoorOpening');
@@ -75,9 +75,9 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())->method('getState')
             ->will($this->returnCallback(function () use ($date1, $date2) {
                 if (Carbon::now()->eq($date1)) {
-                    return Door::STATE_UNKNOWN;
+                    return State::UNKNOWN();
                 }
-                return Door::STATE_CLOSED;
+                return State::CLOSED();
             }));
         $sut = new WatchDog($door, $messenger);
         $sut->execute();
@@ -109,12 +109,12 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Door
+     * @return \PHPUnit_Framework_MockObject_MockObject|\GDC\Door\DoorInterface
      */
     private function createDoorMock()
     {
         $door = $this
-            ->getMockBuilder('\GDC\Door')
+            ->getMockBuilder('GDC\Door\DoorInterface')
             ->disableOriginalConstructor()
             ->getMock();
 

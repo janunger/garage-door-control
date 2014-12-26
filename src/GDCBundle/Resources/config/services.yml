@@ -18,7 +18,7 @@ services:
         factory_method: createInstance
 
     gdc.door:
-        class: GDC\Door
+        class: GDC\Door\Door
         arguments:
             - @gdc.piface
 

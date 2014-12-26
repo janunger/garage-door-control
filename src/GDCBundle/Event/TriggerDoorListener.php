@@ -3,16 +3,17 @@
 namespace GDCBundle\Event;
 
 use GDC\CommandQueue\Command;
-use GDC\Door;
+use GDC\Door\Door;
+use GDC\Door\DoorInterface;
 
 class TriggerDoorListener
 {
     /**
-     * @var Door
+     * @var DoorInterface
      */
     private $door;
 
-    public function __construct(Door $door)
+    public function __construct(DoorInterface $door)
     {
         $this->door = $door;
     }

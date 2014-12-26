@@ -14,7 +14,7 @@ class TriggerDoorListenerTest extends AbstractTestCase
      */
     public function it_should_trigger_the_door_on_a_trigger_door_command()
     {
-        $door = $this->createMock('GDC\Door');
+        $door = $this->createMock('GDC\Door\DoorInterface');
         $door->expects($this->once())->method('triggerControl');
 
         $SUT = new TriggerDoorListener($door);

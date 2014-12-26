@@ -20,6 +20,7 @@
             <directory>../src/*/*Bundle/Tests</directory>
             <directory>../src/*/Bundle/*Bundle/Tests</directory>
             <directory>../src/*/*/Tests</directory>
+            <directory>../tests</directory>
         </testsuite>
     </testsuites>
 

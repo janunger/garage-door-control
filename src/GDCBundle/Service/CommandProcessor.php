@@ -2,7 +2,7 @@
 
 namespace GDCBundle\Service;
 
-use GDC\Door;
+use GDC\Door\Door;
 use GDCBundle\Entity\CommandQueueEntryRepository;
 use GDCBundle\Event\CommandIssuedEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

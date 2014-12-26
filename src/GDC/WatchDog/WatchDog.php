@@ -2,17 +2,19 @@
 
 namespace GDC\WatchDog;
 
-use GDC\Door;
+use GDC\Door\HardwareErrorException;
+use GDC\Door\DoorInterface;
+use GDC\Door\State;
 
 class WatchDog
 {
     /**
-     * @var Door
+     * @var DoorInterface
      */
     private $door;
 
     /**
-     * @var string|null
+     * @var State|null
      */
     private $state = null;
 
@@ -21,7 +23,7 @@ class WatchDog
      */
     private $messenger;
 
-    public function __construct(Door $door, Messenger $messenger)
+    public function __construct(DoorInterface $door, Messenger $messenger)
     {
         $this->door = $door;
         $this->messenger = $messenger;
@@ -31,21 +33,21 @@ class WatchDog
     {
         try {
             $currentState = $this->door->getState();
-        } catch (Door\HardwareErrorException $e) {
+        } catch (HardwareErrorException $e) {
             $this->messenger->sendHardwareError();
             return;
         }
 
         $previousState = $this->state;
-        if ($currentState === $previousState) {
+        if ($currentState->equals($previousState)) {
             return;
         }
 
         if (null === $previousState) {
             $this->messenger->sendMessageOnWatchdogRestart();
-        } elseif (Door::STATE_CLOSED === $previousState) {
+        } elseif ($previousState->equals(State::CLOSED())) {
             $this->messenger->sendMessageOnDoorOpening();
-        } elseif (Door::STATE_UNKNOWN === $previousState && Door::STATE_CLOSED === $currentState) {
+        } elseif ($previousState->equals(State::UNKNOWN()) && $currentState->equals(State::CLOSED())) {
             $this->messenger->sendMessageAfterDoorClosed();
         }
 

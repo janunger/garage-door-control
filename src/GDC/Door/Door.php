@@ -1,16 +1,11 @@
 <?php
 
-namespace GDC;
+namespace GDC\Door;
 
-use GDC\Door\HardwareErrorException;
 use Pkj\Raspberry\PiFace;
 
-class Door
+class Door implements DoorInterface
 {
-    const STATE_OPENED = 'opened';
-    const STATE_CLOSED = 'closed';
-    const STATE_UNKNOWN = 'unknown';
-
     /**
      * @var \Pkj\Raspberry\PiFace\InputPin
      */
@@ -34,8 +29,8 @@ class Door
     }
 
     /**
-     * @return string
-     * @throws Door\HardwareErrorException
+     * @return State
+     * @throws HardwareErrorException
      */
     public function getState()
     {
@@ -44,14 +39,14 @@ class Door
         }
 
         if ($this->sensorOpened->isOn()) {
-            return self::STATE_OPENED;
+            return State::OPENED();
         }
 
         if ($this->sensorClosed->isOn()) {
-            return self::STATE_CLOSED;
+            return State::CLOSED();
         }
 
-        return self::STATE_UNKNOWN;
+        return State::UNKNOWN();
     }
 
     public function triggerControl()

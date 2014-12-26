@@ -4,7 +4,7 @@ namespace GDCBundle\Controller;
 
 use GDC\Camera;
 use GDC\CommandQueue\Command;
-use GDC\Door;
+use GDC\Door\Door;
 use GDCBundle\Entity\CommandQueueEntry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
