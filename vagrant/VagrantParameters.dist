@@ -5,7 +5,7 @@ $name = "uit.garagedoorcontrol"
 $ip = "192.168.77.41"
 
 # Base Box
-$vm_box = "puphpet/debian75-x64"
+$vm_box = "juit_debian780"
 
 $memory_size = 512
 
