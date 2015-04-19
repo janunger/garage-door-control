@@ -36,7 +36,7 @@
 
     <target name="-clear-cache">
         <antcall target="-sshexec">
-            <param name="command" value="${path}/app/console cache:clear --env=prod"/>
+            <param name="command" value="rm -fr ${path}/app/cache/prod"/>
         </antcall>
     </target>
 
