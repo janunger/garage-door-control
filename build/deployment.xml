@@ -20,7 +20,8 @@
             depends="
                 -rsync-source-code,
                 -clear-cache,
-                -migrate-database
+                -migrate-database,
+                -make-cache-writable
                 "
             />
 
@@ -49,6 +50,12 @@
     <target name="-restart-watchdog">
         <antcall target="-sshexec">
             <param name="command" value="sudo supervisorctl start gdc_watchdog"/>
+        </antcall>
+    </target>
+
+    <target name="-make-cache-writable">
+        <antcall target="-sshexec">
+            <param name="command" value="sudo chmod -R uga+rw ${path}/app/cache/prod"/>
         </antcall>
     </target>
 
