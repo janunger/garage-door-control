@@ -42,7 +42,7 @@
 
     <target name="-migrate-database">
         <antcall target="-sshexec">
-            <param name="command" value="${path}/app/console doctrine:migrations:migrate --no-interaction"/>
+            <param name="command" value="${path}/app/console doctrine:migrations:migrate --no-interaction --env=prod"/>
         </antcall>
     </target>
 
