@@ -38,9 +38,6 @@
         <antcall target="-sshexec">
             <param name="command" value="${path}/app/console cache:clear --env=prod"/>
         </antcall>
-        <antcall target="-sshexec">
-            <param name="command" value="chmod -R uga+rw ${path}/app/cache/prod"/>
-        </antcall>
     </target>
 
     <target name="-migrate-database">
