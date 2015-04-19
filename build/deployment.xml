@@ -19,7 +19,8 @@
     <target name="-push"
             depends="
                 -rsync-source-code,
-                -clear-cache
+                -clear-cache,
+                -migrate-database
                 "
             />
 
@@ -39,6 +40,12 @@
         </antcall>
         <antcall target="-sshexec">
             <param name="command" value="chmod -R uga+rw ${path}/app/cache/prod"/>
+        </antcall>
+    </target>
+
+    <target name="-migrate-database">
+        <antcall target="-sshexec">
+            <param name="command" value="${path}/app/console doctrine:migrations:migrate --no-interaction"/>
         </antcall>
     </target>
 
