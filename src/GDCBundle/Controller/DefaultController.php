@@ -26,7 +26,7 @@ class DefaultController extends Controller
         $door = $this->get('gdc.door');
 
         return new JsonResponse([
-            'doorState' => $door->getState()
+            'doorState' => $door->getState()->getValue()
         ]);
     }
 
