@@ -18,7 +18,7 @@ class SelfTestSystemCommand extends ContainerAwareCommand
         $piFace = $this->getContainer()->get('gdc.piface_factory')->createInstance();
         foreach (range(0, 7) as $i) {
             $output->write("PIN $i: ");
-            $output->writeln($piFace->getInputPin(0)->isOn() ? 'On' : 'Off');
+            $output->writeln($piFace->getInputPin($i)->isOn() ? 'On' : 'Off');
         }
     }
 }

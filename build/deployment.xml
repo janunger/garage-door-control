@@ -12,7 +12,7 @@
 
     <target name="-stop-watchdog">
         <antcall target="-sshexec">
-            <param name="command" value="sudo supervisorctl stop gdc_watchdog"/>
+            <param name="command" value="sudo supervisorctl stop gdc_eventloop"/>
         </antcall>
     </target>
 
@@ -49,7 +49,7 @@
 
     <target name="-restart-watchdog">
         <antcall target="-sshexec">
-            <param name="command" value="sudo supervisorctl start gdc_watchdog"/>
+            <param name="command" value="sudo supervisorctl start gdc_eventloop"/>
         </antcall>
     </target>
 
