@@ -15,7 +15,7 @@ class EventLoopStartTest extends PHPUnit_Framework_TestCase
     {
         // "exec ..." is required if $process->stop() isn't working without.
         self::$eventLoop   = new Process('exec ' . __DIR__ . '/../../app/console gdc:event-loop:run');
-        self::$mailCatcher = new Client('http://localhost:1081');
+        self::$mailCatcher = new Client('http://localhost:1080');
     }
 
     protected function setUp()
