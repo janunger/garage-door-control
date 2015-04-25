@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a2b2fe31c190521815f759400de203a2",
+    "hash": "12ee10a1643d92763edbbdc47552298f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1590,16 +1590,16 @@
         },
         {
             "name": "pkj/raspberry-piface-api",
-            "version": "dev-master",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/janunger/raspberry-piface-api.git",
-                "reference": "83c82f9a6ee64b3313612f8a0ca0cb9352316390"
+                "reference": "529d9c0ca7844393d565cec0c435e8080d03605f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/janunger/raspberry-piface-api/zipball/83c82f9a6ee64b3313612f8a0ca0cb9352316390",
-                "reference": "83c82f9a6ee64b3313612f8a0ca0cb9352316390",
+                "url": "https://api.github.com/repos/janunger/raspberry-piface-api/zipball/529d9c0ca7844393d565cec0c435e8080d03605f",
+                "reference": "529d9c0ca7844393d565cec0c435e8080d03605f",
                 "shasum": ""
             },
             "require": {
@@ -1634,9 +1634,9 @@
             "description": "Lets you control your PiFace for Raspberry PI with PHP.",
             "homepage": "http://github.com/peec/raspberry-piface-api",
             "support": {
-                "source": "https://github.com/janunger/raspberry-piface-api/tree/master"
+                "source": "https://github.com/janunger/raspberry-piface-api/tree/v1.0.1"
             },
-            "time": "2013-12-14 00:12:02"
+            "time": "2015-04-25 19:48:44"
         },
         {
             "name": "psr/log",
@@ -3631,8 +3631,6 @@
     "stability-flags": {
         "doctrine/migrations": 20,
         "doctrine/doctrine-migrations-bundle": 20,
-        "pkj/raspberry-piface-api": 20,
-        "nesbot/carbon": 0,
         "guzzle/guzzle": 0,
         "juit/e-mail-bundle": 20,
         "phpunit/phpunit": 0,

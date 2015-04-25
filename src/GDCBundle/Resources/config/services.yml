@@ -86,11 +86,31 @@ services:
         arguments:
             - GDCBundle:CommandQueueEntry
 
+    gdc.sensor_log_entry_repository:
+        class: GDCBundle\Entity\SensorLogEntryRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - GDCBundle:SensorLogEntry
+
     gdc.command_processor:
         class: GDCBundle\Service\CommandProcessor
         arguments:
             - @gdc.command_queue_entry_repository
             - @event_dispatcher
+
+    gdc.sensor_logger_factory:
+        class: GDCBundle\Service\SensorLogger\Factory
+        arguments:
+            - @gdc.sensor_log_entry_repository
+            - @gdc.piface_input_pin.door_closed
+            - @gdc.piface_input_pin.door_opened
+            - @gdc.piface_input_pin.photo_interrupter
+
+    gdc.sensor_logger:
+        class: GDCBundle\Service\SensorLogger\SensorLogger
+        factory_service: gdc.sensor_logger_factory
+        factory_method: createInstance
 
     gdc.listener:
         class: GDCBundle\Event\TriggerDoorListener

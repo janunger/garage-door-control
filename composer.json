@@ -1,15 +1,14 @@
 {
-    "name": "symfony/framework-standard-edition",
+    "name": "juit/garage-door-control",
     "license": "MIT",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
         "psr-0": {
             "": "src/"
         }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4.0",
         "symfony/symfony": "~2.4",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "~1.2",
@@ -23,8 +22,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
-        "pkj/raspberry-piface-api": "dev-master",
-        "nesbot/carbon": "@stable",
+        "pkj/raspberry-piface-api": "~1.0",
+        "nesbot/carbon": "~1.18",
         "guzzle/guzzle": "@stable",
         "myclabs/php-enum": "~1.2",
         "juit/e-mail-bundle": "dev-master"

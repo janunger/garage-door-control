@@ -1,25 +1,25 @@
 <?php
 
 use Alex\MailCatcher\Client;
-use Symfony\Component\Process\Process;
 
-class EventLoopStartTest extends PHPUnit_Framework_TestCase
+require_once __DIR__ . '/EndToEndTestCase.php';
+
+class EventLoopStartTest extends EndToEndTestCase
 {
-    /** @var Process */
-    private static $eventLoop;
-
     /** @var Client */
     private static $mailCatcher;
 
     public static function setUpBeforeClass()
     {
-        // "exec ..." is required if $process->stop() isn't working without.
-        self::$eventLoop   = new Process('exec ' . __DIR__ . '/../../app/console gdc:event-loop:run');
+        parent::setUpBeforeClass();
+
         self::$mailCatcher = new Client('http://localhost:1080');
     }
 
     protected function setUp()
     {
+        parent::setUp();
+
         self::$mailCatcher->purge();
     }
 
@@ -39,7 +39,8 @@ class EventLoopStartTest extends PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        self::$eventLoop->stop();
+        parent::tearDownAfterClass();
+
         self::$mailCatcher->purge();
     }
 

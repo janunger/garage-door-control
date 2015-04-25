@@ -3,6 +3,8 @@
 namespace GDCBundle\Command;
 
 use DateTime;
+use GDC\Sensor\Role;
+use GDCBundle\Service\SensorLogger\SensorLogger;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,9 +28,12 @@ class RunEventLoopCommand extends ContainerAwareCommand
         $container = $this->getContainer();
         $commandProcessor = $container->get('gdc.command_processor');
         $watchdog = $container->get('gdc.watchdog');
+        $sensorLogger = $this->getContainer()->get('gdc.sensor_logger');
+
         while (true) {
             $commandProcessor->execute();
             $watchdog->execute();
+            $sensorLogger->execute();
             $this->flushMailQueue();
             if ($this->mustForceRestart()) {
                 break;
