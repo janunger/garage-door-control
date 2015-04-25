@@ -1,3 +1,8 @@
+.app-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
 .ui-element {
     padding: 20px 10px 0 10px;
     text-align: center;
