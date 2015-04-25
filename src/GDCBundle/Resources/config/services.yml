@@ -17,28 +17,28 @@ services:
         factory_service: gdc.piface_factory
         factory_method: createInstance
 
-    gdc.piface_pin.door_closed:
+    gdc.piface_input_pin.door_closed:
         class: Pkj\Raspberry\PiFace\Hardware\Components\InputPin
         factory_service: gdc.piface
         factory_method: getInputPin
         arguments:
             - %gdc.piface_inputpin_id.door_closed%
 
-    gdc.piface_pin.door_opened:
+    gdc.piface_input_pin.door_opened:
         class: Pkj\Raspberry\PiFace\Hardware\Components\InputPin
         factory_service: gdc.piface
         factory_method: getInputPin
         arguments:
             - %gdc.piface_inputpin_id.door_opened%
 
-    gdc.piface_pin.photo_interrupter:
+    gdc.piface_input_pin.photo_interrupter:
         class: Pkj\Raspberry\PiFace\Hardware\Components\InputPin
         factory_service: gdc.piface
         factory_method: getInputPin
         arguments:
             - %gdc.piface_inputpin_id.photo_interrupter%
 
-    gdc.piface_pin.motor_trigger:
+    gdc.piface_output_pin.motor_trigger:
         class: Pkj\Raspberry\PiFace\Hardware\Components\OutputPin
         factory_service: gdc.piface
         factory_method: getOutputPin
@@ -48,9 +48,9 @@ services:
     gdc.door:
         class: GDC\Door\Door
         arguments:
-            - @gdc.piface_pin.door_closed
-            - @gdc.piface_pin.door_opened
-            - @gdc.piface_pin.motor_trigger
+            - @gdc.piface_input_pin.door_closed
+            - @gdc.piface_input_pin.door_opened
+            - @gdc.piface_output_pin.motor_trigger
 
     gdc.watchdog_messenger:
         class: GDC\WatchDog\Messenger

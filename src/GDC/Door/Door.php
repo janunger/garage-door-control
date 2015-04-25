@@ -20,13 +20,13 @@ class Door implements DoorInterface
     /**
      * @var OutputPin
      */
-    private $actorControl;
+    private $motorTrigger;
 
-    public function __construct(InputPin $sensorClosed, InputPin $sensorOpened, OutputPin $actorControl)
+    public function __construct(InputPin $sensorClosed, InputPin $sensorOpened, OutputPin $motorTrigger)
     {
         $this->sensorClosed = $sensorClosed;
         $this->sensorOpened = $sensorOpened;
-        $this->actorControl = $actorControl;
+        $this->motorTrigger = $motorTrigger;
     }
 
     /**
@@ -52,8 +52,8 @@ class Door implements DoorInterface
 
     public function triggerControl()
     {
-        $this->actorControl->turnOn();
+        $this->motorTrigger->turnOn();
         usleep(500000);
-        $this->actorControl->turnOff();
+        $this->motorTrigger->turnOff();
     }
 }
