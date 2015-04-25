@@ -1,6 +1,6 @@
 <?php
 
-namespace GDC\WatchDog\Tests;
+namespace GDC\Tests\WatchDog;
 
 use Carbon\Carbon;
 use GDC\Door\HardwareErrorException;
