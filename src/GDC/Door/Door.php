@@ -2,30 +2,31 @@
 
 namespace GDC\Door;
 
-use Pkj\Raspberry\PiFace;
+use Pkj\Raspberry\PiFace\InputPin;
+use Pkj\Raspberry\PiFace\OutputPin;
 
 class Door implements DoorInterface
 {
     /**
-     * @var \Pkj\Raspberry\PiFace\InputPin
+     * @var InputPin
      */
     private $sensorClosed;
 
     /**
-     * @var \Pkj\Raspberry\PiFace\InputPin
+     * @var InputPin
      */
     private $sensorOpened;
 
     /**
-     * @var \Pkj\Raspberry\PiFace\OutputPin
+     * @var OutputPin
      */
     private $actorControl;
 
-    public function __construct(PiFace $piFace)
+    public function __construct(InputPin $sensorClosed, InputPin $sensorOpened, OutputPin $actorControl)
     {
-        $this->sensorClosed = $piFace->getInputPin(0);
-        $this->sensorOpened = $piFace->getInputPin(1);
-        $this->actorControl = $piFace->getOutputPin(0);
+        $this->sensorClosed = $sensorClosed;
+        $this->sensorOpened = $sensorOpened;
+        $this->actorControl = $actorControl;
     }
 
     /**

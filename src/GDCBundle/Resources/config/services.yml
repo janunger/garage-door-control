@@ -1,11 +1,11 @@
 parameters:
-#    gdc.example.class: GDC\CoreBundle\Example
+    gdc.piface_inputpin_id.door_closed: 0
+    gdc.piface_inputpin_id.door_opened: 1
+    gdc.piface_inputpin_id.photo_interrupter: 2
+
+    gdc.piface_outputpin_id.motor_trigger: 0
 
 services:
-#    gdc.example:
-#        class: %gdc.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
-
     gdc.piface_factory:
         class: GDC\Door\PiFaceFactory
         arguments:
@@ -17,10 +17,40 @@ services:
         factory_service: gdc.piface_factory
         factory_method: createInstance
 
+    gdc.piface_pin.door_closed:
+        class: Pkj\Raspberry\PiFace\Hardware\Components\InputPin
+        factory_service: gdc.piface
+        factory_method: getInputPin
+        arguments:
+            - %gdc.piface_inputpin_id.door_closed%
+
+    gdc.piface_pin.door_opened:
+        class: Pkj\Raspberry\PiFace\Hardware\Components\InputPin
+        factory_service: gdc.piface
+        factory_method: getInputPin
+        arguments:
+            - %gdc.piface_inputpin_id.door_opened%
+
+    gdc.piface_pin.photo_interrupter:
+        class: Pkj\Raspberry\PiFace\Hardware\Components\InputPin
+        factory_service: gdc.piface
+        factory_method: getInputPin
+        arguments:
+            - %gdc.piface_inputpin_id.photo_interrupter%
+
+    gdc.piface_pin.motor_trigger:
+        class: Pkj\Raspberry\PiFace\Hardware\Components\OutputPin
+        factory_service: gdc.piface
+        factory_method: getOutputPin
+        arguments:
+            - %gdc.piface_outputpin_id.motor_trigger%
+
     gdc.door:
         class: GDC\Door\Door
         arguments:
-            - @gdc.piface
+            - @gdc.piface_pin.door_closed
+            - @gdc.piface_pin.door_opened
+            - @gdc.piface_pin.motor_trigger
 
     gdc.watchdog_messenger:
         class: GDC\WatchDog\Messenger
