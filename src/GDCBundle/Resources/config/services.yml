@@ -66,6 +66,7 @@ services:
         arguments:
             - @gdc.door
             - @gdc.watchdog_messenger
+            - @gdc.door_state_repository
 
     gdc.camera_http_client:
         class: Guzzle\Http\Client
@@ -92,6 +93,13 @@ services:
         factory_method: getRepository
         arguments:
             - GDCBundle:SensorLogEntry
+
+    gdc.door_state_repository:
+        class: GDCBundle\Entity\DoorStateRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - GDCBundle:DoorState
 
     gdc.command_processor:
         class: GDCBundle\Service\CommandProcessor

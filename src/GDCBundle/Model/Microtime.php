@@ -39,4 +39,20 @@ class Microtime
         }
         throw new \InvalidArgumentException("Unexpected microtime representation '$value'");
     }
+
+    /**
+     * @return string
+     */
+    public function getIntegerPart()
+    {
+        return substr($this->value, 0, strlen($this->value) - 8);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDecimalPart()
+    {
+        return substr($this->value, -8);
+    }
 }

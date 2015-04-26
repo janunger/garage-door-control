@@ -29,20 +29,24 @@ angular.module('doorApp', [])
 
                     $scope.statusMessage = statusMessage;
                     $scope.statusClass = 'status-' + statusClass;
-                    $scope.statusDate = new Date();
+                    $scope.statusDate = data.date + ' ';
+                    if (data.ageOfStateSeconds > 5) {
+                        $scope.statusClass = 'status-unknown';
+                        $scope.statusDate = $scope.statusDate + ' (nicht aktuell)';
+                    }
 
                     $timeout(loadDoorState, 2000);
                 }).
                 error(function () {
                     $scope.statusMessage = 'FEHLER';
-                    $scope.statusClass = 'status-error';
+                    $scope.statusClass = 'error';
                     $scope.statusDate = new Date();
 
                     $timeout(loadDoorState, 2000);
                 });
         };
 
-        $scope.statusMessage = 'unbekannt';
+        $scope.statusMessage = 'wird geladen';
         $scope.statusClass = 'status-unknown';
         $scope.statusDate = new Date();
 

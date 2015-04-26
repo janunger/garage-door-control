@@ -23,10 +23,12 @@ class DefaultController extends Controller
 
     public function doorStateAction()
     {
-        $door = $this->get('gdc.door');
+        $doorState = $this->get('gdc.door_state_repository')->find(1);
 
         return new JsonResponse([
-            'doorState' => $door->getState()->getValue()
+            'doorState' => $doorState->getState()->getValue(),
+            'date' => $doorState->getDate()->format(DATE_ISO8601),
+            'ageOfStateSeconds' => time() - (int)$doorState->getDate()->format('U')
         ]);
     }
 

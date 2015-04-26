@@ -5,6 +5,8 @@ namespace GDC\WatchDog;
 use GDC\Door\HardwareErrorException;
 use GDC\Door\DoorInterface;
 use GDC\Door\State;
+use GDCBundle\Entity\DoorState;
+use GDCBundle\Entity\DoorStateRepository;
 
 class WatchDog
 {
@@ -23,10 +25,16 @@ class WatchDog
      */
     private $messenger;
 
-    public function __construct(DoorInterface $door, Messenger $messenger)
+    /**
+     * @var DoorStateRepository
+     */
+    private $doorStateRepository;
+
+    public function __construct(DoorInterface $door, Messenger $messenger, DoorStateRepository $doorStateRepository)
     {
-        $this->door = $door;
-        $this->messenger = $messenger;
+        $this->door                = $door;
+        $this->messenger           = $messenger;
+        $this->doorStateRepository = $doorStateRepository;
     }
 
     public function execute()
@@ -35,8 +43,11 @@ class WatchDog
             $currentState = $this->door->getState();
         } catch (HardwareErrorException $e) {
             $this->messenger->sendHardwareError();
+
             return;
         }
+
+        $this->updateDoorState($currentState);
 
         $previousState = $this->state;
         if ($currentState->equals($previousState)) {
@@ -52,5 +63,16 @@ class WatchDog
         }
 
         $this->state = $currentState;
+    }
+
+    private function updateDoorState(State $currentState)
+    {
+        $stateEntity = $this->doorStateRepository->find(1);
+        if (!$stateEntity) {
+            $stateEntity = new DoorState();
+        }
+        $stateEntity->setState($currentState);
+        $stateEntity->setDate(new \DateTime());
+        $this->doorStateRepository->save($stateEntity);
     }
 }

@@ -35,4 +35,28 @@ class MicrotimeTest extends AbstractTestCase
         $this->setExpectedException('InvalidArgumentException', "Unexpected microtime representation '1430048647.7839'");
         new Microtime(1430048647.7839);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_integer_part()
+    {
+        $SUT = new Microtime('143004864778396600');
+        $this->assertSame('1430048647', $SUT->getIntegerPart());
+
+        $SUT = new Microtime('1143004864778396600');
+        $this->assertSame('11430048647', $SUT->getIntegerPart());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_decimal_part()
+    {
+        $SUT = new Microtime('143004864778396600');
+        $this->assertSame('78396600', $SUT->getDecimalPart());
+
+        $SUT = new Microtime('1143004864778396600');
+        $this->assertSame('78396600', $SUT->getDecimalPart());
+    }
 }
