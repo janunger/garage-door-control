@@ -2,6 +2,7 @@
 
 use Doctrine\Common\Collections\ArrayCollection;
 use GDC\Sensor\Role;
+use GDCBundle\Entity\SensorLogEntry;
 use Pkj\Raspberry\PiFace\Emulator\Components\InputPin;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\Process;
@@ -130,7 +131,7 @@ class SensorLoggerTest extends EndToEndTestCase
     /**
      * @param int $expectedEntryCount
      * @param int $timeout
-     * @return ArrayCollection|\GDCBundle\Entity\SensorLogEntry[]
+     * @return ArrayCollection|SensorLogEntry[]
      */
     private function expectEntries($expectedEntryCount, $timeout = 5)
     {

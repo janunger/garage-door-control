@@ -7,6 +7,8 @@ use GDC\Sensor\Role;
 use GDC\Tests\AbstractTestCase;
 use GDCBundle\Entity\SensorLogEntry;
 use GDCBundle\Entity\SensorLogEntryRepository;
+use GDCBundle\Model\Microtime;
+use GDCBundle\Service\MicrotimeProvider;
 use GDCBundle\Service\SensorLogger\SensorLogger;
 use GDCBundle\Service\SensorLogger\StateWatcher;
 
@@ -39,7 +41,7 @@ class SensorLoggerTest extends AbstractTestCase
 
     protected function setUp()
     {
-        Carbon::setTestNow(Carbon::createFromDate());
+        MicrotimeProvider::setTestNow(new Microtime('143004864778396600'));
 
         $this->logEntryRepository = $this->createMock('\GDCBundle\Entity\SensorLogEntryRepository');
 
@@ -69,13 +71,13 @@ class SensorLoggerTest extends AbstractTestCase
     {
         $this->logEntryRepository->expects($this->exactly(3))->method('save');
         $this->logEntryRepository->expects($this->at(0))->method('save')->with(
-            new SensorLogEntry(Role::DOOR_CLOSED(), true, Carbon::now())
+            new SensorLogEntry(Role::DOOR_CLOSED(), true, MicrotimeProvider::now())
         );
         $this->logEntryRepository->expects($this->at(1))->method('save')->with(
-            new SensorLogEntry(Role::DOOR_OPENED(), false, Carbon::now())
+            new SensorLogEntry(Role::DOOR_OPENED(), false, MicrotimeProvider::now())
         );
         $this->logEntryRepository->expects($this->at(2))->method('save')->with(
-            new SensorLogEntry(Role::PHOTO_INTERRUPTER(), true, Carbon::now())
+            new SensorLogEntry(Role::PHOTO_INTERRUPTER(), true, MicrotimeProvider::now())
         );
 
         $this->SUT->execute();
@@ -96,13 +98,13 @@ class SensorLoggerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_log_only_changes_state()
+    public function it_should_log_only_changed_state()
     {
         $this->SUT->execute();
 
         $this->sensorDoorClosed->setIsOn(false);
         $this->logEntryRepository->expects($this->once())->method('save')->with(
-            new SensorLogEntry(Role::DOOR_CLOSED(), false, Carbon::now())
+            new SensorLogEntry(Role::DOOR_CLOSED(), false, MicrotimeProvider::now())
         );
 
         $this->SUT->execute();

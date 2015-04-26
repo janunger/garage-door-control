@@ -4,6 +4,7 @@ namespace GDCBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use GDC\Sensor\Role;
+use GDCBundle\Model\Microtime;
 
 /**
  * @ORM\Table(name="sensor_log")
@@ -33,21 +34,22 @@ class SensorLogEntry
     private $isOn;
 
     /**
-     * @var \DateTime
-     * @ORM\Column(name="date", type="datetime")
+     * @var string
+     *
+     * @ORM\Column(name="microtime", type="bigint")
      */
-    private $date;
+    private $microtime;
 
     /**
      * @param Role      $role
      * @param bool      $isOn
-     * @param \DateTime $date
+     * @param Microtime $microtime
      */
-    public function __construct(Role $role, $isOn, \DateTime $date)
+    public function __construct(Role $role, $isOn, Microtime $microtime)
     {
         $this->role = $role;
         $this->isOn = $isOn;
-        $this->date = $date;
+        $this->microtime = $microtime->getValue();
     }
 
     /**
@@ -74,6 +76,14 @@ class SensorLogEntry
     public function isOn()
     {
         return $this->isOn;
+    }
+
+    /**
+     * @return Microtime
+     */
+    public function getMicrotime()
+    {
+        return new Microtime($this->microtime);
     }
 }
 
