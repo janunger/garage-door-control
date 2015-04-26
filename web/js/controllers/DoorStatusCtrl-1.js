@@ -32,7 +32,7 @@ angular.module('doorApp', [])
                     $scope.statusDate = data.date + ' ';
                     if (data.ageOfStateSeconds > 5) {
                         $scope.statusClass = 'status-unknown';
-                        $scope.statusDate = $scope.statusDate + ' (nicht aktuell)';
+                        $scope.statusDate = $scope.statusDate + ' (' + data.ageOfStateSeconds + ' Sekunden alt)';
                     }
 
                     $timeout(loadDoorState, 2000);
