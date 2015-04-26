@@ -3,10 +3,10 @@
 namespace GDCBundle\Tests\Service;
 
 use GDC\CommandQueue\Command;
+use GDC\Tests\AbstractTestCase;
 use GDCBundle\Entity\CommandQueueEntry;
 use GDCBundle\Event\CommandIssuedEvent;
 use GDCBundle\Service\CommandProcessor;
-use GDCBundle\Tests\AbstractTestCase;
 
 class CommandProcessorTest extends AbstractTestCase
 {

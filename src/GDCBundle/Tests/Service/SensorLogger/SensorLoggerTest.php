@@ -4,11 +4,11 @@ namespace GDCBundle\Tests\Service\SensorLogger;
 
 use Carbon\Carbon;
 use GDC\Sensor\Role;
+use GDC\Tests\AbstractTestCase;
 use GDCBundle\Entity\SensorLogEntry;
 use GDCBundle\Entity\SensorLogEntryRepository;
 use GDCBundle\Service\SensorLogger\SensorLogger;
 use GDCBundle\Service\SensorLogger\StateWatcher;
-use GDCBundle\Tests\AbstractTestCase;
 
 class SensorLoggerTest extends AbstractTestCase
 {

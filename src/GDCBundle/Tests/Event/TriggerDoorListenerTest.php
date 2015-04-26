@@ -3,9 +3,9 @@
 namespace GDCBundle\Tests\Event;
 
 use GDC\CommandQueue\Command;
+use GDC\Tests\AbstractTestCase;
 use GDCBundle\Event\CommandIssuedEvent;
 use GDCBundle\Event\TriggerDoorListener;
-use GDCBundle\Tests\AbstractTestCase;
 
 class TriggerDoorListenerTest extends AbstractTestCase
 {
