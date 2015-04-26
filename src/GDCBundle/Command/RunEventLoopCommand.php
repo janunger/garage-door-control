@@ -38,7 +38,7 @@ class RunEventLoopCommand extends ContainerAwareCommand
             if ($this->mustForceRestart()) {
                 break;
             }
-            sleep(1);
+            usleep(300000);
         }
     }
 
