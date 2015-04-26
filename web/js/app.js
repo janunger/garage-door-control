@@ -4,13 +4,16 @@ $(function () {
     var snapshotTag = $('.snapshot');
     var snapshotUrl = snapshotTag.data('default-src');
 
-    function reloadSnapshot() {
+    function loadSnapshot() {
         var timestamp = (new Date()).getTime();
         var newSrc = snapshotUrl + '?' + timestamp;
         snapshotTag.attr('src', newSrc);
-        setTimeout(reloadSnapshot, 10000);
+        setTimeout(loadSnapshot, 10000);
     }
-    reloadSnapshot();
+
+    snapshotTag.click(function () {
+        loadSnapshot();
+    });
 });
 
 $(function () {
