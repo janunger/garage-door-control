@@ -25,7 +25,7 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
         $messenger
             ->expects($this->once())->method('sendMessageOnWatchdogRestart');
 
-        $sut = new WatchDog($door, $messenger);
+        $sut = new WatchDog($door, $messenger, $this->createDoorStateRepositoryMock());
         $sut->execute();
     }
 
@@ -52,7 +52,7 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
         $messenger
             ->expects($this->once())->method('sendMessageOnDoorOpening');
 
-        $sut = new WatchDog($door, $messenger);
+        $sut = new WatchDog($door, $messenger, $this->createDoorStateRepositoryMock());
         $sut->execute();
 
         Carbon::setTestNow($date2);
@@ -79,7 +79,7 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
                 }
                 return State::CLOSED();
             }));
-        $sut = new WatchDog($door, $messenger);
+        $sut = new WatchDog($door, $messenger, $this->createDoorStateRepositoryMock());
         $sut->execute();
 
         $messenger
@@ -104,7 +104,7 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
         $messenger
             ->expects($this->once())->method('sendHardwareError');
 
-        $sut = new WatchDog($door, $messenger);
+        $sut = new WatchDog($door, $messenger, $this->createDoorStateRepositoryMock());
         $sut->execute();
     }
 
@@ -132,5 +132,16 @@ class WatchDogTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         return $messenger;
+    }
+
+    /**
+     * @return \GDCBundle\Entity\DoorStateRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function createDoorStateRepositoryMock()
+    {
+        return $this
+            ->getMockBuilder('\GDCBundle\Entity\DoorStateRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
