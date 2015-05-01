@@ -24,8 +24,6 @@ class SensorLoggerTest extends AbstractTestCase
      */
     protected $SUT;
 
-    private $now;
-
     /**
      * @var $repo SensorLogEntryRepository|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -79,7 +77,7 @@ class SensorLoggerTest extends AbstractTestCase
      */
     public function it_should_log_the_initial_state_after_being_instantiated_with_sensors()
     {
-        $this->phpMock->expects($this->any())->method('microtime')->with()->willReturn('0.78396600 1430048647');
+        $this->phpMock->expects($this->any())->method('microtime')->willReturn('0.78396600 1430048647');
 
         $this->logEntryRepository->expects($this->exactly(3))->method('save');
         $this->logEntryRepository->expects($this->at(0))->method('save')->with(
@@ -113,7 +111,7 @@ class SensorLoggerTest extends AbstractTestCase
      */
     public function it_should_log_only_changed_state()
     {
-        $this->phpMock->expects($this->any())->method('microtime')->with()->willReturn('0.78396600 1430048647');
+        $this->phpMock->expects($this->any())->method('microtime')->willReturn('0.78396600 1430048647');
 
         $this->SUT->execute();
 
