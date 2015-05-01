@@ -7,6 +7,7 @@ use GDC\Door\DoorInterface;
 use GDC\Door\State;
 use GDCBundle\Entity\DoorState;
 use GDCBundle\Entity\DoorStateRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class WatchDog
 {
@@ -30,11 +31,21 @@ class WatchDog
      */
     private $doorStateRepository;
 
-    public function __construct(DoorInterface $door, Messenger $messenger, DoorStateRepository $doorStateRepository)
-    {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    public function __construct(
+        DoorInterface $door,
+        Messenger $messenger,
+        DoorStateRepository $doorStateRepository,
+        EventDispatcherInterface $dispatcher
+    ) {
         $this->door                = $door;
         $this->messenger           = $messenger;
         $this->doorStateRepository = $doorStateRepository;
+        $this->dispatcher          = $dispatcher;
     }
 
     public function execute()
