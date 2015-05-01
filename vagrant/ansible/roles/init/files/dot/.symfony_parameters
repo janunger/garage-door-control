@@ -8,6 +8,9 @@ alias sfrtc='sfrt --coverage-html /vagrant/tests/reports/coverage'
 alias sfdb_reset='sf doctrine:database:drop --force && sf doctrine:database:create && sf doctrine:schema:create && sf doctrine:fixtures:load -n'
 alias sfdb_load_dump='sf doctrine:database:drop --force -vvv && sf doctrine:database:create -vvv && mysql -u dev -pdev dev < ./docs/current.sql && sfdmm'
 
+alias xdebug_enable='export XDEBUG_CONFIG="idekey=phpstorm-xdebug remote_host=192.168.77.1 profiler_enable=1 default_enable=1 remote_enable=1 remote_handler=dbgp remote_port=9000 remote_autostart=0" && export PHP_IDE_CONFIG="serverName=gdc.uit.dev"'
+alias xdebug_disable='unset XDEBUG_CONFIG && unset PHP_IDE_CONFIG'
+
 export SYMFONY__DATABASE__NAME=dev
 export SYMFONY__DATABASE__USER=dev
 export SYMFONY__DATABASE__PASSWORD=dev

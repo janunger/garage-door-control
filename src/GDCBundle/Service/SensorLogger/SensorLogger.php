@@ -4,6 +4,7 @@ namespace GDCBundle\Service\SensorLogger;
 
 use GDCBundle\Entity\SensorLogEntry;
 use GDCBundle\Entity\SensorLogEntryRepository;
+use GDCBundle\Model\Microtime;
 use GDCBundle\Service\MicrotimeProvider;
 
 class SensorLogger
@@ -41,7 +42,7 @@ class SensorLogger
         $this->logEntryRepository->save(new SensorLogEntry(
             $sensor->getRole(),
             $sensor->isOn(),
-            MicrotimeProvider::now()
+            new Microtime()
         ));
     }
 }

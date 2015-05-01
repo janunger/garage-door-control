@@ -15,6 +15,7 @@
     beStrictAboutOutputDuringTests          = "true"
     beStrictAboutTestSize                   = "true"
     syntaxCheck                             = "false"
+    verbose                                 = "true"
     bootstrap                               = "bootstrap.php.cache" >
 
     <testsuites>
