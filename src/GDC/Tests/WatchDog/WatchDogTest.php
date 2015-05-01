@@ -3,52 +3,11 @@
 namespace GDC\Tests\WatchDog;
 
 use Carbon\Carbon;
-use GDC\Door\DoorInterface;
 use GDC\Door\HardwareErrorException;
 use GDC\Door\State;
-use GDC\Tests\AbstractTestCase;
-use GDC\WatchDog\Messenger;
-use GDC\WatchDog\WatchDog;
-use GDCBundle\Entity\DoorStateRepository;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class WatchDogTest extends AbstractTestCase
+class WatchDogTest extends WatchDogTestCase
 {
-    /**
-     * @var DoorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $door;
-
-    /**
-     * @var Messenger|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $messenger;
-
-    /**
-     * @var DoorStateRepository|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $doorStateRepository;
-
-    /**
-     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var WatchDog
-     */
-    private $SUT;
-
-    protected function setUp()
-    {
-        $this->door                = $this->createMock('GDC\Door\DoorInterface');
-        $this->messenger           = $this->createMock('GDC\WatchDog\Messenger');
-        $this->doorStateRepository = $this->createMock('GDCBundle\Entity\DoorStateRepository');
-        $this->eventDispatcher     = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-
-        $this->SUT = new WatchDog($this->door, $this->messenger, $this->doorStateRepository, $this->eventDispatcher);
-    }
-
     /**
      * @test
      */
@@ -60,7 +19,8 @@ class WatchDogTest extends AbstractTestCase
         $this->messenger
             ->expects($this->once())->method('sendMessageOnWatchdogRestart');
 
-        $this->SUT->execute();
+        $SUT = $this->createSUTInstance();
+        $SUT->execute();
     }
 
     /**
@@ -84,10 +44,11 @@ class WatchDogTest extends AbstractTestCase
         $this->messenger
             ->expects($this->once())->method('sendMessageOnDoorOpening');
 
-        $this->SUT->execute();
+        $SUT = $this->createSUTInstance();
+        $SUT->execute();
 
         Carbon::setTestNow($date2);
-        $this->SUT->execute();
+        $SUT->execute();
     }
 
     /**
@@ -108,13 +69,14 @@ class WatchDogTest extends AbstractTestCase
 
                 return State::CLOSED();
             }));
-        $this->SUT->execute();
+        $SUT = $this->createSUTInstance();
+        $SUT->execute();
 
         $this->messenger
             ->expects($this->once())->method('sendMessageAfterDoorClosed');
 
         Carbon::setTestNow($date2);
-        $this->SUT->execute();
+        $SUT->execute();
     }
 
     /**
@@ -128,6 +90,7 @@ class WatchDogTest extends AbstractTestCase
         $this->messenger
             ->expects($this->once())->method('sendHardwareError');
 
-        $this->SUT->execute();
+        $SUT = $this->createSUTInstance();
+        $SUT->execute();
     }
 }
