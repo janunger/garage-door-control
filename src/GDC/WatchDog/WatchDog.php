@@ -54,6 +54,8 @@ class WatchDog
             return;
         }
 
+        $this->state = $currentState;
+
         if (null === $previousState) {
             $this->messenger->sendMessageOnWatchdogRestart();
         } elseif ($previousState->equals(State::CLOSED())) {
@@ -61,8 +63,6 @@ class WatchDog
         } elseif ($previousState->equals(State::UNKNOWN()) && $currentState->equals(State::CLOSED())) {
             $this->messenger->sendMessageAfterDoorClosed();
         }
-
-        $this->state = $currentState;
     }
 
     private function updateDoorState(State $currentState)
