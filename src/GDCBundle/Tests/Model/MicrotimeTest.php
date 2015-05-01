@@ -59,4 +59,20 @@ class MicrotimeTest extends AbstractTestCase
         $SUT = new Microtime('1143004864778396600');
         $this->assertSame('78396600', $SUT->getDecimalPart());
     }
+
+    /**
+     * @test
+     * @runInSeparateProcess
+     */
+    public function it_should_accept_an_empty_construction_parameter_and_assume_current_microtime_as_value()
+    {
+        $phpMock = \PHPUnit_Extension_FunctionMocker::start($this, 'GDCBundle\Model')
+            ->mockFunction('microtime')
+            ->getMock();
+        $phpMock->expects($this->once())->method('microtime')->with()->willReturn('0.43932300 1430479381');
+
+        $SUT = new Microtime();
+
+        $this->assertEquals('143047938143932300', $SUT->getValue());
+    }
 }

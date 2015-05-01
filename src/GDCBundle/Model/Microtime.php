@@ -12,8 +12,11 @@ class Microtime
     /**
      * @param string $value
      */
-    public function __construct($value)
+    public function __construct($value = null)
     {
+        if (null === $value) {
+            $value = microtime();
+        }
         $this->value = $this->normalize($value);
     }
 
