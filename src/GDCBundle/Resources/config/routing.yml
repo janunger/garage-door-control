@@ -1,7 +1,3 @@
 gdc_trigger:
     pattern:  /trigger
     defaults: { _controller: GDCBundle:Default:trigger }
-
-gdc_snapshot:
-    pattern:  /snapshot
-    defaults: { _controller: GDCBundle:Default:snapshot }
