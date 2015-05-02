@@ -62,6 +62,11 @@ services:
             - %messenger_sender_name%
             - %messenger_recipient_address%
             - %messenger_recipient_name%
+        tags:
+            - { name: kernel.event_listener, event: watchdog.restarted, method: onWatchdogRestart }
+            - { name: kernel.event_listener, event: watchdog.door_opening, method: onDoorOpening }
+            - { name: kernel.event_listener, event: watchdog.door_closed, method: onDoorClosed }
+            - { name: kernel.event_listener, event: watchdog.hardware_error, method: onHardwareError }
 
     gdc.door_state_save_path:
         class: SplFileInfo

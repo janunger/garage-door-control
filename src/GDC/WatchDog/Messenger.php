@@ -2,8 +2,6 @@
 
 namespace GDC\WatchDog;
 
-use DateTime;
-
 class Messenger
 {
     /**
@@ -33,41 +31,40 @@ class Messenger
 
     public function __construct(\Swift_Mailer $mailer, $senderAddress, $senderName, $recipientAddress, $recipientName)
     {
-        $this->mailer = $mailer;
-        $this->senderAddress = $senderAddress;
-        $this->senderName = $senderName;
+        $this->mailer           = $mailer;
+        $this->senderAddress    = $senderAddress;
+        $this->senderName       = $senderName;
         $this->recipientAddress = $recipientAddress;
-        $this->recipientName = $recipientName;
+        $this->recipientName    = $recipientName;
     }
 
-    public function sendMessageOnWatchdogRestart()
+    public function onWatchdogRestart()
     {
         $this->send('Watchdog restarted');
     }
 
-    public function sendMessageOnDoorOpening()
+    public function onDoorOpening()
     {
         $this->send('Door opening');
     }
 
-    public function sendMessageAfterDoorClosed()
+    public function onDoorClosed()
     {
         $this->send('Door closed');
     }
 
-    public function sendHardwareError()
+    public function onHardwareError()
     {
         $this->send('Hardware error');
     }
 
     private function send($subject)
     {
-        $now = (new DateTime())->format('Y-m-d H:i:s');
+        $now  = date('Y-m-d H:i:s');
         $text = $subject . ' - ' . $now;
 
         $message = \Swift_Message::newInstance();
         $message->setSubject($text);
-        // TODO: Make dynamic
         $message->setFrom($this->senderAddress, $this->senderName);
         $message->setTo($this->recipientAddress, $this->recipientName);
         $message->setBody($text);
