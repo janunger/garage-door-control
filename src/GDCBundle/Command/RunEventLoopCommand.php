@@ -2,9 +2,6 @@
 
 namespace GDCBundle\Command;
 
-use DateTime;
-use GDC\Sensor\Role;
-use GDCBundle\Service\SensorLogger\SensorLogger;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RunEventLoopCommand extends ContainerAwareCommand
 {
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     private $startDate;
 
@@ -24,7 +21,7 @@ class RunEventLoopCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->startDate = new DateTime();
+        $this->startDate = new \DateTime();
         $container = $this->getContainer();
         $commandProcessor = $container->get('gdc.command_processor');
         $watchdog = $container->get('gdc.watchdog');
@@ -58,7 +55,7 @@ class RunEventLoopCommand extends ContainerAwareCommand
      */
     private function mustForceRestart()
     {
-        $now = new DateTime();
+        $now = new \DateTime();
 
         return $now->format('Hi') === '0500' && $this->calculateUpTime() > 2 * 60 * 60;
     }
@@ -68,7 +65,7 @@ class RunEventLoopCommand extends ContainerAwareCommand
      */
     private function calculateUpTime()
     {
-        $now = new DateTime();
+        $now = new \DateTime();
 
         return (int)$now->format('U') - (int)$this->startDate->format('U');
     }

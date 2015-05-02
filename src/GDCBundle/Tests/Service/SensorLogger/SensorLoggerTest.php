@@ -2,13 +2,11 @@
 
 namespace GDCBundle\Tests\Service\SensorLogger;
 
-use Carbon\Carbon;
 use GDC\Sensor\Role;
 use GDC\Tests\AbstractTestCase;
 use GDCBundle\Entity\SensorLogEntry;
 use GDCBundle\Entity\SensorLogEntryRepository;
 use GDCBundle\Model\Microtime;
-use GDCBundle\Service\MicrotimeProvider;
 use GDCBundle\Service\SensorLogger\SensorLogger;
 use GDCBundle\Service\SensorLogger\StateWatcher;
 
