@@ -7,7 +7,7 @@ use Pkj\Raspberry\PiFace\Emulator\Components\InputPin;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\Process;
 
-class SensorLoggerTest extends EndToEndTestCase
+class SensorLoggerTest extends EventLoopTestCase
 {
     private static $rootDir;
 
