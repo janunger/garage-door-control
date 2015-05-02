@@ -4,7 +4,7 @@ angular.module('doorApp', [])
     .controller('DoorStatusCtrl', function ($scope, $http, $timeout) {
         var loadDoorState = function () {
             $http.
-                get('/door-state').
+                get('/state/current.json').
                 success(function (data) {
                     var statusMessage;
                     var statusClass;
