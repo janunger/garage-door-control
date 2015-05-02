@@ -17,6 +17,7 @@ class CommandProcessorTest extends AbstractTestCase
     {
         $repository = $this->createMock('GDCBundle\Entity\CommandQueueEntryRepository');
         $repository->expects($this->any())->method('getList')->will($this->returnValue([]));
+        $repository->expects($this->never())->method('delete');
 
         $dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $dispatcher->expects($this->never())->method('dispatch');
@@ -35,6 +36,7 @@ class CommandProcessorTest extends AbstractTestCase
         $repository->expects($this->any())->method('getList')->will($this->returnValue([
             new CommandQueueEntry(Command::TRIGGER_DOOR())
         ]));
+        $repository->expects($this->once())->method('delete')->with(new CommandQueueEntry(Command::TRIGGER_DOOR()));
 
         $dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $dispatcher
@@ -56,6 +58,7 @@ class CommandProcessorTest extends AbstractTestCase
             new CommandQueueEntry(Command::TRIGGER_DOOR()),
             new CommandQueueEntry(Command::TRIGGER_DOOR())
         ]));
+        $repository->expects($this->exactly(2))->method('delete')->with(new CommandQueueEntry(Command::TRIGGER_DOOR()));
 
         $dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $dispatcher
