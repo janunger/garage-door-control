@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Garage Door Control</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div ng-app="doorApp" ng-controller="DoorStatusCtrl" class="app-container">
+
+    <div class="ui-element">
+        <div class="status" ng-class="statusClass">
+            <div class="message">
+                Status: <span>{{ statusMessage }}</span>
+            </div>
+            <div class="status-date">{{ statusDate | date: 'dd.MM.yyyy HH:mm:ss' }}</div>
+        </div>
+    </div>
+
+    <div class="ui-element">
+        <img class="snapshot" data-default-src="/snapshot" alt="Zum Aktivieren der Kamera klicken"/>
+    </div>
+
+    <div class="ui-element">
+        <a class="btn btn-primary btn-lg btn-trigger">Öffnen/Schließen</a>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+
+<script src="/js/controllers/DoorStatusCtrl-2.js"></script>
+<script src="/js/app-1.js"></script>
+</body>
+</html>

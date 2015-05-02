@@ -3,10 +3,14 @@
 # mod_rewrite). Additionally, this reduces the matching process for the
 # start page (path "/") because otherwise Apache will apply the rewriting rules
 # to each configured DirectoryIndex file (e.g. index.php, index.html, index.pl).
-DirectoryIndex app.php
+DirectoryIndex index.html
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # Serve the index page from static file
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule .? /index.html [L]
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
