@@ -35,14 +35,14 @@ angular.module('doorApp', [])
                         $scope.statusDate = $scope.statusDate + ' (' + data.ageOfStateSeconds + ' Sekunden alt)';
                     }
 
-                    $timeout(loadDoorState, 2000);
+                    $timeout(loadDoorState, 1000);
                 }).
                 error(function () {
                     $scope.statusMessage = 'FEHLER';
                     $scope.statusClass = 'error';
                     $scope.statusDate = new Date();
 
-                    $timeout(loadDoorState, 2000);
+                    $timeout(loadDoorState, 1000);
                 });
         };
 

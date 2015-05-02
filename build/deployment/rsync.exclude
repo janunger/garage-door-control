@@ -14,6 +14,7 @@
 /logs
 /web/app_dev.php
 /web/config.php
+/web/state
 /puppet
 /vagrant
 /Vagrant*

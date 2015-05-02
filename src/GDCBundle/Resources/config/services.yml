@@ -5,6 +5,8 @@ parameters:
 
     gdc.piface_outputpin_id.motor_trigger: 0
 
+    gdc.door_state_save_path: "%kernel.root_dir%/../web/state/current.json"
+
 services:
     gdc.piface_factory:
         class: GDC\Door\PiFaceFactory
@@ -61,12 +63,22 @@ services:
             - %messenger_recipient_address%
             - %messenger_recipient_name%
 
+    gdc.door_state_save_path:
+        class: SplFileInfo
+        arguments:
+            - %gdc.door_state_save_path%
+
+    gdc.door_state_writer:
+        class: GDCBundle\Service\DoorStateWriter
+        arguments:
+            - @gdc.door_state_save_path
+
     gdc.watchdog:
         class: GDC\WatchDog\WatchDog
         arguments:
             - @gdc.door
             - @gdc.watchdog_messenger
-            - @gdc.door_state_repository
+            - @gdc.door_state_writer
             - @event_dispatcher
 
     gdc.camera_http_client:
@@ -94,13 +106,6 @@ services:
         factory_method: getRepository
         arguments:
             - GDCBundle:SensorLogEntry
-
-    gdc.door_state_repository:
-        class: GDCBundle\Entity\DoorStateRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
-        arguments:
-            - GDCBundle:DoorState
 
     gdc.command_processor:
         class: GDCBundle\Service\CommandProcessor

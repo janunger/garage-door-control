@@ -12,15 +12,22 @@ class DoorStateChangeEvent extends Event
      * @var State
      */
     private $newState;
+
+    /**
+     * @var State
+     */
+    private $previousState;
+
     /**
      * @var Microtime
      */
     private $time;
 
-    public function __construct(State $newState, Microtime $time)
+    public function __construct(State $newState, State $previousState, Microtime $time)
     {
         $this->newState = $newState;
         $this->time = $time;
+        $this->previousState = $previousState;
     }
 
     /**
@@ -29,6 +36,15 @@ class DoorStateChangeEvent extends Event
     public function getNewState()
     {
         return $this->newState;
+    }
+
+
+    /**
+     * @return State
+     */
+    public function getPreviousState()
+    {
+        return $this->previousState;
     }
 
     /**

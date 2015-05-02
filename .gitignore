@@ -8,3 +8,5 @@
 /tests/reports/*
 /vendor/
 /web/bundles/*
+/web/state/*
+!/web/state/.gitkeep
