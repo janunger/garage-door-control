@@ -13,7 +13,9 @@ $(function () {
 
     triggerButton.click(function () {
         triggerButton.attr('disabled', 'disabled');
-        $.ajax('/trigger', {
+        $.ajax('/trigger.php', {
+            type: 'POST',
+            data: {},
             complete: function () {
                 triggerButton.removeAttr('disabled');
             }

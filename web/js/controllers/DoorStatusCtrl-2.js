@@ -3,8 +3,9 @@
 angular.module('doorApp', [])
     .controller('DoorStatusCtrl', function ($scope, $http, $timeout) {
         var loadDoorState = function () {
+            var timestamp = (new Date()).getTime();
             $http.
-                get('/state/current.json').
+                get('/state/current.json?' + timestamp).
                 success(function (data) {
                     var statusMessage;
                     var statusClass;
