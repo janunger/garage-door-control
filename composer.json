@@ -23,7 +23,6 @@
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "pkj/raspberry-piface-api": "~1.0",
-        "guzzle/guzzle": "@stable",
         "myclabs/php-enum": "~1.2",
         "juit/e-mail-bundle": "dev-master"
     },

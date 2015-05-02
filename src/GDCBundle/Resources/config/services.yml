@@ -86,18 +86,6 @@ services:
             - @gdc.door_state_writer
             - @event_dispatcher
 
-    gdc.camera_http_client:
-        class: Guzzle\Http\Client
-        arguments:
-            - %camera_url%
-
-    gdc.camera:
-        class: GDC\Camera
-        arguments:
-            - @gdc.camera_http_client
-            - %camera_username%
-            - %camera_password%
-
     gdc.command_queue_entry_repository:
         class: GDCBundle\Entity\CommandQueueEntryRepository
         factory_service: doctrine.orm.default_entity_manager

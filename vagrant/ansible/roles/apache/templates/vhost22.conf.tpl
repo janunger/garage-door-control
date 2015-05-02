@@ -22,4 +22,11 @@
         Order allow,deny
         Allow from all
     </Directory>
+
+    #ProxyPass /videostream http://(Your camera IP)/videostream.cgi
+    #ProxyPassReverse /videostram http://(Your camera IP)/videostream.cgi
+
+    <Location /videostream>
+        #RequestHeader set Authorization "Basic (Your base64 encoded username:password)"
+    </Location>
 </VirtualHost>
