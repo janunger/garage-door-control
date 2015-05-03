@@ -9,6 +9,7 @@ use GDC\Tests\AbstractTestCase;
 use GDC\WatchDog\Messenger;
 use GDC\WatchDog\WatchDog;
 use GDCBundle\Event\WatchDogEvents;
+use GDCBundle\Event\WatchDogRestartedEvent;
 use GDCBundle\Service\DoorStateWriter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -47,7 +48,10 @@ class WatchDogTest extends AbstractTestCase
      */
     public function it_should_raise_a_watchdog_restarted_event_on_startup()
     {
-        $this->eventDispatcher->expects($this->once())->method('dispatch')->with(WatchDogEvents::RESTARTED);
+        $this->door->expects($this->atLeast(1))->method('getState')->willReturn(State::CLOSED());
+        $this->eventDispatcher
+            ->expects($this->once())->method('dispatch')
+            ->with(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent(State::CLOSED()));
 
         $this->createSUTInstance();
     }
@@ -97,8 +101,7 @@ class WatchDogTest extends AbstractTestCase
             ->expects($this->any())->method('getState')
             ->will($this->throwException(new HardwareErrorException('Both sensors are on')));
 
-        $this->eventDispatcher->expects($this->at(0))->method('dispatch')->with(WatchDogEvents::RESTARTED);
-        $this->eventDispatcher->expects($this->at(1))->method('dispatch')->with(WatchDogEvents::HARDWARE_ERROR);
+        $this->eventDispatcher->expects($this->once())->method('dispatch')->with(WatchDogEvents::HARDWARE_ERROR);
         $this->createSUTInstance();
     }
 
@@ -107,10 +110,11 @@ class WatchDogTest extends AbstractTestCase
      */
     public function can_handle_hardware_error_when_running()
     {
-        $SUT = $this->createSUTInstance();
+        $this->door->expects($this->at(0))->method('getState')->willReturn(State::CLOSED());
         $this->door
-            ->expects($this->any())->method('getState')
+            ->expects($this->at(1))->method('getState')
             ->will($this->throwException(new HardwareErrorException('Both sensors are on')));
+        $SUT = $this->createSUTInstance();
 
         $this->eventDispatcher->expects($this->once())->method('dispatch')->with(WatchDogEvents::HARDWARE_ERROR);
         $SUT->execute();

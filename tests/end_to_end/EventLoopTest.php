@@ -26,20 +26,22 @@ class EventLoopTest extends EventLoopTestCase
     /**
      * @test
      */
-    public function it_should_send_a_mail_on_start()
+    public function it_should_send_a_mail_on_start_with_door_state()
     {
+        self::setEmulatorInputPin(EmulatorPinId::DOOR_OPENED(), EmulatorPinValue::OFF());
+        self::setEmulatorInputPin(EmulatorPinId::DOOR_CLOSED(), EmulatorPinValue::ON());
         self::$eventLoop->start();
 
         $this->waitUntilMailCatcherHasMessages();
         $this->assertEquals(1, self::$mailCatcher->getMessageCount());
 
         $message = self::$mailCatcher->searchOne();
-        $this->assertRegExp('/^Watchdog restarted/', $message->getSubject());
+        $this->assertRegExp('/^Watchdog restarted, door closed/', $message->getSubject());
     }
 
     /**
      * @test
-     * @depends it_should_send_a_mail_on_start
+     * @depends it_should_send_a_mail_on_start_with_door_state
      */
     public function it_should_send_a_mail_on_door_opening()
     {

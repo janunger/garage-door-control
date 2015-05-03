@@ -6,6 +6,7 @@ use GDC\Door\HardwareErrorException;
 use GDC\Door\DoorInterface;
 use GDC\Door\State;
 use GDCBundle\Event\WatchDogEvents;
+use GDCBundle\Event\WatchDogRestartedEvent;
 use GDCBundle\Model\Microtime;
 use GDCBundle\Service\DoorStateWriter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -47,9 +48,9 @@ class WatchDog
 
     private function init()
     {
-        $this->dispatcher->dispatch(WatchDogEvents::RESTARTED);
         try {
             $this->state = $this->door->getState();
+            $this->dispatcher->dispatch(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent($this->state));
         } catch (HardwareErrorException $e) {
             $this->dispatcher->dispatch(WatchDogEvents::HARDWARE_ERROR);
         }

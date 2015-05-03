@@ -2,6 +2,9 @@
 
 namespace GDC\WatchDog;
 
+use GDC\Door\State;
+use GDCBundle\Event\WatchDogRestartedEvent;
+
 class Messenger
 {
     /**
@@ -38,9 +41,20 @@ class Messenger
         $this->recipientName    = $recipientName;
     }
 
-    public function onWatchdogRestart()
+    public function onWatchdogRestart(WatchDogRestartedEvent $event)
     {
-        $this->send('Watchdog restarted');
+        switch ($event->getCurrentState()) {
+            case State::CLOSED():
+                $state = 'door closed';
+                break;
+            case State::OPENED():
+                $state = 'DOOR OPENED';
+                break;
+            default:
+                $state = 'DOOR UNKNOWN';
+                break;
+        }
+        $this->send('Watchdog restarted, ' . $state);
     }
 
     public function onDoorOpening()
