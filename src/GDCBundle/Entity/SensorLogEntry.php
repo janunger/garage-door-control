@@ -47,7 +47,7 @@ class SensorLogEntry
      */
     public function __construct(Role $role, $isOn, Microtime $microtime)
     {
-        $this->role = $role;
+        $this->role = $role->getValue();
         $this->isOn = $isOn;
         $this->microtime = $microtime->getValue();
     }
@@ -63,11 +63,11 @@ class SensorLogEntry
     }
 
     /**
-     * @return string
+     * @return Role
      */
     public function getRole()
     {
-        return $this->role;
+        return new Role($this->role);
     }
 
     /**
