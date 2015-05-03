@@ -69,7 +69,7 @@ class MicrotimeTest extends AbstractTestCase
         $phpMock = \PHPUnit_Extension_FunctionMocker::start($this, 'GDCBundle\Model')
             ->mockFunction('microtime')
             ->getMock();
-        $phpMock->expects($this->once())->method('microtime')->with()->willReturn('0.43932300 1430479381');
+        $phpMock->expects($this->once())->method('microtime')->willReturn('0.43932300 1430479381');
 
         $SUT = new Microtime();
 

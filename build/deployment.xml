@@ -47,6 +47,12 @@
         </antcall>
     </target>
 
+    <target name="-assert-state-dir-exists">
+        <antcall target="-sshexec">
+            <param name="command" value="cd ${path}/web &amp;&amp; mkdir -p state &amp;&amp; chmod 0777 state"/>
+        </antcall>
+    </target>
+
     <target name="-restart-watchdog">
         <antcall target="-sshexec">
             <param name="command" value="sudo supervisorctl start gdc_eventloop"/>

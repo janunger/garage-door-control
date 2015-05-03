@@ -8,12 +8,14 @@
 /composer.lock
 /run_tests.sh
 /app/cache/*
+/app/config/db_credentials.php
 /app/config/parameters.yml
 /app/logs/*
 /app/var/*
 /logs
 /web/app_dev.php
 /web/config.php
+/web/state
 /puppet
 /vagrant
 /Vagrant*

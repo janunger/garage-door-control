@@ -5,8 +5,11 @@ namespace GDC\WatchDog;
 use GDC\Door\HardwareErrorException;
 use GDC\Door\DoorInterface;
 use GDC\Door\State;
-use GDCBundle\Entity\DoorState;
-use GDCBundle\Entity\DoorStateRepository;
+use GDCBundle\Event\WatchDogEvents;
+use GDCBundle\Event\WatchDogRestartedEvent;
+use GDCBundle\Model\Microtime;
+use GDCBundle\Service\DoorStateWriter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class WatchDog
 {
@@ -21,20 +24,36 @@ class WatchDog
     private $state = null;
 
     /**
-     * @var Messenger
+     * @var EventDispatcherInterface
      */
-    private $messenger;
+    private $dispatcher;
 
     /**
-     * @var DoorStateRepository
+     * @var DoorStateWriter
      */
-    private $doorStateRepository;
+    private $doorStateWriter;
 
-    public function __construct(DoorInterface $door, Messenger $messenger, DoorStateRepository $doorStateRepository)
+    public function __construct(
+        DoorInterface $door,
+        Messenger $messenger,
+        DoorStateWriter $doorStateWriter,
+        EventDispatcherInterface $dispatcher
+    ) {
+        $this->door            = $door;
+        $this->doorStateWriter = $doorStateWriter;
+        $this->dispatcher      = $dispatcher;
+
+        $this->init();
+    }
+
+    private function init()
     {
-        $this->door                = $door;
-        $this->messenger           = $messenger;
-        $this->doorStateRepository = $doorStateRepository;
+        try {
+            $this->state = $this->door->getState();
+            $this->dispatcher->dispatch(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent($this->state));
+        } catch (HardwareErrorException $e) {
+            $this->dispatcher->dispatch(WatchDogEvents::HARDWARE_ERROR);
+        }
     }
 
     public function execute()
@@ -42,12 +61,12 @@ class WatchDog
         try {
             $currentState = $this->door->getState();
         } catch (HardwareErrorException $e) {
-            $this->messenger->sendHardwareError();
+            $this->dispatcher->dispatch(WatchDogEvents::HARDWARE_ERROR);
 
             return;
         }
 
-        $this->updateDoorState($currentState);
+        $this->doorStateWriter->write($currentState, new Microtime());
 
         $previousState = $this->state;
         if ($currentState->equals($previousState)) {
@@ -56,23 +75,10 @@ class WatchDog
 
         $this->state = $currentState;
 
-        if (null === $previousState) {
-            $this->messenger->sendMessageOnWatchdogRestart();
-        } elseif ($previousState->equals(State::CLOSED())) {
-            $this->messenger->sendMessageOnDoorOpening();
+        if ($previousState->equals(State::CLOSED())) {
+            $this->dispatcher->dispatch(WatchDogEvents::DOOR_OPENING);
         } elseif ($previousState->equals(State::UNKNOWN()) && $currentState->equals(State::CLOSED())) {
-            $this->messenger->sendMessageAfterDoorClosed();
+            $this->dispatcher->dispatch(WatchDogEvents::DOOR_CLOSED);
         }
-    }
-
-    private function updateDoorState(State $currentState)
-    {
-        $stateEntity = $this->doorStateRepository->find(1);
-        if (!$stateEntity) {
-            $stateEntity = new DoorState();
-        }
-        $stateEntity->setState($currentState);
-        $stateEntity->setDate(new \DateTime());
-        $this->doorStateRepository->save($stateEntity);
     }
 }

@@ -72,6 +72,7 @@ class Door implements DoorInterface
         $this->waitForMotorTriggerToTurnOn();
         usleep(500000);
         $this->motorTrigger->turnOff();
+        usleep(300000);
     }
 
     private function waitForMotorTriggerToTurnOn()

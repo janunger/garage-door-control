@@ -3,7 +3,6 @@
 namespace GDCBundle\Event;
 
 use GDC\CommandQueue\Command;
-use GDC\Door\Door;
 use GDC\Door\DoorInterface;
 
 class TriggerDoorListener

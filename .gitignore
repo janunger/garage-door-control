@@ -1,5 +1,6 @@
 /app/bootstrap.php.cache
 /app/cache/*
+/app/config/db_credentials.php
 /app/config/parameters.yml
 /app/logs/*
 !app/cache/.gitkeep
@@ -8,3 +9,5 @@
 /tests/reports/*
 /vendor/
 /web/bundles/*
+/web/state/*
+!/web/state/.gitkeep

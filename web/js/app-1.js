@@ -1,18 +1,10 @@
 'use strict';
 
 $(function () {
-    var snapshotTag = $('.snapshot');
-    var snapshotUrl = snapshotTag.data('default-src');
+    var videostreamTag = $('.videostream');
 
-    function loadSnapshot() {
-        var timestamp = (new Date()).getTime();
-        var newSrc = snapshotUrl + '?' + timestamp;
-        snapshotTag.attr('src', newSrc);
-        setTimeout(loadSnapshot, 10000);
-    }
-
-    snapshotTag.click(function () {
-        loadSnapshot();
+    videostreamTag.click(function () {
+        videostreamTag.attr('src', videostreamTag.data('default-src'));
     });
 });
 
@@ -21,7 +13,9 @@ $(function () {
 
     triggerButton.click(function () {
         triggerButton.attr('disabled', 'disabled');
-        $.ajax('/trigger', {
+        $.ajax('/trigger.php', {
+            type: 'POST',
+            data: {},
             complete: function () {
                 triggerButton.removeAttr('disabled');
             }

@@ -2,18 +2,21 @@
 
 namespace GDCBundle\Tests\Service\SensorLogger;
 
-use Carbon\Carbon;
 use GDC\Sensor\Role;
 use GDC\Tests\AbstractTestCase;
 use GDCBundle\Entity\SensorLogEntry;
 use GDCBundle\Entity\SensorLogEntryRepository;
 use GDCBundle\Model\Microtime;
-use GDCBundle\Service\MicrotimeProvider;
 use GDCBundle\Service\SensorLogger\SensorLogger;
 use GDCBundle\Service\SensorLogger\StateWatcher;
 
 class SensorLoggerTest extends AbstractTestCase
 {
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $phpMock;
+
     /**
      * @var SensorLogger
      */
@@ -41,7 +44,9 @@ class SensorLoggerTest extends AbstractTestCase
 
     protected function setUp()
     {
-        MicrotimeProvider::setTestNow(new Microtime('143004864778396600'));
+        $this->phpMock = \PHPUnit_Extension_FunctionMocker::start($this, '\GDCBundle\Model')
+            ->mockFunction('microtime')
+            ->getMock();
 
         $this->logEntryRepository = $this->createMock('\GDCBundle\Entity\SensorLogEntryRepository');
 
@@ -66,18 +71,21 @@ class SensorLoggerTest extends AbstractTestCase
 
     /**
      * @test
+     * @runInSeparateProcess
      */
     public function it_should_log_the_initial_state_after_being_instantiated_with_sensors()
     {
+        $this->phpMock->expects($this->any())->method('microtime')->willReturn('0.78396600 1430048647');
+
         $this->logEntryRepository->expects($this->exactly(3))->method('save');
         $this->logEntryRepository->expects($this->at(0))->method('save')->with(
-            new SensorLogEntry(Role::DOOR_CLOSED(), true, MicrotimeProvider::now())
+            new SensorLogEntry(Role::DOOR_CLOSED(), true, new Microtime('0.78396600 1430048647'))
         );
         $this->logEntryRepository->expects($this->at(1))->method('save')->with(
-            new SensorLogEntry(Role::DOOR_OPENED(), false, MicrotimeProvider::now())
+            new SensorLogEntry(Role::DOOR_OPENED(), false, new Microtime('0.78396600 1430048647'))
         );
         $this->logEntryRepository->expects($this->at(2))->method('save')->with(
-            new SensorLogEntry(Role::PHOTO_INTERRUPTER(), true, MicrotimeProvider::now())
+            new SensorLogEntry(Role::PHOTO_INTERRUPTER(), true, new Microtime('0.78396600 1430048647'))
         );
 
         $this->SUT->execute();
@@ -97,14 +105,17 @@ class SensorLoggerTest extends AbstractTestCase
 
     /**
      * @test
+     * @runInSeparateProcess
      */
     public function it_should_log_only_changed_state()
     {
+        $this->phpMock->expects($this->any())->method('microtime')->willReturn('0.78396600 1430048647');
+
         $this->SUT->execute();
 
         $this->sensorDoorClosed->setIsOn(false);
         $this->logEntryRepository->expects($this->once())->method('save')->with(
-            new SensorLogEntry(Role::DOOR_CLOSED(), false, MicrotimeProvider::now())
+            new SensorLogEntry(Role::DOOR_CLOSED(), false, new Microtime())
         );
 
         $this->SUT->execute();

@@ -3,8 +3,9 @@
 angular.module('doorApp', [])
     .controller('DoorStatusCtrl', function ($scope, $http, $timeout) {
         var loadDoorState = function () {
+            var timestamp = (new Date()).getTime();
             $http.
-                get('/door-state').
+                get('/state/current.json?' + timestamp).
                 success(function (data) {
                     var statusMessage;
                     var statusClass;
@@ -35,14 +36,14 @@ angular.module('doorApp', [])
                         $scope.statusDate = $scope.statusDate + ' (' + data.ageOfStateSeconds + ' Sekunden alt)';
                     }
 
-                    $timeout(loadDoorState, 2000);
+                    $timeout(loadDoorState, 1000);
                 }).
                 error(function () {
                     $scope.statusMessage = 'FEHLER';
                     $scope.statusClass = 'error';
                     $scope.statusDate = new Date();
 
-                    $timeout(loadDoorState, 2000);
+                    $timeout(loadDoorState, 1000);
                 });
         };
 
