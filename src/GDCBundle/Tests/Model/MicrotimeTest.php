@@ -75,4 +75,13 @@ class MicrotimeTest extends AbstractTestCase
 
         $this->assertEquals('143047938143932300', $SUT->getValue());
     }
+
+    /**
+     * @test
+     */
+    public function it_should_calculate_the_difference_from_other_instance()
+    {
+        $SUT = new Microtime('0.78396600 1430048647');
+        $this->assertEquals(new Microtime('0.00000000 2'), $SUT->subtract(new Microtime('0.78396600 1430048645')));
+    }
 }

@@ -58,4 +58,16 @@ class Microtime
     {
         return substr($this->value, -8);
     }
+
+    /**
+     * @param Microtime $other
+     * @return Microtime
+     */
+    public function subtract(Microtime $other)
+    {
+        $integer = $this->getIntegerPart() - $other->getIntegerPart();
+        $decimal = $this->getDecimalPart() - $other->getDecimalPart();
+
+        return new Microtime('0.' . str_pad($decimal, 8, '0', STR_PAD_RIGHT) . ' ' . $integer);
+    }
 }
