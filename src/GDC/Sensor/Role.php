@@ -14,4 +14,13 @@ class Role extends Enum
     const DOOR_CLOSED = 'door_closed';
     const DOOR_OPENED = 'door_opened';
     const PHOTO_INTERRUPTER = 'photo_interrupter';
+
+    /**
+     * @param Role $other
+     * @return bool
+     */
+    public function equals(Role $other)
+    {
+        return $this->value === $other->value;
+    }
 }
