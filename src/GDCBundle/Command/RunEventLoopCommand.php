@@ -41,13 +41,13 @@ class RunEventLoopCommand extends ContainerAwareCommand
 
     private function flushMailQueue()
     {
-        /** @var $transport \Swift_SpoolTransport */
-        $transport = $this->getContainer()->get('mailer')->getTransport();
+        /** @var $spoolTransport \Swift_SpoolTransport */
+        $spoolTransport = $this->getContainer()->get('mailer')->getTransport();
+        $spool = $spoolTransport->getSpool();
+        $smtpTransport = $this->getContainer()->get('swiftmailer.transport.real');
 
-        /** @var $spool \Swift_Spool */
-        $spool = $transport->getSpool();
-
-        $spool->flushQueue($this->getContainer()->get('swiftmailer.transport.real'));
+        $spool->flushQueue($smtpTransport);
+        $smtpTransport->stop();
     }
 
     /**
