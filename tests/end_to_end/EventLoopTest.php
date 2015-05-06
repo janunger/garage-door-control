@@ -51,7 +51,7 @@ class EventLoopTest extends EventLoopTestCase
         $this->assertEquals(1, self::$mailCatcher->getMessageCount());
 
         $message = self::$mailCatcher->searchOne();
-        $this->assertRegExp('/^Door opening/', $message->getSubject());
+        $this->assertRegExp('/^DOOR OPENING/', $message->getSubject());
     }
 
     /**
@@ -82,7 +82,7 @@ class EventLoopTest extends EventLoopTestCase
         $this->assertEquals(1, self::$mailCatcher->getMessageCount());
 
         $message = self::$mailCatcher->searchOne();
-        $this->assertRegExp('/^Hardware error/', $message->getSubject());
+        $this->assertRegExp('/^HARDWARE ERROR/', $message->getSubject());
     }
 
     public static function tearDownAfterClass()

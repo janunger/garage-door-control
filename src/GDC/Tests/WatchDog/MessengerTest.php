@@ -103,8 +103,8 @@ class MessengerTest extends AbstractTestCase
         $this->assertInstanceOf('Swift_Message', $message);
         $this->assertEquals(['sender@example.com' => 'Sender'], $message->getFrom());
         $this->assertEquals(['recipient@example.com' => 'Recipient'], $message->getTo());
-        $this->assertEquals('Door opening - 2015-05-02 14:33:00', $message->getSubject());
-        $this->assertEquals('Door opening - 2015-05-02 14:33:00', $message->getBody());
+        $this->assertEquals('DOOR OPENING - 2015-05-02 14:33:00', $message->getSubject());
+        $this->assertEquals('DOOR OPENING - 2015-05-02 14:33:00', $message->getBody());
     }
 
     /**
@@ -137,7 +137,7 @@ class MessengerTest extends AbstractTestCase
         $this->assertInstanceOf('Swift_Message', $message);
         $this->assertEquals(['sender@example.com' => 'Sender'], $message->getFrom());
         $this->assertEquals(['recipient@example.com' => 'Recipient'], $message->getTo());
-        $this->assertEquals('Hardware error - 2015-05-02 14:35:00', $message->getSubject());
-        $this->assertEquals('Hardware error - 2015-05-02 14:35:00', $message->getBody());
+        $this->assertEquals('HARDWARE ERROR - 2015-05-02 14:35:00', $message->getSubject());
+        $this->assertEquals('HARDWARE ERROR - 2015-05-02 14:35:00', $message->getBody());
     }
 }

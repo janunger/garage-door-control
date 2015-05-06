@@ -59,7 +59,7 @@ class Messenger
 
     public function onDoorOpening()
     {
-        $this->send('Door opening');
+        $this->send('DOOR OPENING');
     }
 
     public function onDoorClosed()
@@ -69,7 +69,7 @@ class Messenger
 
     public function onHardwareError()
     {
-        $this->send('Hardware error');
+        $this->send('HARDWARE ERROR');
     }
 
     private function send($subject)
