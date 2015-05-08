@@ -126,9 +126,15 @@ services:
             - @gdc.watchdog
             - @gdc.sensor_logger
 
-    gdc.listener:
-        class: GDCBundle\Event\TriggerDoorListener
+    gdc.auto_sequence.factory:
+        class: GDCBundle\Service\AutoSequence\Factory
         arguments:
             - @gdc.door
+            - @gdc.piface_input_pin.photo_interrupter
+
+    gdc.auto_seequence.worker:
+        class: GDCBundle\Service\AutoSequence\Worker
+        arguments:
+            - @gdc.auto_sequence.factory
         tags:
             - { name: kernel.event_listener, event: gdc.command_issued, method: onCommandIssued }
