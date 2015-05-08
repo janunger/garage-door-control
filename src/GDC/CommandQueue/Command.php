@@ -5,11 +5,13 @@ namespace GDC\CommandQueue;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static TRIGGER_DOOR
+ * @method static Command TRIGGER_DOOR()
+ * @method static Command CLOSE_AFTER_ONE_TRANSIT()
  */
 class Command extends Enum
 {
     const TRIGGER_DOOR = 'trigger-door';
+    const CLOSE_AFTER_ONE_TRANSIT = 'close-after-one-transit';
 
     /**
      * @param Command $other

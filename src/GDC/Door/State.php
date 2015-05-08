@@ -5,9 +5,9 @@ namespace GDC\Door;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static State CLOSED
- * @method static State OPENED
- * @method static State UNKNOWN
+ * @method static State CLOSED()
+ * @method static State OPENED()
+ * @method static State UNKNOWN()
  */
 class State extends Enum
 {
