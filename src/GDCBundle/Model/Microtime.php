@@ -70,4 +70,16 @@ class Microtime
 
         return new Microtime('0.' . str_pad($decimal, 8, '0', STR_PAD_RIGHT) . ' ' . $integer);
     }
+
+    /**
+     * @param Microtime $other
+     * @return bool
+     */
+    public function isGreaterThan(Microtime $other)
+    {
+        if ($this->getIntegerPart() > $other->getIntegerPart()) {
+            return true;
+        }
+        return $this->getIntegerPart() - $other->getIntegerPart() === 0 && $this->getDecimalPart() > $other->getDecimalPart();
+    }
 }

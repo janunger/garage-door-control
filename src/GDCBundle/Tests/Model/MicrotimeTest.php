@@ -84,4 +84,19 @@ class MicrotimeTest extends AbstractTestCase
         $SUT = new Microtime('0.78396600 1430048647');
         $this->assertEquals(new Microtime('0.00000000 2'), $SUT->subtract(new Microtime('0.78396600 1430048645')));
     }
+
+    /**
+     * @test
+     */
+    public function it_should_tell_if_it_s_less_than_other_instance()
+    {
+        $SUT = new Microtime('0.10000000 1430040001');
+
+        $this->assertTrue($SUT->isGreaterThan(new Microtime('0.00000000 1430040000')));
+        $this->assertTrue($SUT->isGreaterThan(new Microtime('0.10000000 1430040000')));
+        $this->assertTrue($SUT->isGreaterThan(new Microtime('0.00000000 1430040001')));
+        $this->assertFalse($SUT->isGreaterThan(new Microtime('0.10000000 1430040001')));
+        $this->assertFalse($SUT->isGreaterThan(new Microtime('0.20000000 1430040001')));
+        $this->assertFalse($SUT->isGreaterThan(new Microtime('0.00000000 1430040002')));
+    }
 }
