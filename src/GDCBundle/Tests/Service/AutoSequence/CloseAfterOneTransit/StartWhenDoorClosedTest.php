@@ -61,9 +61,19 @@ class StartWhenDoorClosedTest extends AbstractTestCase
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
-        // It should trigger the door again when the door is open and the photo interrupter goes on and off.
+        // It should not trigger the door when the door is completely opened and the photo interrupter does nothing.
         TimeProvider::setTestMicrotime('0.00000000 1431110010');
         $this->door->setState(DoorState::OPENED());
+        $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
+
+        // It should trigger the door again when the door is opened and the photo interrupter goes on and off.
+        TimeProvider::setTestMicrotime('0.00000000 1431110011');
+        $this->sensorPhotoInterrupter->setIsOn(true);
+        $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
+        TimeProvider::setTestMicrotime('0.00000000 1431110012');
+        $this->sensorPhotoInterrupter->setIsOn(false);
         $this->assertEquals(SequenceState::FINISHED(), $SUT->tick());
         $this->assertEquals(2, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once again.');
 
