@@ -23,14 +23,10 @@ class RunEventLoopCommand extends ContainerAwareCommand
     {
         $this->startDate = new \DateTime();
         $container = $this->getContainer();
-        $commandProcessor = $container->get('gdc.command_processor');
-        $watchdog = $container->get('gdc.watchdog');
-        $sensorLogger = $this->getContainer()->get('gdc.sensor_logger');
+        $eventLoop = $container->get('gdc.event_loop');
 
         while (true) {
-            $commandProcessor->execute();
-            $watchdog->execute();
-            $sensorLogger->execute();
+            $eventLoop->tick();
             $this->flushMailQueue();
             if ($this->mustForceRestart()) {
                 break;

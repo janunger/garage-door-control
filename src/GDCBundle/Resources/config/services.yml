@@ -119,6 +119,13 @@ services:
         factory_service: gdc.sensor_logger_factory
         factory_method: createInstance
 
+    gdc.event_loop:
+        class: GDCBundle\Service\EventLoop
+        arguments:
+            - @gdc.command_processor
+            - @gdc.watchdog
+            - @gdc.sensor_logger
+
     gdc.listener:
         class: GDCBundle\Event\TriggerDoorListener
         arguments:
