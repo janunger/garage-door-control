@@ -5,7 +5,7 @@ namespace GDCBundle\Service;
 class TimeProvider
 {
     /**
-     * @var string|null
+     * @var float|null
      */
     private static $testMicrotime = null;
 
@@ -18,11 +18,11 @@ class TimeProvider
             return self::$testMicrotime;
         }
 
-        return microtime();
+        return microtime(true);
     }
 
     /**
-     * @param string|null $testMicrotime
+     * @param float|null $testMicrotime
      */
     public static function setTestMicrotime($testMicrotime = null)
     {
