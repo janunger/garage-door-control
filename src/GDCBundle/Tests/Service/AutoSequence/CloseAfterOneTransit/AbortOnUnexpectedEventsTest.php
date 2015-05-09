@@ -149,4 +149,52 @@ class AbortOnUnexpectedEventsTest extends AbstractTestCase
         $this->assertEquals(SequenceState::FINISHED(), $SUT->tick());
         $this->assertEquals(0, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered any more.');
     }
+
+    /**
+     * @test
+     */
+    public function it_should_abort_if_door_has_opened_and_moves_without_being_triggered()
+    {
+        TimeProvider::setTestMicrotime(1431120000.0000);
+
+        // It should not do anything right after instantiation.
+        $SUT = new CloseAfterOneTransit($this->door, $this->sensorPhotoInterrupter);
+        $this->assertEquals(0, $this->door->getTriggerControlCount());
+
+        // It should trigger the door.
+        $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once.');
+
+        // It should do nothing when door starts moving.
+        TimeProvider::setTestMicrotime(1431120001.0000);
+        $this->door->setState(DoorState::UNKNOWN());
+        $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
+
+        // It should ignore the photo interrupter within the first seconds when the door itself goes through it.
+        TimeProvider::setTestMicrotime(1431120002.5000);
+        $this->sensorPhotoInterrupter->setIsOn(true);
+        $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
+        TimeProvider::setTestMicrotime(1431120005.5000);
+        $this->sensorPhotoInterrupter->setIsOn(false);
+        $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
+
+        // It should not trigger the door when the door is completely opened and the photo interrupter does nothing.
+        TimeProvider::setTestMicrotime(1431120010.0000);
+        $this->door->setState(DoorState::OPENED());
+        $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
+
+        // It should abort if the door moves
+        TimeProvider::setTestMicrotime(1431120011.0000);
+        $this->door->setState(DoorState::UNKNOWN());
+        $this->assertEquals(SequenceState::FINISHED(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered any more.');
+
+        // It should not trigger the door any more, even if ticked again.
+        $this->assertEquals(SequenceState::FINISHED(), $SUT->tick());
+        $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered any more.');
+    }
 }

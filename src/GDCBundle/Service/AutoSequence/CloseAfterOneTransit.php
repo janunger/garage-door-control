@@ -109,6 +109,11 @@ class CloseAfterOneTransit implements AutoSequence
             if (null === $this->doorOpenedTime) {
                 $this->doorOpenedTime = TimeProvider::microtime();
             }
+            if ($this->door->getState()->equals(DoorState::UNKNOWN())) {
+                $this->doorPhase = self::DOOR_BEHAVES_UNEXPECTEDLY;
+
+                return State::FINISHED();
+            }
             if ($this->isTargetReached() && $this->isDoorOpenedLongEnough()) {
                 $this->doorPhase = self::DOOR_FINISHED;
                 $this->door->triggerControl();
