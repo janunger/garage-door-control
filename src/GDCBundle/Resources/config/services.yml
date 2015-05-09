@@ -127,6 +127,7 @@ services:
         arguments:
             - @gdc.command_processor
             - @gdc.watchdog
+            - @gdc.auto_sequence.worker
             - @gdc.sensor_logger
 
     gdc.auto_sequence.factory:

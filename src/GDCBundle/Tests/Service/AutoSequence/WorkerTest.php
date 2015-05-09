@@ -149,4 +149,28 @@ class WorkerTest extends AbstractTestCase
         $this->SUT->onCommandIssued(new CommandIssuedEvent(Command::CLOSE_AFTER_ONE_TRANSIT()));
         $this->SUT->onCommandIssued(new CommandIssuedEvent(Command::CANCEL()));
     }
+
+    /**
+     * @test
+     */
+    public function it_should_raise_an_event_on_current_sequence_finished()
+    {
+        $sequence = $this->createMock('GDCBundle\Service\AutoSequence\TriggerDoor');
+        $sequence->expects($this->any())->method('getName')->willReturn(new AutoSequenceName(TriggerDoor::NAME));
+        $sequence->expects($this->at(0))->method('tick')->willReturn(State::RUNNING());
+        $sequence->expects($this->at(1))->method('tick')->willReturn(State::FINISHED());
+
+        $this->factory->setSequencesToReturn([$sequence]);
+        $this->assertCount(0, $this->factory->getReceivedCommands());
+
+        $this->eventDispatcher
+            ->expects($this->at(0))->method('dispatch')
+            ->with('gdc.auto_sequence_started', new AutoSequenceStartedEvent(new AutoSequenceName(TriggerDoor::NAME)));
+        $this->eventDispatcher
+            ->expects($this->at(1))->method('dispatch')
+            ->with('gdc.auto_sequence_terminated');
+
+        $this->SUT->onCommandIssued(new CommandIssuedEvent(Command::TRIGGER_DOOR()));
+        $this->SUT->tick();
+    }
 }

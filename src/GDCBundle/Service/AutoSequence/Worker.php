@@ -47,7 +47,7 @@ class Worker
 
         $state = $this->activeSequence->tick();
         if ($state->equals(State::FINISHED())) {
-            $this->activeSequence = null;
+            $this->terminateCurrentSequence();
         }
     }
 

@@ -3,6 +3,7 @@
 namespace GDCBundle\Service;
 
 use GDC\WatchDog\WatchDog;
+use GDCBundle\Service\AutoSequence\Worker;
 use GDCBundle\Service\SensorLogger\SensorLogger;
 
 class EventLoop
@@ -18,21 +19,32 @@ class EventLoop
     private $watchDog;
 
     /**
+     * @var Worker
+     */
+    private $autoSequenceWorker;
+
+    /**
      * @var SensorLogger
      */
     private $sensorLogger;
 
-    public function __construct(CommandProcessor $commandProcessor, WatchDog $watchDog, SensorLogger $sensorLogger)
-    {
-        $this->commandProcessor = $commandProcessor;
-        $this->watchDog         = $watchDog;
-        $this->sensorLogger     = $sensorLogger;
+    public function __construct(
+        CommandProcessor $commandProcessor,
+        WatchDog $watchDog,
+        Worker $autoSequenceWorker,
+        SensorLogger $sensorLogger
+    ) {
+        $this->commandProcessor   = $commandProcessor;
+        $this->watchDog           = $watchDog;
+        $this->autoSequenceWorker = $autoSequenceWorker;
+        $this->sensorLogger       = $sensorLogger;
     }
 
     public function tick()
     {
         $this->commandProcessor->execute();
         $this->watchDog->execute();
+        $this->autoSequenceWorker->tick();
         $this->sensorLogger->execute();
     }
 }
