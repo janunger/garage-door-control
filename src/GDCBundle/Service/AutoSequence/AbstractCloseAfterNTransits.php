@@ -17,9 +17,8 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
     const DOOR_FINISHED = 'DOOR_FINISHED';
     const DOOR_BEHAVES_UNEXPECTEDLY = 'DOOR_BEHAVES_UNEXPECTEDLY';
 
-    const PHOTO_INTERRUPTER_NOT_TRIGGERED = 'PHOTO_INTERRUPTER_NOT_TRIGGERED';
-    const PHOTO_INTERRUPTER_WENT_ON = 'PHOTO_INTERRUPTER_WENT_ON';
-    const PHOTO_INTERRUPTER_WENT_OFF_AGAIN = 'PHOTO_INTERRUPTER_WENT_OFF_AGAIN';
+    const PHOTO_INTERRUPTER_IS_ON = 'PHOTO_INTERRUPTER_IS_ON';
+    const PHOTO_INTERRUPTER_IS_OFF = 'PHOTO_INTERRUPTER_IS_OFF';
 
     const NAME = '';
 
@@ -41,7 +40,7 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
     /**
      * @var string
      */
-    protected $photoInterrupterPhase = self::PHOTO_INTERRUPTER_NOT_TRIGGERED;
+    protected $photoInterrupterPhase = self::PHOTO_INTERRUPTER_IS_OFF;
 
     /**
      * @var float
@@ -137,17 +136,14 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
             return;
         }
 
-        if (
-            self::PHOTO_INTERRUPTER_NOT_TRIGGERED === $this->photoInterrupterPhase
-            || self::PHOTO_INTERRUPTER_WENT_OFF_AGAIN === $this->photoInterrupterPhase
-        ) {
+        if (self::PHOTO_INTERRUPTER_IS_OFF === $this->photoInterrupterPhase) {
             if ($this->sensorPhotoInterrupter->isOn()) {
-                $this->photoInterrupterPhase = self::PHOTO_INTERRUPTER_WENT_ON;
+                $this->photoInterrupterPhase = self::PHOTO_INTERRUPTER_IS_ON;
             }
         }
-        if (self::PHOTO_INTERRUPTER_WENT_ON === $this->photoInterrupterPhase) {
+        if (self::PHOTO_INTERRUPTER_IS_ON === $this->photoInterrupterPhase) {
             if (!$this->sensorPhotoInterrupter->isOn()) {
-                $this->photoInterrupterPhase = self::PHOTO_INTERRUPTER_WENT_OFF_AGAIN;
+                $this->photoInterrupterPhase = self::PHOTO_INTERRUPTER_IS_OFF;
                 $this->photoInterrupterCount++;
             }
         }
@@ -187,10 +183,6 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
      */
     protected function isTargetReached()
     {
-        if (self::PHOTO_INTERRUPTER_NOT_TRIGGERED === $this->photoInterrupterPhase) {
-            return false;
-        }
-
         return $this->photoInterrupterCount >= $this->getExpectedPhotoInterrupterCount();
     }
 
