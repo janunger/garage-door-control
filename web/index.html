@@ -8,7 +8,7 @@
     <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
-<div ng-app="doorApp" ng-controller="DoorStatusCtrl" class="app-container">
+<div ng-app="doorApp" ng-controller="DoorCtrl" class="app-container">
 
     <div class="ui-element">
         <div class="status" ng-class="statusClass">
@@ -20,18 +20,25 @@
     </div>
 
     <div class="ui-element">
-        <img class="videostream" data-default-src="/videostream" alt="Zum Aktivieren der Kamera klicken"/>
+        <img class="videostream" alt="Zum Aktivieren der Kamera klicken" ng-src="{{ videostreamUrl }}" ng-click="clickVideostream()"/>
     </div>
 
     <div class="ui-element">
-        <a class="btn btn-primary btn-lg btn-trigger">Öffnen/Schließen</a>
+        <a class="btn btn-primary btn-lg btn-trigger" ng-class="{'disabled': isButtonTriggerDisabled()}" ng-click="sendTriggerCommand()">Öffnen/Schließen</a>
+    </div>
+    <div class="ui-element">
+        <a class="btn btn-primary btn-lg btn-sequence" ng-class="{'disabled': isButtonSequenceOneDisabled()}" ng-click="sendSequenceOneCommand()">S1</a>
+        <a class="btn btn-primary btn-lg btn-sequence disabled">S2</a>
+        <a class="btn btn-danger btn-lg btn-sequence" ng-class="{'disabled': isButtonCancelDisabled()}" ng-click="sendCancelCommand()">X</a>
+    </div>
+    <div class="ui-element">
+        {{ currentSequence }}
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 
-<script src="/js/controllers/DoorStatusCtrl-2.js"></script>
-<script src="/js/app-1.js"></script>
+<script src="/js/controllers/DoorCtrl.js"></script>
 </body>
 </html>
