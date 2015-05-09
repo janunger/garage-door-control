@@ -51,6 +51,9 @@ angular.module('doorApp', [])
         $scope.isButtonSequenceOneDisabled = function () {
             return $scope.isRequestRunning || null !== $scope.currentSequence;
         };
+        $scope.isButtonSequenceTwoDisabled = function () {
+            return $scope.isRequestRunning || null !== $scope.currentSequence;
+        };
         $scope.isButtonCancelDisabled = function () {
             return $scope.isRequestRunning || null === $scope.currentSequence;
         };
@@ -64,6 +67,13 @@ angular.module('doorApp', [])
         $scope.sendSequenceOneCommand = function () {
             $scope.isRequestRunning = true;
             $http.post('/trigger.php', {sequence: 1}).
+                success(function (data, status, headers, config) {
+                    $scope.isRequestRunning = false;
+                });
+        };
+        $scope.sendSequenceTwoCommand = function () {
+            $scope.isRequestRunning = true;
+            $http.post('/trigger.php', {sequence: 2}).
                 success(function (data, status, headers, config) {
                     $scope.isRequestRunning = false;
                 });

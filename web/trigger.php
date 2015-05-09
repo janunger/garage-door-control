@@ -28,6 +28,9 @@ function readCommand()
     if (isset($json['sequence']) && 1 === $json['sequence']) {
         return 'close-after-one-transit';
     }
+    if (isset($json['sequence']) && 2 === $json['sequence']) {
+        return 'close-after-two-transits';
+    }
     if (isset($json['cancel_sequence'])) {
         return 'cancel';
     }

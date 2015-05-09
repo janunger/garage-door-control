@@ -45,4 +45,15 @@ class FactoryTest extends AbstractTestCase
             $this->SUT->createSequenceFor(Command::CLOSE_AFTER_ONE_TRANSIT())
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_should_create_a_close_after_two_transits_sequence_for_a_close_after_two_command()
+    {
+        $this->assertInstanceOf(
+            'GDCBundle\Service\AutoSequence\CloseAfterTwoTransits',
+            $this->SUT->createSequenceFor(Command::CLOSE_AFTER_TWO_TRANSITS())
+        );
+    }
 }

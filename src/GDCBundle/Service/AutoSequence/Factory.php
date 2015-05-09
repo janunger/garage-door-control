@@ -36,6 +36,9 @@ class Factory
         if ($command->equals(Command::CLOSE_AFTER_ONE_TRANSIT())) {
             return new CloseAfterOneTransit($this->door, $this->photoInterrupter);
         }
+        if ($command->equals(Command::CLOSE_AFTER_TWO_TRANSITS())) {
+            return new CloseAfterTwoTransits($this->door, $this->photoInterrupter);
+        }
 
         return null;
     }

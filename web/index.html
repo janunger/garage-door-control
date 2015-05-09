@@ -28,7 +28,7 @@
     </div>
     <div class="ui-element">
         <a class="btn btn-primary btn-lg btn-sequence" ng-class="{'disabled': isButtonSequenceOneDisabled()}" ng-click="sendSequenceOneCommand()">S1</a>
-        <a class="btn btn-primary btn-lg btn-sequence disabled">S2</a>
+        <a class="btn btn-primary btn-lg btn-sequence" ng-class="{'disabled': isButtonSequenceTwoDisabled()}" ng-click="sendSequenceTwoCommand()">S2</a>
         <a class="btn btn-danger btn-lg btn-sequence" ng-class="{'disabled': isButtonCancelDisabled()}" ng-click="sendCancelCommand()">X</a>
     </div>
     <div class="ui-element">
