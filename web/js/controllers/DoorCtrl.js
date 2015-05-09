@@ -27,9 +27,10 @@ angular.module('doorApp', [])
 
                     $scope.statusDate = data.date + '';
                     $scope.currentSequence = data.autoSequence;
-                    if (data.ageOfStateSeconds > 5) {
+                    var ageOfState = Math.abs(Math.round(((new Date(data.date)).getTime() - timestamp)/1000));
+                    if (ageOfState > 5) {
                         $scope.statusClass = 'status-unknown';
-                        $scope.statusDate = $scope.statusDate + ' (' + data.ageOfStateSeconds + ' Sekunden alt)';
+                        $scope.statusDate = $scope.statusDate + ' (' + ageOfState + ' Sekunden Differenz)';
                     }
 
                     $timeout(loadState, 1000);
@@ -48,10 +49,7 @@ angular.module('doorApp', [])
         $scope.isButtonTriggerDisabled = function () {
             return $scope.isRequestRunning;
         };
-        $scope.isButtonSequenceOneDisabled = function () {
-            return $scope.isRequestRunning || null !== $scope.currentSequence;
-        };
-        $scope.isButtonSequenceTwoDisabled = function () {
+        $scope.isButtonSequenceDisabled = function () {
             return $scope.isRequestRunning || null !== $scope.currentSequence;
         };
         $scope.isButtonCancelDisabled = function () {
