@@ -53,6 +53,11 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
      */
     protected $doorOpenedTime = null;
 
+    /**
+     * @var int
+     */
+    protected $photoInterrupterCount = 0;
+
     public function __construct(DoorInterface $door, InputPin $sensorPhotoInterrupter)
     {
         $this->sensorPhotoInterrupter = $sensorPhotoInterrupter;
@@ -132,7 +137,10 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
             return;
         }
 
-        if (self::PHOTO_INTERRUPTER_NOT_TRIGGERED === $this->photoInterrupterPhase) {
+        if (
+            self::PHOTO_INTERRUPTER_NOT_TRIGGERED === $this->photoInterrupterPhase
+            || self::PHOTO_INTERRUPTER_WENT_OFF_AGAIN === $this->photoInterrupterPhase
+        ) {
             if ($this->sensorPhotoInterrupter->isOn()) {
                 $this->photoInterrupterPhase = self::PHOTO_INTERRUPTER_WENT_ON;
             }
@@ -140,6 +148,7 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
         if (self::PHOTO_INTERRUPTER_WENT_ON === $this->photoInterrupterPhase) {
             if (!$this->sensorPhotoInterrupter->isOn()) {
                 $this->photoInterrupterPhase = self::PHOTO_INTERRUPTER_WENT_OFF_AGAIN;
+                $this->photoInterrupterCount++;
             }
         }
     }
@@ -178,7 +187,11 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
      */
     protected function isTargetReached()
     {
-        return self::PHOTO_INTERRUPTER_WENT_OFF_AGAIN === $this->photoInterrupterPhase;
+        if (self::PHOTO_INTERRUPTER_NOT_TRIGGERED === $this->photoInterrupterPhase) {
+            return false;
+        }
+
+        return $this->photoInterrupterCount >= $this->getExpectedPhotoInterrupterCount();
     }
 
     /**
@@ -219,4 +232,9 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
     {
         return new AutoSequenceName(static::NAME);
     }
+
+    /**
+     * @return int
+     */
+    abstract protected function getExpectedPhotoInterrupterCount();
 }

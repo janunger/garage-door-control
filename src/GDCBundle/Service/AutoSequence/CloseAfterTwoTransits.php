@@ -7,10 +7,10 @@ class CloseAfterTwoTransits extends AbstractCloseAfterNTransits
     const NAME = 'close-after-two-transits';
 
     /**
-     * @return State
+     * @return int
      */
-    public function tick()
+    protected function getExpectedPhotoInterrupterCount()
     {
-        return State::FINISHED();
+        return 2;
     }
 }
