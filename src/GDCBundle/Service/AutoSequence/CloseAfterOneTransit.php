@@ -11,9 +11,11 @@ use Pkj\Raspberry\PiFace\InputPin;
 class CloseAfterOneTransit implements AutoSequence
 {
     const DOOR_JUST_STARTED = 'DOOR_JUST_STARTED';
+    const DOOR_WAS_TRIGGERED_TO_OPEN = 'DOOR_WAS_TRIGGERED_TO_OPEN';
     const DOOR_OPENING = 'DOOR_OPENING';
     const DOOR_OPENED = 'DOOR_OPENED';
     const DOOR_FINISHED = 'DOOR_FINISHED';
+    const DOOR_BEHAVES_UNEXPECTEDLY = 'DOOR_BEHAVES_UNEXPECTEDLY';
 
     const PHOTO_INTERRUPTER_NOT_TRIGGERED = 'PHOTO_INTERRUPTER_NOT_TRIGGERED';
     const PHOTO_INTERRUPTER_WENT_ON = 'PHOTO_INTERRUPTER_WENT_ON';
@@ -85,12 +87,22 @@ class CloseAfterOneTransit implements AutoSequence
         $this->updatePhotoInterrupter();
 
         if (self::DOOR_JUST_STARTED === $this->doorPhase) {
-            $this->doorPhase = self::DOOR_OPENING;
+            $this->doorPhase = self::DOOR_WAS_TRIGGERED_TO_OPEN;
             $this->door->triggerControl();
+        }
+        if (self::DOOR_WAS_TRIGGERED_TO_OPEN === $this->doorPhase) {
+            if ($this->door->getState()->equals(DoorState::UNKNOWN())) {
+                $this->doorPhase = self::DOOR_OPENING;
+            }
         }
         if (self::DOOR_OPENING === $this->doorPhase) {
             if ($this->door->getState()->equals(DoorState::OPENED())) {
                 $this->doorPhase = self::DOOR_OPENED;
+            }
+            if ($this->door->getState()->equals(DoorState::CLOSED())) {
+                $this->doorPhase = self::DOOR_BEHAVES_UNEXPECTEDLY;
+
+                return State::FINISHED();
             }
         }
         if (self::DOOR_OPENED === $this->doorPhase) {
@@ -151,7 +163,7 @@ class CloseAfterOneTransit implements AutoSequence
      */
     private function isSequenceFinished()
     {
-        return self::DOOR_FINISHED === $this->doorPhase;
+        return self::DOOR_FINISHED === $this->doorPhase || self::DOOR_BEHAVES_UNEXPECTEDLY === $this->doorPhase;
     }
 
     /**
