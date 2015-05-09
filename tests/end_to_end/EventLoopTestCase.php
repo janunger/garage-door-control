@@ -58,6 +58,6 @@ class EventLoopTestCase extends PHPUnit_Framework_TestCase
     {
         self::$piFaceStateProvider->writeInput($id->getValue(), 0, $value->getValue());
         // Avoid timing problems due to file system
-        usleep(100);
+        usleep(1000);
     }
 }

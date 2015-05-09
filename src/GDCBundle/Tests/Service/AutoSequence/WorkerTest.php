@@ -125,8 +125,28 @@ class WorkerTest extends AbstractTestCase
 
         $this->eventDispatcher
             ->expects($this->once())->method('dispatch')
-            ->with('gdc.autosequence_started', new AutoSequenceStartedEvent(new AutoSequenceName(TriggerDoor::NAME)));
+            ->with('gdc.auto_sequence_started', new AutoSequenceStartedEvent(new AutoSequenceName(TriggerDoor::NAME)));
 
         $this->SUT->onCommandIssued(new CommandIssuedEvent(Command::TRIGGER_DOOR()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_raise_an_event_on_current_sequence_cancelled()
+    {
+        $sequence = new AutoSequenceMock(new AutoSequenceName(TriggerDoor::NAME));
+        $this->factory->setSequencesToReturn([$sequence, null]);
+        $this->assertCount(0, $this->factory->getReceivedCommands());
+
+        $this->eventDispatcher
+            ->expects($this->at(0))->method('dispatch')
+            ->with('gdc.auto_sequence_started', new AutoSequenceStartedEvent(new AutoSequenceName(TriggerDoor::NAME)));
+        $this->eventDispatcher
+            ->expects($this->at(1))->method('dispatch')
+            ->with('gdc.auto_sequence_terminated');
+
+        $this->SUT->onCommandIssued(new CommandIssuedEvent(Command::CLOSE_AFTER_ONE_TRANSIT()));
+        $this->SUT->onCommandIssued(new CommandIssuedEvent(Command::CANCEL()));
     }
 }
