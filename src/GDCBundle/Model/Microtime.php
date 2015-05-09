@@ -15,7 +15,7 @@ class Microtime
     public function __construct($value = null)
     {
         if (null === $value) {
-            $value = microtime();
+            $value = microtime(true);
         }
         $this->value = $this->normalize($value);
     }
@@ -34,11 +34,8 @@ class Microtime
      */
     private function normalize($value)
     {
-        if (preg_match('/^0\.(?P<msec>\d+) (?P<sec>\d+)$/', $value, $matches)) {
-            return $matches['sec'] . $matches['msec'];
-        }
-        if (preg_match('/^\d+$/', $value)) {
-            return $value;
+        if (preg_match('/^-?\d+\.\d{1,4}$/', $value)) {
+            return (string)$value;
         }
         throw new \InvalidArgumentException("Unexpected microtime representation '$value'");
     }
@@ -48,15 +45,7 @@ class Microtime
      */
     public function getIntegerPart()
     {
-        return substr($this->value, 0, strlen($this->value) - 8);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDecimalPart()
-    {
-        return substr($this->value, -8);
+        return substr($this->value, 0, strpos($this->value, '.'));
     }
 
     /**
@@ -65,10 +54,7 @@ class Microtime
      */
     public function subtract(Microtime $other)
     {
-        $integer = $this->getIntegerPart() - $other->getIntegerPart();
-        $decimal = $this->getDecimalPart() - $other->getDecimalPart();
-
-        return new Microtime('0.' . str_pad($decimal, 8, '0', STR_PAD_RIGHT) . ' ' . $integer);
+        return new Microtime(bcsub($this->value, $other->value, 4));
     }
 
     /**
@@ -77,9 +63,6 @@ class Microtime
      */
     public function isGreaterThan(Microtime $other)
     {
-        if ($this->getIntegerPart() > $other->getIntegerPart()) {
-            return true;
-        }
-        return $this->getIntegerPart() - $other->getIntegerPart() === 0 && $this->getDecimalPart() > $other->getDecimalPart();
+        return 1 === bccomp($this->value, $other->value, 4);
     }
 }

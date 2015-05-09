@@ -60,13 +60,13 @@ class DoorStateWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_write_the_current_date_into_the_json()
     {
-        $time = new Microtime('0.23675900 1430479339');
+        $time = new Microtime('1430479339.2368');
         $nowAsIsoString = '2015-05-01T13:22:19+0200';
         $this->SUT->write(State::CLOSED(), $time);
         $json = json_decode(file_get_contents($this->filePath), true);
         $this->assertEquals($nowAsIsoString, $json['date']);
 
-        $time = new Microtime('0.43932300 1430479381');
+        $time = new Microtime('1430479381.4393');
         $nowAsIsoString = '2015-05-01T13:23:01+0200';
         $this->SUT->write(State::CLOSED(), $time);
         $json = json_decode(file_get_contents($this->filePath), true);

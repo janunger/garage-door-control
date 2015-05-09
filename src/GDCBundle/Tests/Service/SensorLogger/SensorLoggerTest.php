@@ -75,17 +75,17 @@ class SensorLoggerTest extends AbstractTestCase
      */
     public function it_should_log_the_initial_state_after_being_instantiated_with_sensors()
     {
-        $this->phpMock->expects($this->any())->method('microtime')->willReturn('0.78396600 1430048647');
+        $this->phpMock->expects($this->any())->method('microtime')->willReturn('1430048647.7840');
 
         $this->logEntryRepository->expects($this->exactly(3))->method('save');
         $this->logEntryRepository->expects($this->at(0))->method('save')->with(
-            new SensorLogEntry(Role::DOOR_CLOSED(), true, new Microtime('0.78396600 1430048647'))
+            new SensorLogEntry(Role::DOOR_CLOSED(), true, new Microtime('1430048647.7840'))
         );
         $this->logEntryRepository->expects($this->at(1))->method('save')->with(
-            new SensorLogEntry(Role::DOOR_OPENED(), false, new Microtime('0.78396600 1430048647'))
+            new SensorLogEntry(Role::DOOR_OPENED(), false, new Microtime('1430048647.7840'))
         );
         $this->logEntryRepository->expects($this->at(2))->method('save')->with(
-            new SensorLogEntry(Role::PHOTO_INTERRUPTER(), true, new Microtime('0.78396600 1430048647'))
+            new SensorLogEntry(Role::PHOTO_INTERRUPTER(), true, new Microtime('1430048647.7840'))
         );
 
         $this->SUT->execute();
@@ -109,7 +109,7 @@ class SensorLoggerTest extends AbstractTestCase
      */
     public function it_should_log_only_changed_state()
     {
-        $this->phpMock->expects($this->any())->method('microtime')->willReturn('0.78396600 1430048647');
+        $this->phpMock->expects($this->any())->method('microtime')->willReturn('1430048647.7840');
 
         $this->SUT->execute();
 
