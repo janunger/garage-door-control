@@ -2,6 +2,7 @@
 
 namespace GDCBundle\Tests\Service\AutoSequence;
 
+use GDCBundle\Model\AutoSequenceName;
 use GDCBundle\Service\AutoSequence\AutoSequence;
 use GDCBundle\Service\AutoSequence\State;
 
@@ -17,9 +18,18 @@ class AutoSequenceMock implements AutoSequence
      */
     private $state;
 
-    public function __construct()
+    /**
+     * @var AutoSequenceName
+     */
+    private $name;
+
+    public function __construct(AutoSequenceName $name = null)
     {
         $this->state = State::RUNNING();
+        if (null === $name) {
+            $name = new AutoSequenceName('autosequence-mock');
+        }
+        $this->name = $name;
     }
 
     /**
@@ -46,5 +56,13 @@ class AutoSequenceMock implements AutoSequence
     public function setState(State $state)
     {
         $this->state = $state;
+    }
+
+    /**
+     * @return AutoSequenceName
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

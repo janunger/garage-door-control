@@ -2,7 +2,10 @@
 
 namespace GDCBundle\Service\AutoSequence;
 
+use GDCBundle\Event\AutoSequenceStartedEvent;
 use GDCBundle\Event\CommandIssuedEvent;
+use GDCBundle\Model\AutoSequenceName;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Worker
 {
@@ -16,14 +19,24 @@ class Worker
      */
     private $factory;
 
-    public function __construct(Factory $factory)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(Factory $factory, EventDispatcherInterface $eventDispatcher)
     {
-        $this->factory = $factory;
+        $this->factory         = $factory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function onCommandIssued(CommandIssuedEvent $event)
     {
         $this->activeSequence = $this->factory->createSequenceFor($event->getCommand());
+        $this->eventDispatcher->dispatch(
+            'gdc.autosequence_started',
+            new AutoSequenceStartedEvent($this->activeSequence->getName())
+        );
     }
 
     public function tick()

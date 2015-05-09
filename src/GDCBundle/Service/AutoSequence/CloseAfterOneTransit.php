@@ -4,6 +4,7 @@ namespace GDCBundle\Service\AutoSequence;
 
 use GDC\Door\DoorInterface;
 use GDC\Door\State as DoorState;
+use GDCBundle\Model\AutoSequenceName;
 use GDCBundle\Service\TimeProvider;
 use Pkj\Raspberry\PiFace\InputPin;
 
@@ -17,6 +18,7 @@ class CloseAfterOneTransit implements AutoSequence
     const PHOTO_INTERRUPTER_NOT_TRIGGERED = 'PHOTO_INTERRUPTER_NOT_TRIGGERED';
     const PHOTO_INTERRUPTER_WENT_ON = 'PHOTO_INTERRUPTER_WENT_ON';
     const PHOTO_INTERRUPTER_WENT_OFF_AGAIN = 'PHOTO_INTERRUPTER_WENT_OFF_AGAIN';
+    const NAME = 'close-after-one-transit';
 
     /**
      * @var InputPin
@@ -169,5 +171,13 @@ class CloseAfterOneTransit implements AutoSequence
         $diff = bcsub($now, $this->doorOpenedTime, 3);
 
         return -1 === bccomp($threshold, $diff, 3);
+    }
+
+    /**
+     * @return AutoSequenceName
+     */
+    public function getName()
+    {
+        return new AutoSequenceName(self::NAME);
     }
 }

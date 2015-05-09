@@ -3,9 +3,12 @@
 namespace GDCBundle\Service\AutoSequence;
 
 use GDC\Door\DoorInterface;
+use GDCBundle\Model\AutoSequenceName;
 
 class TriggerDoor implements AutoSequence
 {
+    const NAME = 'trigger-door';
+
     /**
      * @var DoorInterface
      */
@@ -24,5 +27,13 @@ class TriggerDoor implements AutoSequence
         $this->door->triggerControl();
 
         return State::FINISHED();
+    }
+
+    /**
+     * @return AutoSequenceName
+     */
+    public function getName()
+    {
+        return new AutoSequenceName(self::NAME);
     }
 }
