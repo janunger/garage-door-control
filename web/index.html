@@ -32,7 +32,7 @@
         <a class="btn btn-danger btn-lg btn-sequence" ng-class="{'disabled': isButtonCancelDisabled()}" ng-click="sendCancelCommand()">X</a>
     </div>
     <div class="ui-element">
-        {{ currentSequence }}
+        Aktive Sequenz: {{ currentSequence || '---' }}
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
