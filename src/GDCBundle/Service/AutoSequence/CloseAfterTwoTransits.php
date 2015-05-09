@@ -2,9 +2,7 @@
 
 namespace GDCBundle\Service\AutoSequence;
 
-use GDCBundle\Model\AutoSequenceName;
-
-class CloseAfterTwoTransits implements AutoSequence
+class CloseAfterTwoTransits extends AbstractCloseAfterNTransits
 {
     const NAME = 'close-after-two-transits';
 
@@ -14,13 +12,5 @@ class CloseAfterTwoTransits implements AutoSequence
     public function tick()
     {
         return State::FINISHED();
-    }
-
-    /**
-     * @return AutoSequenceName
-     */
-    public function getName()
-    {
-        return new AutoSequenceName(self::NAME);
     }
 }
