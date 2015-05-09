@@ -29,6 +29,11 @@ class DoorStateWriter
         $this->currentAutoSequenceName = $event->getSequenceName();
     }
 
+    public function onAutoSequenceTerminated()
+    {
+        $this->currentAutoSequenceName = null;
+    }
+
     public function write(State $state, Microtime $time)
     {
         $data = [

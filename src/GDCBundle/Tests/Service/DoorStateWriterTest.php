@@ -7,6 +7,7 @@ use GDCBundle\Event\AutoSequenceStartedEvent;
 use GDCBundle\Model\AutoSequenceName;
 use GDCBundle\Model\Microtime;
 use GDCBundle\Service\AutoSequence\CloseAfterOneTransit;
+use GDCBundle\Service\AutoSequence\TriggerDoor;
 use GDCBundle\Service\DoorStateWriter;
 use org\bovigo\vfs\vfsStream;
 
@@ -92,5 +93,23 @@ class DoorStateWriterTest extends \PHPUnit_Framework_TestCase
         $this->SUT->write(State::CLOSED(), new Microtime());
         $json = json_decode(file_get_contents($this->filePath), true);
         $this->assertEquals(CloseAfterOneTransit::NAME, $json['autoSequence']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_clean_out_auto_sequence_on_termination()
+    {
+        $this->SUT->onAutoSequenceStarted(new AutoSequenceStartedEvent(new AutoSequenceName(CloseAfterOneTransit::NAME)));
+
+        $this->SUT->write(State::CLOSED(), new Microtime());
+        $json = json_decode(file_get_contents($this->filePath), true);
+        $this->assertEquals(CloseAfterOneTransit::NAME, $json['autoSequence']);
+
+        $this->SUT->onAutoSequenceTerminated();
+
+        $this->SUT->write(State::CLOSED(), new Microtime());
+        $json = json_decode(file_get_contents($this->filePath), true);
+        $this->assertEquals(null, $json['autoSequence']);
     }
 }

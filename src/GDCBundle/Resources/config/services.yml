@@ -79,6 +79,7 @@ services:
             - @gdc.door_state_save_path
         tags:
             - { name: kernel.event_listener, event: gdc.auto_sequence_started, method: onAutoSequenceStarted }
+            - { name: kernel.event_listener, event: gdc.auto_sequence_terminated, method: onAutoSequenceTerminated }
 
     gdc.watchdog:
         class: GDC\WatchDog\WatchDog
@@ -134,9 +135,10 @@ services:
             - @gdc.door
             - @gdc.piface_input_pin.photo_interrupter
 
-    gdc.auto_seequence.worker:
+    gdc.auto_sequence.worker:
         class: GDCBundle\Service\AutoSequence\Worker
         arguments:
             - @gdc.auto_sequence.factory
+            - @event_dispatcher
         tags:
             - { name: kernel.event_listener, event: gdc.command_issued, method: onCommandIssued }
