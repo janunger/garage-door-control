@@ -34,7 +34,7 @@ class Microtime
      */
     private function normalize($value)
     {
-        if (preg_match('/^-?\d+\.\d{1,4}$/', $value)) {
+        if (preg_match('/^(?P<integer>-?\d+)(\.(?P<decimal>\d{1,4}))?$/', $value, $matches)) {
             return (string)$value;
         }
         throw new \InvalidArgumentException("Unexpected microtime representation '$value'");
@@ -55,6 +55,15 @@ class Microtime
     public function subtract(Microtime $other)
     {
         return new Microtime(bcsub($this->value, $other->value, 4));
+    }
+
+    /**
+     * @param Microtime $other
+     * @return bool
+     */
+    public function isLessThan(Microtime $other)
+    {
+        return -1 === bccomp($this->value, $other->value, 4);
     }
 
     /**

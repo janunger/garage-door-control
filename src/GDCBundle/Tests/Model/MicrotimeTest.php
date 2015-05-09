@@ -13,8 +13,19 @@ class MicrotimeTest extends AbstractTestCase
     public function it_should_accept_a_float_as_value()
     {
         $SUT = new Microtime(1431203854.7798);
-
         $this->assertSame('1431203854.7798', $SUT->getValue());
+
+        $SUT = new Microtime(1431120000.0000);
+        $this->assertSame('1431120000', $SUT->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_accept_an_integer_as_value()
+    {
+        $SUT = new Microtime(1431120000);
+        $this->assertSame('1431120000', $SUT->getValue());
     }
 
     /**
@@ -80,6 +91,21 @@ class MicrotimeTest extends AbstractTestCase
      * @test
      */
     public function it_should_tell_if_it_s_less_than_other_instance()
+    {
+        $SUT = new Microtime('1430040001.1000');
+
+        $this->assertFalse($SUT->isLessThan(new Microtime('1430040000.0000')));
+        $this->assertFalse($SUT->isLessThan(new Microtime('1430040000.1000')));
+        $this->assertFalse($SUT->isLessThan(new Microtime('1430040001.0000')));
+        $this->assertFalse($SUT->isLessThan(new Microtime('1430040001.1000')));
+        $this->assertTrue($SUT->isLessThan(new Microtime('1430040001.2000')));
+        $this->assertTrue($SUT->isLessThan(new Microtime('1430040002.0000')));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_tell_if_it_s_greater_than_other_instance()
     {
         $SUT = new Microtime('1430040001.1000');
 

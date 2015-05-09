@@ -2,6 +2,7 @@
 
 namespace GDCBundle\Tests\Service;
 
+use GDCBundle\Model\Microtime;
 use GDCBundle\Service\TimeProvider;
 
 class TimeProviderTest extends \PHPUnit_Framework_TestCase
@@ -24,12 +25,12 @@ class TimeProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_return_the_current_microtime()
     {
-        $this->phpMock->expects($this->at(0))->method('microtime')->willReturn('0.00000000 1430940001');
-        $this->phpMock->expects($this->at(1))->method('microtime')->willReturn('0.00000000 1430940002');
+        $this->phpMock->expects($this->at(0))->method('microtime')->with(true)->willReturn('1430940001.0000');
+        $this->phpMock->expects($this->at(1))->method('microtime')->with(true)->willReturn('1430940002.0000');
         $this->phpMock->expects($this->exactly(2))->method('microtime');
 
-        $this->assertEquals('0.00000000 1430940001', TimeProvider::microtime());
-        $this->assertEquals('0.00000000 1430940002', TimeProvider::microtime());
+        $this->assertEquals(new Microtime('1430940001.0000'), TimeProvider::microtime());
+        $this->assertEquals(new Microtime('1430940002.0000'), TimeProvider::microtime());
     }
 
     /**
@@ -39,8 +40,8 @@ class TimeProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->phpMock->expects($this->never())->method('microtime');
 
-        TimeProvider::setTestMicrotime('0.00000000 1430940000');
+        TimeProvider::setTestMicrotime(new Microtime('1430940000.0000'));
 
-        $this->assertEquals('0.00000000 1430940000', TimeProvider::microtime());
+        $this->assertEquals(new Microtime('1430940000.0000'), TimeProvider::microtime());
     }
 }

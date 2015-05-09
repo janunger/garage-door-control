@@ -4,6 +4,7 @@ namespace GDCBundle\Tests\Service\AutoSequence\CloseAfterTwoTransits;
 
 use GDC\Door\State as DoorState;
 use GDC\Tests\AbstractTestCase;
+use GDCBundle\Model\Microtime;
 use GDCBundle\Service\AutoSequence\CloseAfterTwoTransits;
 use GDCBundle\Service\AutoSequence\State as SequenceState;
 use GDCBundle\Service\TimeProvider;
@@ -36,7 +37,7 @@ class StartWhenDoorClosedTest extends AbstractTestCase
      */
     public function it_should_close_the_door_if_door_initially_closed_and_transits_after_door_is_opened()
     {
-        TimeProvider::setTestMicrotime(1431120000.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120000));
 
         // It should not do anything right after instantiation.
         $SUT = new CloseAfterTwoTransits($this->door, $this->sensorPhotoInterrupter);
@@ -47,43 +48,43 @@ class StartWhenDoorClosedTest extends AbstractTestCase
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once.');
 
         // It should do nothing when door starts moving.
-        TimeProvider::setTestMicrotime(1431120001.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120001));
         $this->door->setState(DoorState::UNKNOWN());
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
         // It should ignore the photo interrupter within the first seconds when the door itself goes through it.
-        TimeProvider::setTestMicrotime(1431120002.5000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120002.5));
         $this->sensorPhotoInterrupter->setIsOn(true);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
-        TimeProvider::setTestMicrotime(1431120005.5000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120005.5));
         $this->sensorPhotoInterrupter->setIsOn(false);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
         // It should not trigger the door when the door is completely opened and the photo interrupter does nothing.
-        TimeProvider::setTestMicrotime(1431120010.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120010));
         $this->door->setState(DoorState::OPENED());
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
         // It should not trigger the door when the door is opened and the photo interrupter goes on and off for the first time.
-        TimeProvider::setTestMicrotime(1431120012.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120012));
         $this->sensorPhotoInterrupter->setIsOn(true);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
-        TimeProvider::setTestMicrotime(1431120013.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120013));
         $this->sensorPhotoInterrupter->setIsOn(false);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once again.');
 
         // It should trigger the door when the door is opened and the photo interrupter goes on and off for the second time.
-        TimeProvider::setTestMicrotime(1431120014.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120014));
         $this->sensorPhotoInterrupter->setIsOn(true);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
-        TimeProvider::setTestMicrotime(1431120015.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120015));
         $this->sensorPhotoInterrupter->setIsOn(false);
         $this->assertEquals(SequenceState::FINISHED(), $SUT->tick());
         $this->assertEquals(2, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once again.');
@@ -98,7 +99,7 @@ class StartWhenDoorClosedTest extends AbstractTestCase
      */
     public function it_should_close_the_door_if_door_initially_closed_and_first_transit_while_door_is_opening()
     {
-        TimeProvider::setTestMicrotime(1431120000.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120000));
 
         // It should not do anything right after instantiation.
         $SUT = new CloseAfterTwoTransits($this->door, $this->sensorPhotoInterrupter);
@@ -109,43 +110,43 @@ class StartWhenDoorClosedTest extends AbstractTestCase
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once.');
 
         // It should do nothing when door starts moving.
-        TimeProvider::setTestMicrotime(1431120001.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120001));
         $this->door->setState(DoorState::UNKNOWN());
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
         // It should ignore the photo interrupter within the first seconds when the door itself goes through it.
-        TimeProvider::setTestMicrotime(1431120002.5000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120002.5));
         $this->sensorPhotoInterrupter->setIsOn(true);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
-        TimeProvider::setTestMicrotime(1431120005.5000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120005.5));
         $this->sensorPhotoInterrupter->setIsOn(false);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
         // It should not trigger the door when the door is still moving and the photo interrupter goes on and off for the first time.
-        TimeProvider::setTestMicrotime(1431120007.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120007));
         $this->sensorPhotoInterrupter->setIsOn(true);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
-        TimeProvider::setTestMicrotime(1431120008.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120008));
         $this->sensorPhotoInterrupter->setIsOn(false);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
         // It should not trigger the door when the door is completely opened and the photo interrupter does nothing.
-        TimeProvider::setTestMicrotime(1431120010.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120010));
         $this->door->setState(DoorState::OPENED());
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
 
         // It should trigger the door when the door is opened and the photo interrupter goes on and off for the second time.
-        TimeProvider::setTestMicrotime(1431120013.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120013));
         $this->sensorPhotoInterrupter->setIsOn(true);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was not expected to be triggered.');
-        TimeProvider::setTestMicrotime(1431120015.0000);
+        TimeProvider::setTestMicrotime(new Microtime(1431120015));
         $this->sensorPhotoInterrupter->setIsOn(false);
         $this->assertEquals(SequenceState::FINISHED(), $SUT->tick());
         $this->assertEquals(2, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once again.');

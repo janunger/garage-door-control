@@ -5,6 +5,7 @@ namespace GDCBundle\Service\AutoSequence;
 use GDC\Door\DoorInterface;
 use GDC\Door\State as DoorState;
 use GDCBundle\Model\AutoSequenceName;
+use GDCBundle\Model\Microtime;
 use GDCBundle\Service\TimeProvider;
 use Pkj\Raspberry\PiFace\InputPin;
 
@@ -43,12 +44,12 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
     protected $photoInterrupterPhase = self::PHOTO_INTERRUPTER_IS_OFF;
 
     /**
-     * @var float
+     * @var Microtime
      */
     protected $startTime = null;
 
     /**
-     * @var float
+     * @var Microtime
      */
     protected $doorOpenedTime = null;
 
@@ -195,11 +196,12 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
             return false;
         }
 
-        $threshold = '7.0';
+        $threshold = new Microtime(7);
         $now       = TimeProvider::microtime();
-        $diff      = bcsub($now, $this->startTime, 3);
 
-        return 1 === bccomp($threshold, $diff, 3);
+        $diff = $now->subtract($this->startTime);
+
+        return $diff->isLessThan($threshold);
     }
 
     /**
@@ -210,11 +212,12 @@ abstract class AbstractCloseAfterNTransits implements AutoSequence
         if (null === $this->doorOpenedTime) {
             return false;
         }
-        $threshold = '1.0';
+        $threshold = new Microtime(1);
         $now       = TimeProvider::microtime();
-        $diff      = bcsub($now, $this->doorOpenedTime, 3);
 
-        return -1 === bccomp($threshold, $diff, 3);
+        $diff = $now->subtract($this->doorOpenedTime);
+
+        return $diff->isGreaterThan($threshold);
     }
 
     /**

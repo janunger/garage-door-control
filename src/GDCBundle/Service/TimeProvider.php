@@ -2,15 +2,17 @@
 
 namespace GDCBundle\Service;
 
+use GDCBundle\Model\Microtime;
+
 class TimeProvider
 {
     /**
-     * @var float|null
+     * @var Microtime|null
      */
     private static $testMicrotime = null;
 
     /**
-     * @return string
+     * @return Microtime
      */
     public static function microtime()
     {
@@ -18,13 +20,13 @@ class TimeProvider
             return self::$testMicrotime;
         }
 
-        return microtime(true);
+        return new Microtime(microtime(true));
     }
 
     /**
-     * @param float|null $testMicrotime
+     * @param Microtime|null $testMicrotime
      */
-    public static function setTestMicrotime($testMicrotime = null)
+    public static function setTestMicrotime(Microtime $testMicrotime = null)
     {
         self::$testMicrotime = $testMicrotime;
     }
