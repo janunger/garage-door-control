@@ -77,6 +77,8 @@ services:
         class: GDCBundle\Service\DoorStateWriter
         arguments:
             - @gdc.door_state_save_path
+        tags:
+            - { name: kernel.event_listener, event: gdc.auto_sequence_started, method: onAutoSequenceStarted }
 
     gdc.watchdog:
         class: GDC\WatchDog\WatchDog
