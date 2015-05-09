@@ -64,6 +64,9 @@ class CloseAfterOneTransit implements AutoSequence
         if ($this->door->getState()->equals(DoorState::CLOSED())) {
             $this->doorPhase = self::DOOR_JUST_STARTED;
         }
+        if ($this->door->getState()->equals(DoorState::UNKNOWN())) {
+            $this->doorPhase = self::DOOR_OPENING;
+        }
         if ($this->door->getState()->equals(DoorState::OPENED())) {
             $this->doorPhase = self::DOOR_OPENED;
             $this->doorOpenedTime = TimeProvider::microtime();
@@ -164,6 +167,10 @@ class CloseAfterOneTransit implements AutoSequence
      */
     private function isTooEarlyForPhotoInterrupter()
     {
+        if (self::DOOR_OPENED === $this->doorPhase) {
+            return false;
+        }
+
         $threshold = '7.0';
         $now  = TimeProvider::microtime();
         $diff = bcsub($now, $this->startTime, 3);
