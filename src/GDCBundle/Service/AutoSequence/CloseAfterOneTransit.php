@@ -33,7 +33,7 @@ class CloseAfterOneTransit implements AutoSequence
     /**
      * @var string
      */
-    private $doorPhase = self::DOOR_JUST_STARTED;
+    private $doorPhase;
 
     /**
      * @var string
@@ -54,6 +54,20 @@ class CloseAfterOneTransit implements AutoSequence
     {
         $this->sensorPhotoInterrupter = $sensorPhotoInterrupter;
         $this->door                   = $door;
+        $this->init();
+    }
+
+    private function init()
+    {
+        $this->startTime = TimeProvider::microtime();
+
+        if ($this->door->getState()->equals(DoorState::CLOSED())) {
+            $this->doorPhase = self::DOOR_JUST_STARTED;
+        }
+        if ($this->door->getState()->equals(DoorState::OPENED())) {
+            $this->doorPhase = self::DOOR_OPENED;
+            $this->doorOpenedTime = TimeProvider::microtime();
+        }
     }
 
     /**
@@ -70,7 +84,6 @@ class CloseAfterOneTransit implements AutoSequence
         if (self::DOOR_JUST_STARTED === $this->doorPhase) {
             $this->doorPhase = self::DOOR_OPENING;
             $this->door->triggerControl();
-            $this->startTime = TimeProvider::microtime();
         }
         if (self::DOOR_OPENING === $this->doorPhase) {
             if ($this->door->getState()->equals(DoorState::OPENED())) {

@@ -3,6 +3,7 @@
 namespace GDCBundle\Tests\Service\AutoSequence;
 
 use GDC\CommandQueue\Command;
+use GDC\Door\State;
 use GDC\Tests\AbstractTestCase;
 use GDCBundle\Service\AutoSequence\Factory;
 
@@ -15,8 +16,10 @@ class FactoryTest extends AbstractTestCase
 
     protected function setUp()
     {
+        $door = $this->createMock('GDC\Door\DoorInterface');
+        $door->expects($this->any())->method('getState')->willReturn(State::CLOSED());
         $this->SUT = new Factory(
-            $this->createMock('GDC\Door\DoorInterface'),
+            $door,
             $this->createMock('Pkj\Raspberry\PiFace\InputPin')
         );
     }

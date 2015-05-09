@@ -25,7 +25,10 @@ class StartWhenDoorClosedTest extends AbstractTestCase
     protected function setUp()
     {
         $this->door = new DoorMock();
+        $this->door->setState(DoorState::CLOSED());
+
         $this->sensorPhotoInterrupter = new InputPinMock();
+        $this->sensorPhotoInterrupter->setIsOn(false);
     }
 
     /**
@@ -33,15 +36,13 @@ class StartWhenDoorClosedTest extends AbstractTestCase
      */
     public function it_should_close_the_door_if_door_initially_closed_and_transit_after_door_is_opened()
     {
-        $this->door->setState(DoorState::CLOSED());
-        $this->sensorPhotoInterrupter->setIsOn(false);
+        TimeProvider::setTestMicrotime(1431120000.0000);
 
         // It should not do anything right after instantiation.
         $SUT = new CloseAfterOneTransit($this->door, $this->sensorPhotoInterrupter);
         $this->assertEquals(0, $this->door->getTriggerControlCount());
 
         // It should trigger the door.
-        TimeProvider::setTestMicrotime(1431120000.0000);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once.');
 
@@ -87,15 +88,13 @@ class StartWhenDoorClosedTest extends AbstractTestCase
      */
     public function it_should_close_the_door_if_door_initially_closed_and_transit_while_door_is_opening()
     {
-        $this->door->setState(DoorState::CLOSED());
-        $this->sensorPhotoInterrupter->setIsOn(false);
+        TimeProvider::setTestMicrotime(1431120000.0000);
 
         // It should not do anything right after instantiation.
         $SUT = new CloseAfterOneTransit($this->door, $this->sensorPhotoInterrupter);
         $this->assertEquals(0, $this->door->getTriggerControlCount());
 
         // It should trigger the door.
-        TimeProvider::setTestMicrotime(1431120000.0000);
         $this->assertEquals(SequenceState::RUNNING(), $SUT->tick());
         $this->assertEquals(1, $this->door->getTriggerControlCount(), 'Door was expected to be triggered once.');
 
