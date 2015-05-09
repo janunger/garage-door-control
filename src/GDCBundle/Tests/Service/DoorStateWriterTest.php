@@ -68,4 +68,14 @@ class DoorStateWriterTest extends \PHPUnit_Framework_TestCase
         $json = json_decode(file_get_contents($this->filePath), true);
         $this->assertEquals($nowAsIsoString, $json['date']);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_write_the_current_auto_sequence_into_the_json()
+    {
+        $this->SUT->write(State::CLOSED(), new Microtime());
+        $json = json_decode(file_get_contents($this->filePath), true);
+        $this->assertEquals(null, $json['autoSequence']);
+    }
 }
