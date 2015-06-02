@@ -28,8 +28,8 @@ angular.module('doorApp', [])
                     $scope.statusDate = data.date + '';
                     $scope.currentSequence = data.autoSequence;
                     var ageOfState = Math.abs(Math.round(((new Date(data.date)).getTime() - timestamp)/1000));
-                    if (ageOfState > 5) {
-                        $scope.statusClass = 'status-unknown';
+                    if (ageOfState > 30) {
+                        $scope.statusClass = 'status-error';
                         $scope.statusDate = $scope.statusDate + ' (' + ageOfState + ' Sekunden Differenz)';
                     }
 
