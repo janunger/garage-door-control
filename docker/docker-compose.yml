@@ -1,0 +1,29 @@
+version: "3"
+services:
+  web:
+    build: ./web/
+    ports:
+      - 80:80
+    volumes:
+      - ../:/var/www
+    working_dir: /var/www
+    links:
+      - mysql
+      - mailhog
+
+  mysql:
+    image: mysql:5.5
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER:          "dev"
+      MYSQL_PASSWORD:      "dev"
+      MYSQL_DATABASE:      "dev"
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    expose:
+      - 1025
+    ports:
+      - 8025:8025

@@ -8,6 +8,6 @@
 /bin/
 /tests/reports/*
 /vendor/
-/web/bundles/*
-/web/state/*
-!/web/state/.gitkeep
+/public/bundles/*
+/public/state/*
+!/public/state/.gitkeep
