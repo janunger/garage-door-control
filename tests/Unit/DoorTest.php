@@ -70,4 +70,12 @@ class DoorTest extends TestCase
         $this->expectException(HardwareError::class);
         $this->SUT->getState();
     }
+
+    /** @test */
+    public function it_triggers_the_motor()
+    {
+        $this->actorMotor->expects(static::once())->method('trigger')->with(500);
+
+        $this->SUT->triggerControl();
+    }
 }

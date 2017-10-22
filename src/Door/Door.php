@@ -49,4 +49,9 @@ class Door
 
         return State::UNKNOWN();
     }
+
+    public function triggerControl()
+    {
+        $this->actorMotor->trigger(500);
+    }
 }
