@@ -13,13 +13,21 @@
         }
     },
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.0",
+        "symfony/process": "^3.3"
     },
     "require-dev": {
+        "juit/mailhog-client": "^1.0",
         "phpunit/phpunit": "^6.4"
     },
     "config": {
         "bin-dir": "bin",
         "sort-packages": true
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/juitde/mailhog-client"
+        }
+    ]
 }
