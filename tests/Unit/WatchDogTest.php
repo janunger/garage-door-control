@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace JUIT\GDC\Tests\Unit;
 
 use JUIT\GDC\Door\Door;
-use JUIT\GDC\Door\HardwareError;
 use JUIT\GDC\Door\State;
 use JUIT\GDC\Event\WatchDogEvents;
 use JUIT\GDC\Event\WatchDogRestartedEvent;
@@ -53,7 +52,9 @@ class WatchDogTest extends TestCase
         $this->door->expects(static::at(1))->method('getState')->willReturn(State::CLOSED());
         $this->door->expects(static::at(2))->method('getState')->willReturn(State::CLOSED());
 
-        $this->eventDispatcher->expects(static::once())->method('dispatch')->with(WatchDogEvents::RESTARTED);
+        $this->eventDispatcher
+            ->expects(static::once())->method('dispatch')
+            ->with(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent(State::CLOSED()));
 
         $SUT = $this->createSUTInstance();
         $SUT->execute();
@@ -95,11 +96,12 @@ class WatchDogTest extends TestCase
     /** @test */
     public function it_handles_a_hardware_error_on_instantiation()
     {
-        $this->door
-            ->expects($this->any())->method('getState')
-            ->will($this->throwException(new HardwareError()));
+        $this->door->expects(static::at(0))->method('getState')->willReturn(State::HARDWARE_ERROR());
 
-        $this->eventDispatcher->expects($this->once())->method('dispatch')->with(WatchDogEvents::HARDWARE_ERROR);
+        $this->eventDispatcher
+            ->expects(static::once())->method('dispatch')
+            ->with(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent(State::HARDWARE_ERROR()));
+
         $this->createSUTInstance();
     }
 
@@ -107,12 +109,14 @@ class WatchDogTest extends TestCase
     public function it_handles_a_hardware_error_when_running()
     {
         $this->door->expects(static::at(0))->method('getState')->willReturn(State::CLOSED());
-        $this->door
-            ->expects(static::at(1))->method('getState')
-            ->will(static::throwException(new HardwareError()));
-        $SUT = $this->createSUTInstance();
+        $this->door->expects(static::at(1))->method('getState')->willReturn(State::HARDWARE_ERROR());
 
-        $this->eventDispatcher->expects($this->once())->method('dispatch')->with(WatchDogEvents::HARDWARE_ERROR);
+        $this->eventDispatcher
+            ->expects(static::at(0))->method('dispatch')
+            ->with(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent(State::CLOSED()));
+        $this->eventDispatcher->expects(static::at(1))->method('dispatch')->with(WatchDogEvents::HARDWARE_ERROR);
+
+        $SUT = $this->createSUTInstance();
         $SUT->execute();
     }
 

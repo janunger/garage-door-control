@@ -35,6 +35,9 @@ class Messenger
             case State::OPENED:
                 $text .= 'DOOR OPENED';
                 break;
+            case State::HARDWARE_ERROR:
+                $text .= 'HARDWARE ERROR';
+                break;
             default:
                 $text .= 'DOOR UNKNOWN';
                 break;

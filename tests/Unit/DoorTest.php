@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace JUIT\GDC\Tests\Unit;
 
 use JUIT\GDC\Door\Door;
-use JUIT\GDC\Door\HardwareError;
 use JUIT\GDC\Door\State;
 use JUIT\PiFace\InputPin;
 use JUIT\PiFace\OutputPin;
@@ -62,13 +61,12 @@ class DoorTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_if_sensor_state_is_implausible()
+    public function it_tells_if_sensor_state_is_implausible()
     {
         $this->sensorClosed->expects(static::any())->method('isOn')->willReturn(true);
         $this->sensorOpened->expects(static::any())->method('isOn')->willReturn(true);
 
-        $this->expectException(HardwareError::class);
-        $this->SUT->getState();
+        static::assertEquals(State::HARDWARE_ERROR(), $this->SUT->getState());
     }
 
     /** @test */

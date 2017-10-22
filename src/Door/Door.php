@@ -37,9 +37,8 @@ class Door
         $isOpened = $this->sensorOpened->isOn();
 
         if ($isClosed && $isOpened) {
-            throw new HardwareError();
+            return State::HARDWARE_ERROR();
         }
-
         if ($isClosed) {
             return State::CLOSED();
         }

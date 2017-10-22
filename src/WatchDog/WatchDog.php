@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace JUIT\GDC\WatchDog;
 
 use JUIT\GDC\Door\Door;
-use JUIT\GDC\Door\HardwareError;
 use JUIT\GDC\Door\State;
 use JUIT\GDC\Event\WatchDogEvents;
 use JUIT\GDC\Event\WatchDogRestartedEvent;
@@ -42,31 +41,23 @@ class WatchDog
 
     private function init()
     {
-        try {
-            $this->state = $this->door->getState();
-            $this->eventDispatcher->dispatch(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent($this->state));
-        } catch (HardwareError $e) {
-            $this->eventDispatcher->dispatch(WatchDogEvents::HARDWARE_ERROR);
-        }
+        $this->state = $this->door->getState();
+        $this->eventDispatcher->dispatch(WatchDogEvents::RESTARTED, new WatchDogRestartedEvent($this->state));
     }
 
     public function execute()
     {
-        try {
-            $currentState = $this->door->getState();
-        } catch (HardwareError $e) {
-            $this->eventDispatcher->dispatch(WatchDogEvents::HARDWARE_ERROR);
-
-            return;
-        }
-
+        $currentState = $this->door->getState();
         $previousState = $this->state;
+
         if ($currentState->equals($previousState)) {
             return;
         }
 
         $this->state = $currentState;
-        if ($previousState->equals(State::CLOSED())) {
+        if ($currentState->equals(State::HARDWARE_ERROR())) {
+            $this->eventDispatcher->dispatch(WatchDogEvents::HARDWARE_ERROR);
+        } elseif ($previousState->equals(State::CLOSED())) {
             $this->eventDispatcher->dispatch(WatchDogEvents::DOOR_OPENING);
         } elseif ($previousState->equals(State::UNKNOWN()) && $currentState->equals(State::CLOSED())) {
             $this->eventDispatcher->dispatch(WatchDogEvents::DOOR_CLOSED);
