@@ -17,10 +17,13 @@
         "juit/raspberry-piface2-api": "dev-master",
         "myclabs/php-enum": "^1.5",
         "roave/security-advisories": "dev-master",
+        "swiftmailer/swiftmailer": "^6.0",
+        "symfony/event-dispatcher": "^3.3",
         "symfony/process": "^3.3"
     },
     "require-dev": {
         "juit/mailhog-client": "^1.0",
+        "lstrojny/phpunit-function-mocker": "^1.0",
         "phpunit/phpunit": "^6.4"
     },
     "config": {
