@@ -1,4 +1,6 @@
 /bin/phpunit
 /public/state/*
 !/public/state/.gitkeep
+/var/emulator
+!/var/emulator/.gitkeep
 /vendor

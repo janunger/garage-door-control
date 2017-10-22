@@ -14,6 +14,9 @@
     },
     "require": {
         "php": ">=7.0",
+        "juit/raspberry-piface2-api": "dev-master",
+        "myclabs/php-enum": "^1.5",
+        "roave/security-advisories": "dev-master",
         "symfony/process": "^3.3"
     },
     "require-dev": {
@@ -28,6 +31,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/juitde/mailhog-client"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/janunger/raspberry-piface2-api"
         }
     ]
 }
