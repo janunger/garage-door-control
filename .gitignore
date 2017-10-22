@@ -1,4 +1,5 @@
 /bin/phpunit
+/etc/config.php
 /public/state/*
 !/public/state/.gitkeep
 /var/emulator

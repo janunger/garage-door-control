@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$config = require __DIR__ . '/../etc/config.php';
+
+$pinIdOpened       = $config['pin_id_opened'];
+$pinIdClosed       = $config['pin_id_closed'];
+$pinIdMotorTrigger = $config['pin_id_motor_trigger'];
+if ($config['use_hardware']) {
+    $sensorClosed = new \JUIT\PiFace\Hardware\InputPin($pinIdOpened);
+    $sensorOpened = new \JUIT\PiFace\Hardware\InputPin($pinIdClosed);
+    $actorMotor   = new \JUIT\PiFace\Hardware\OutputPin($pinIdMotorTrigger);
+} else {
+    $emulatorDataDir = new SplFileInfo(__DIR__ . '/../var/emulator');
+    $sensorClosed    = new \JUIT\PiFace\Emulator\InputPin($pinIdOpened, $emulatorDataDir);
+    $sensorOpened    = new \JUIT\PiFace\Emulator\InputPin($pinIdClosed, $emulatorDataDir);
+    $actorMotor      = new \JUIT\PiFace\Emulator\OutputPin();
+}
+
+$door = new \JUIT\GDC\Door\Door($sensorClosed, $sensorOpened, $actorMotor);
+
+$transport        = new Swift_SmtpTransport($config['mailer_host'], $config['mailer_port']);
+$swiftMailer      = new Swift_Mailer($transport);
+$senderAddress    = $config['mailer_sender_address'];
+$senderName       = $config['mailer_sender_name'];
+$recipientAddress = $config['mailer_recipient_address'];
+$recipientName    = $config['mailer_recipient_name'];
+$messageFactory   = new \JUIT\GDC\WatchDog\MessageFactory(
+    $senderAddress, $senderName, $recipientAddress, $recipientName
+);
+$messenger        = new \JUIT\GDC\WatchDog\Messenger($swiftMailer, $messageFactory);
+
+$eventDispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
+$eventDispatcher->addListener(\JUIT\GDC\Event\WatchDogEvents::RESTARTED, [$messenger, 'onWatchdogRestart']);
+$eventDispatcher->addListener(\JUIT\GDC\Event\WatchDogEvents::DOOR_OPENING, [$messenger, 'onDoorOpening']);
+$eventDispatcher->addListener(\JUIT\GDC\Event\WatchDogEvents::DOOR_CLOSED, [$messenger, 'onDoorClosed']);
+$eventDispatcher->addListener(\JUIT\GDC\Event\WatchDogEvents::HARDWARE_ERROR, [$messenger, 'onHardwareError']);
+
+$watchDog = new \JUIT\GDC\WatchDog\WatchDog($door, $messenger, $eventDispatcher);
+
+while (true) {
+    $watchDog->execute();
+    usleep(300000);
+}

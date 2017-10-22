@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'pin_id_opened'            => 0,
+    'pin_id_closed'            => 1,
+    'pin_id_motor_trigger'     => 0,
+    'use_hardware'             => false,
+    'mailer_host'              => 'mailhog',
+    'mailer_port'              => 1025,
+    'mailer_sender_address'    => 'sender@example.com',
+    'mailer_sender_name'       => 'Sender',
+    'mailer_recipient_address' => 'recipient@example.com',
+    'mailer_recipient_name'    => 'Recipient',
+];
