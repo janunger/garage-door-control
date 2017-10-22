@@ -1,0 +1,4 @@
+/bin/phpunit
+/public/state/*
+!/public/state/.gitkeep
+/vendor

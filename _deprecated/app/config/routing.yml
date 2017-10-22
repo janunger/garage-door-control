@@ -1,4 +1,0 @@
-gdc:
-    resource: "@GDCBundle/Resources/config/routing.yml"
-    prefix:   /
-
