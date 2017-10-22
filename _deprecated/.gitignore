@@ -5,7 +5,6 @@
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
-/bin/
 /tests/reports/*
 /vendor/
 /public/bundles/*

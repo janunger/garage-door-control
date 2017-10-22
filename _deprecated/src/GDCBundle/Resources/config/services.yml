@@ -2,8 +2,14 @@ parameters:
     gdc.piface_inputpin_id.door_closed: 0
     gdc.piface_inputpin_id.door_opened: 1
     gdc.piface_inputpin_id.photo_interrupter: 2
+    gdc.piface_inputpin_id.button_motor_trigger: 3
+    gdc.piface_inputpin_id.button_auto_sequence: 4
+    gdc.piface_inputpin_id.button_sequence_cancel: 5
 
     gdc.piface_outputpin_id.motor_trigger: 0
+    gdc.piface_outputpin_id.led_motor_trigger: 2
+    gdc.piface_outputpin_id.led_sequence: 3
+    gdc.piface_outputpin_id.led_cancel: 4
 
     gdc.door_state_save_path: "%kernel.root_dir%/../web/state/current.json"
 

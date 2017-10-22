@@ -43,8 +43,11 @@ class EventLoop
     public function tick()
     {
         $this->commandProcessor->execute();
+        // TODO: $this->hardwareButtonReader->execute();
+        // TODO: Rename watchDog to doorSensorReader
         $this->watchDog->execute();
         $this->autoSequenceWorker->tick();
+        // TODO: $this->statusDisplay->tick();
         $this->sensorLogger->execute();
     }
 }
