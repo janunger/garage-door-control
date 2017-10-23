@@ -23,7 +23,20 @@ if ($config['use_hardware']) {
 
 $door = new \JUIT\GDC\Door\Door($sensorClosed, $sensorOpened, $actorMotor);
 
-$transport        = new Swift_SmtpTransport($config['mailer_host'], $config['mailer_port']);
+$transport = new Swift_SmtpTransport($config['mailer_host'], $config['mailer_port']);
+if (null !== $config['mailer_encryption']) {
+    $transport->setEncryption($config['mailer_encryption']);
+}
+if (null !== $config['mailer_username']) {
+    $transport->setUsername($config['mailer_username']);
+}
+if (null !== $config['mailer_password']) {
+    $transport->setPassword($config['mailer_password']);
+}
+if (null !== $config['mailer_auth_mode']) {
+    $transport->setAuthMode($config['mailer_auth_mode']);
+}
+
 $swiftMailer      = new Swift_Mailer($transport);
 $senderAddress    = $config['mailer_sender_address'];
 $senderName       = $config['mailer_sender_name'];
@@ -45,4 +58,7 @@ $watchDog = new \JUIT\GDC\WatchDog\WatchDog($door, $messenger, $eventDispatcher)
 while (true) {
     $watchDog->execute();
     usleep(300000);
+    if ($transport->isStarted()) {
+        $transport->stop();
+    }
 }
