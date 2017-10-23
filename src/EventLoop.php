@@ -39,6 +39,20 @@ class EventLoop
             if ($this->mailerTransport->isStarted()) {
                 $this->mailerTransport->stop();
             }
+            if ($this->mustForceRestart()) {
+                break;
+            }
         }
     }
+
+    private function mustForceRestart(): bool
+    {
+        return date('Hi') === '0500' && $this->uptime() > 70;
+    }
+
+    private function uptime(): int
+    {
+        return time() - $this->timeStart;
+    }
+
 }
