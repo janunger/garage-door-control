@@ -8,5 +8,6 @@
 - /docker
 - /docs
 - /etc/config.php
+- /public/state
 - /tests
 - /var
