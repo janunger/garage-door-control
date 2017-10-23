@@ -8,6 +8,7 @@ use JUIT\GDC\Door\Door;
 use JUIT\GDC\Door\State;
 use JUIT\GDC\Event\WatchDogEvents;
 use JUIT\GDC\Event\WatchDogRestartedEvent;
+use JUIT\GDC\WatchDog\DoorStateWriter;
 use JUIT\GDC\WatchDog\Messenger;
 use JUIT\GDC\WatchDog\WatchDog;
 use PHPUnit\Framework\TestCase;
@@ -24,12 +25,16 @@ class WatchDogTest extends TestCase
     /** @var Messenger */
     private $messenger;
 
+    /** @var DoorStateWriter|\PHPUnit_Framework_MockObject_MockObject */
+    private $doorStateWriter;
+
     protected function setUp()
     {
         parent::setUp();
         $this->door            = $this->createMock(Door::class);
         $this->messenger       = $this->createMock(Messenger::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->doorStateWriter = $this->createMock(DoorStateWriter::class);
     }
 
     /** @test */
@@ -120,8 +125,28 @@ class WatchDogTest extends TestCase
         $SUT->execute();
     }
 
+    /** @test */
+    public function it_writes_the_door_state_on_every_cycle()
+    {
+        // $door->getState gets invoked on instantiation
+        $this->door->expects(static::at(0))->method('getState')->willReturn(State::CLOSED());
+        $this->door->expects(static::at(1))->method('getState')->willReturn(State::CLOSED());
+        $this->door->expects(static::at(2))->method('getState')->willReturn(State::UNKNOWN());
+        $SUT = $this->createSUTInstance();
+
+        $this->doorStateWriter
+            ->expects(static::at(0))->method('write')
+            ->with(State::CLOSED(), static::isInstanceOf(\DateTimeImmutable::class));
+        $this->doorStateWriter
+            ->expects(static::at(1))->method('write')
+            ->with(State::UNKNOWN(), static::isInstanceOf(\DateTimeImmutable::class));
+
+        $SUT->execute();
+        $SUT->execute();
+    }
+
     private function createSUTInstance(): WatchDog
     {
-        return new WatchDog($this->door, $this->messenger, $this->eventDispatcher);
+        return new WatchDog($this->door, $this->messenger, $this->eventDispatcher, $this->doorStateWriter);
     }
 }

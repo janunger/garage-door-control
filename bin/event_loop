@@ -53,7 +53,9 @@ $eventDispatcher->addListener(\JUIT\GDC\Event\WatchDogEvents::DOOR_OPENING, [$me
 $eventDispatcher->addListener(\JUIT\GDC\Event\WatchDogEvents::DOOR_CLOSED, [$messenger, 'onDoorClosed']);
 $eventDispatcher->addListener(\JUIT\GDC\Event\WatchDogEvents::HARDWARE_ERROR, [$messenger, 'onHardwareError']);
 
-$watchDog = new \JUIT\GDC\WatchDog\WatchDog($door, $messenger, $eventDispatcher);
+$doorStateWriter = new \JUIT\GDC\WatchDog\DoorStateWriter(new SplFileInfo(__DIR__ . '/../public/state/current.json'));
+
+$watchDog = new \JUIT\GDC\WatchDog\WatchDog($door, $messenger, $eventDispatcher, $doorStateWriter);
 
 while (true) {
     $watchDog->execute();

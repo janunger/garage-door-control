@@ -30,11 +30,21 @@ class WatchDog
     /** @var State */
     private $state;
 
-    public function __construct(Door $door, Messenger $messenger, EventDispatcherInterface $eventDispatcher)
-    {
+    /**
+     * @var DoorStateWriter
+     */
+    private $doorStateWriter;
+
+    public function __construct(
+        Door $door,
+        Messenger $messenger,
+        EventDispatcherInterface $eventDispatcher,
+        DoorStateWriter $doorStateWriter
+    ) {
         $this->door            = $door;
         $this->messenger       = $messenger;
         $this->eventDispatcher = $eventDispatcher;
+        $this->doorStateWriter = $doorStateWriter;
 
         $this->init();
     }
@@ -47,8 +57,10 @@ class WatchDog
 
     public function execute()
     {
-        $currentState = $this->door->getState();
+        $currentState  = $this->door->getState();
         $previousState = $this->state;
+
+        $this->doorStateWriter->write($currentState, new \DateTimeImmutable());
 
         if ($currentState->equals($previousState)) {
             return;
