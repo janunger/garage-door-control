@@ -20,6 +20,8 @@ services:
       MYSQL_USER:          "dev"
       MYSQL_PASSWORD:      "dev"
       MYSQL_DATABASE:      "dev"
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
 
   mailhog:
     image: mailhog/mailhog:latest

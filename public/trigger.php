@@ -5,15 +5,14 @@
  */
 function initDatabase()
 {
-    $dbParameters = require __DIR__ . '/../app/config/db_credentials.php';
+    $config = require __DIR__ . '/../etc/config.php';
 
     $db = new PDO(
-        'mysql:' . $dbParameters['database_host'] . ';dbname=' . $dbParameters['database_name'] . ';charset=utf8',
-        $dbParameters['database_user'],
-        $dbParameters['database_password']
+        'mysql:host=' . $config['database_host'] . ';dbname=' . $config['database_name'] . ';charset=utf8',
+        $config['database_username'],
+        $config['database_password']
     );
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db->exec("USE " . $dbParameters['database_name']);
 
     return $db;
 }
@@ -48,7 +47,8 @@ call_user_func(function () {
     $command = readCommand();
 
     $db = initDatabase();
-    $db->exec("INSERT INTO command_queue (command, created_at) VALUES ('$command', NOW())");
+    $statement = $db->prepare("INSERT INTO command_queue (command) VALUES (?)");
+    $statement->execute([$command]);
 
     header('Content-Type: application/json');
     echo '{}';
