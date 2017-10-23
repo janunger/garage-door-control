@@ -57,10 +57,5 @@ $doorStateWriter = new \JUIT\GDC\WatchDog\DoorStateWriter(new SplFileInfo(__DIR_
 
 $watchDog = new \JUIT\GDC\WatchDog\WatchDog($door, $messenger, $eventDispatcher, $doorStateWriter);
 
-while (true) {
-    $watchDog->execute();
-    usleep(300000);
-    if ($transport->isStarted()) {
-        $transport->stop();
-    }
-}
+$eventLoop = new \JUIT\GDC\EventLoop($watchDog, $transport);
+$eventLoop->run();
