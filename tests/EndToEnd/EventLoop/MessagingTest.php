@@ -6,39 +6,22 @@ namespace JUIT\GDC\Tests\EndToEnd\EventLoop;
 
 use JUIT\MailHog\MailHogClient;
 use JUIT\MailHog\Message;
-use JUIT\PiFace\Emulator\InputPin;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
 
-class MessagingTest extends TestCase
+class MessagingTest extends EventLoopTestCase
 {
-    /** @var Process */
-    private static $eventLoop;
-
     /** @var MailHogClient */
     private static $mailHog;
-
-    /** @var InputPin */
-    private $pifacePinDoorClosed;
-
-    /** @var InputPin */
-    private $pifacePinDoorOpened;
 
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
 
-        // "exec ..." is required if $process->stop() isn't working without.
-        static::$eventLoop = new Process('exec ' . PROJECT_ROOT_DIR . '/bin/event_loop');
-        static::$mailHog   = MailHogClient::create('http://mailhog:8025');
+        static::$mailHog = MailHogClient::create('http://mailhog:8025');
     }
 
     protected function setUp()
     {
         parent::setUp();
-
-        $this->pifacePinDoorClosed = new InputPin(0, new \SplFileInfo(EMULATOR_DATA_DIR));
-        $this->pifacePinDoorOpened = new InputPin(1, new \SplFileInfo(EMULATOR_DATA_DIR));
 
         static::$mailHog->deleteAll();
     }
@@ -114,9 +97,6 @@ class MessagingTest extends TestCase
 
     public static function tearDownAfterClass()
     {
-        if (self::$eventLoop->isStarted()) {
-            self::$eventLoop->stop();
-        }
         static::$mailHog->deleteAll();
 
         parent::tearDownAfterClass();
