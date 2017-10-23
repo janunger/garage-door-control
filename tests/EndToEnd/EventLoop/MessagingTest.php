@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JUIT\GDC\Tests\EndToEnd;
+namespace JUIT\GDC\Tests\EndToEnd\EventLoop;
 
 use JUIT\MailHog\MailHogClient;
 use JUIT\MailHog\Message;
@@ -10,7 +10,7 @@ use JUIT\PiFace\Emulator\InputPin;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
-class EventLoopTest extends TestCase
+class MessagingTest extends TestCase
 {
     /** @var Process */
     private static $eventLoop;
