@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/_services.php';
+
+while (true) {
+    /** @var \JUIT\PiFace\PiFace $piFace */
+    $state = $piFace->readInputPins();
+    $pins = [];
+    for ($i = 0; $i < 8; ++$i) {
+        $pins[] = $state->isPinOn($i) ? '1' : '0';
+    }
+    echo implode(' ', $pins) . PHP_EOL;
+    usleep(500000);
+}
