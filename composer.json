@@ -25,6 +25,7 @@
         "juit/mailhog-client": "^1.0",
         "lstrojny/phpunit-function-mocker": "^1.0",
         "mikey179/vfsStream": "^1.6",
+        "phpunit/dbunit": "^3.0",
         "phpunit/phpunit": "^6.4"
     },
     "config": {
