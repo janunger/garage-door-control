@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JUIT\GDC\Tests\EndToEnd\EventLoop;
 
-use JUIT\PiFace\Emulator\InputPin;
+use JUIT\PiFace\Emulator\PiFace;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
@@ -13,11 +13,14 @@ class EventLoopTestCase extends TestCase
     /** @var Process */
     protected static $eventLoop;
 
-    /** @var InputPin */
-    protected $pifacePinDoorOpened;
+    /** @var PiFace */
+    protected $piFace;
 
-    /** @var InputPin */
-    protected $pifacePinDoorClosed;
+    /** @var int */
+    protected $inputPinIdDoorClosed = 0;
+
+    /** @var int */
+    protected $inputPinIdDoorOpened = 1;
 
     public static function setUpBeforeClass()
     {
@@ -31,8 +34,7 @@ class EventLoopTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->pifacePinDoorClosed = new InputPin(0, new \SplFileInfo(EMULATOR_DATA_DIR));
-        $this->pifacePinDoorOpened = new InputPin(1, new \SplFileInfo(EMULATOR_DATA_DIR));
+        $this->piFace = new PiFace(new \SplFileInfo(EMULATOR_DATA_DIR . '/emulator'), 8);
     }
 
     public static function tearDownAfterClass()

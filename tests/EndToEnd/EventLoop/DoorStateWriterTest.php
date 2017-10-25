@@ -12,8 +12,8 @@ class DoorStateWriterTest extends EventLoopTestCase
     public function it_writes_the_door_state()
     {
         $filePath = PROJECT_ROOT_DIR . '/public/state/current.json';
-        $this->pifacePinDoorClosed->setOn();
-        $this->pifacePinDoorOpened->setOff();
+        $this->piFace->setPinOn($this->inputPinIdDoorClosed);
+        $this->piFace->setPinOff($this->inputPinIdDoorOpened);
         $before = (new \DateTimeImmutable())->modify('-3 seconds');
 
         static::$eventLoop->start();

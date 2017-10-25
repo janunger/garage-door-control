@@ -7,21 +7,21 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $config = require __DIR__ . '/../etc/config.php';
 
-$pinIdOpened       = $config['pin_id_opened'];
-$pinIdClosed       = $config['pin_id_closed'];
-$pinIdMotorTrigger = $config['pin_id_motor_trigger'];
 if ($config['use_hardware']) {
-    $sensorClosed = new \JUIT\PiFace\Hardware\InputPin($pinIdOpened);
-    $sensorOpened = new \JUIT\PiFace\Hardware\InputPin($pinIdClosed);
-    $actorMotor   = new \JUIT\PiFace\Hardware\OutputPin($pinIdMotorTrigger);
+    $piFace                  = new \JUIT\PiFace\Hardware\PiFace();
+    $actorMotor              = new \JUIT\PiFace\Hardware\OutputPin($config['pin_id_motor_trigger']);
 } else {
-    $emulatorDataDir = new SplFileInfo(__DIR__ . '/../var/emulator');
-    $sensorClosed    = new \JUIT\PiFace\Emulator\InputPin($pinIdOpened, $emulatorDataDir);
-    $sensorOpened    = new \JUIT\PiFace\Emulator\InputPin($pinIdClosed, $emulatorDataDir);
-    $actorMotor      = new \JUIT\PiFace\Emulator\OutputPin();
+    $emulatorDataFile = new SplFileInfo(__DIR__ . '/../var/emulator/emulator');
+    $piFace           = new \JUIT\PiFace\Emulator\PiFace($emulatorDataFile);
+    $actorMotor       = new \JUIT\PiFace\Emulator\OutputPin();
 }
 
-$door = new \JUIT\GDC\Door\Door($sensorClosed, $sensorOpened, $actorMotor);
+$door = new \JUIT\GDC\Door\Door(
+    $piFace,
+    new \JUIT\GDC\Model\InputPinIdDoorClosed($config['pin_id_closed']),
+    new \JUIT\GDC\Model\InputPinIdDoorOpened($config['pin_id_opened']),
+    $actorMotor
+);
 
 $transport = new Swift_SmtpTransport($config['mailer_host'], $config['mailer_port']);
 if (null !== $config['mailer_encryption']) {

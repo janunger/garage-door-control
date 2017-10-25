@@ -29,8 +29,8 @@ class MessagingTest extends EventLoopTestCase
     /** @test */
     public function it_sends_a_mail_with_door_state_on_startup()
     {
-        $this->pifacePinDoorClosed->setOn();
-        $this->pifacePinDoorOpened->setOff();
+        $this->piFace->setPinOn($this->inputPinIdDoorClosed);
+        $this->piFace->setPinOff($this->inputPinIdDoorOpened);
 
         static::$eventLoop->start();
 
@@ -45,7 +45,7 @@ class MessagingTest extends EventLoopTestCase
      */
     public function it_sends_a_mail_on_door_opening()
     {
-        $this->pifacePinDoorClosed->setOff();
+        $this->piFace->setPinOff($this->inputPinIdDoorClosed);
 
         $messages = $this->fetchMailHogMessages();
         static::assertCount(1, $messages);
@@ -58,7 +58,7 @@ class MessagingTest extends EventLoopTestCase
      */
     public function it_sends_a_mail_on_door_closed_again()
     {
-        $this->pifacePinDoorClosed->setOn();
+        $this->piFace->setPinOn($this->inputPinIdDoorClosed);
 
         $messages = $this->fetchMailHogMessages();
         static::assertCount(1, $messages);
@@ -71,8 +71,8 @@ class MessagingTest extends EventLoopTestCase
      */
     public function it_sends_a_mail_on_hardware_error()
     {
-        $this->pifacePinDoorClosed->setOn();
-        $this->pifacePinDoorOpened->setOn();
+        $this->piFace->setPinOn($this->inputPinIdDoorClosed);
+        $this->piFace->setPinOn($this->inputPinIdDoorOpened);
 
         $messages = $this->fetchMailHogMessages();
         static::assertCount(1, $messages);

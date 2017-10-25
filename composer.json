@@ -14,7 +14,7 @@
     },
     "require": {
         "php": ">=7.0",
-        "juit/raspberry-piface2-api": "^0.1.0",
+        "juit/raspberry-piface2-api": "^0.2.0",
         "myclabs/php-enum": "^1.5",
         "roave/security-advisories": "dev-master",
         "swiftmailer/swiftmailer": "^6.0",

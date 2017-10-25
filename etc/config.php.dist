@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 return [
-    'pin_id_opened'            => 0,
-    'pin_id_closed'            => 1,
+    'pin_id_closed'            => 0,
+    'pin_id_opened'            => 1,
     'pin_id_motor_trigger'     => 0,
     'use_hardware'             => false,
     'mailer_host'              => 'mailhog',
