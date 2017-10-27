@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JUIT\GDC\Tests\EndToEnd\ControlSequence;
+namespace JUIT\GDC\Tests\Integration\ControlSequence;
 
 use JUIT\GDC\ControlSequence\Command;
 use JUIT\GDC\ControlSequence\Repository;

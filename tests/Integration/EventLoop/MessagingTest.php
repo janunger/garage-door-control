@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JUIT\GDC\Tests\EndToEnd\EventLoop;
+namespace JUIT\GDC\Tests\Integration\EventLoop;
 
 use JUIT\MailHog\MailHogClient;
 use JUIT\MailHog\Message;
