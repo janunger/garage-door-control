@@ -7,7 +7,7 @@ namespace JUIT\GDC\ControlSequence\Sequence;
 use JUIT\GDC\ControlSequence\Command;
 use JUIT\GDC\Door\DoorInterface;
 
-class Factory
+class Factory implements FactoryInterface
 {
     /**
      * @var DoorInterface
