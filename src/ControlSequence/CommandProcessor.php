@@ -27,9 +27,10 @@ class CommandProcessor
 
     public function execute()
     {
-        foreach ($this->repository->getCommands() as $command) {
+        foreach ($this->repository->getSequence() as $sequenceItem) {
+            $command = $sequenceItem->getCommand();
             $this->eventDispatcher->dispatch(CommandIssuedEvent::NAME, new CommandIssuedEvent($command));
-            $this->repository->delete($command);
+            $this->repository->delete($sequenceItem);
         }
     }
 }

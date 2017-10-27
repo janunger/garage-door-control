@@ -7,6 +7,7 @@ namespace JUIT\GDC\Tests\Unit\ControlSequence;
 use JUIT\GDC\ControlSequence\Command;
 use JUIT\GDC\ControlSequence\CommandProcessor;
 use JUIT\GDC\ControlSequence\Repository;
+use JUIT\GDC\ControlSequence\SequenceItem;
 use JUIT\GDC\Event\CommandIssuedEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,7 +36,7 @@ class CommandProcessorTest extends TestCase
      */
     public function it_should_do_nothing_if_no_commands_present()
     {
-        $this->repository->expects($this->any())->method('getCommands')->willReturn([]);
+        $this->repository->expects($this->any())->method('getSequence')->willReturn([]);
         $this->repository->expects($this->never())->method('delete');
 
         $this->eventDispatcher->expects($this->never())->method('dispatch');
@@ -49,8 +50,9 @@ class CommandProcessorTest extends TestCase
     public function it_should_dispatch_one_event_for_one_command()
     {
         $command = Command::TRIGGER_DOOR();
-        $this->repository->expects($this->any())->method('getCommands')->willReturn([$command]);
-        $this->repository->expects($this->once())->method('delete')->with($command);
+        $item    = new SequenceItem(1, $command);
+        $this->repository->expects($this->any())->method('getSequence')->willReturn([$item]);
+        $this->repository->expects($this->once())->method('delete')->with($item);
         $this->eventDispatcher
           ->expects($this->once())->method('dispatch')
           ->with(CommandIssuedEvent::NAME, new CommandIssuedEvent($command));
@@ -64,18 +66,20 @@ class CommandProcessorTest extends TestCase
     public function it_should_dispatch_an_event_for_each_command()
     {
         $command1 = Command::TRIGGER_DOOR();
+        $item1    = new SequenceItem(1, $command1);
         $command2 = Command::CLOSE_AFTER_ONE_TRANSIT();
-        $this->repository->expects($this->at(0))->method('getCommands')->willReturn([$command1, $command2]);
+        $item2    = new SequenceItem(2, $command2);
+        $this->repository->expects($this->at(0))->method('getSequence')->willReturn([$item1, $item2]);
 
         $this->eventDispatcher
           ->expects(static::at(0))->method('dispatch')
           ->with(CommandIssuedEvent::NAME, new CommandIssuedEvent($command1));
-        $this->repository->expects(static::at(1))->method('delete')->with($command1);
+        $this->repository->expects(static::at(1))->method('delete')->with($item1);
 
         $this->eventDispatcher
           ->expects(static::at(1))->method('dispatch')
           ->with(CommandIssuedEvent::NAME, new CommandIssuedEvent($command2));
-        $this->repository->expects(static::at(2))->method('delete')->with($command2);
+        $this->repository->expects(static::at(2))->method('delete')->with($item2);
 
         $this->SUT->execute();
     }

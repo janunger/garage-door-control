@@ -33,8 +33,22 @@ class RepositoryTest extends TestCase
                 new SequenceItem(1, Command::TRIGGER_DOOR()),
                 new SequenceItem(2, Command::CANCEL()),
             ],
-            $this->SUT->getCommands()
+            $this->SUT->getSequence()
         );
+    }
+
+    /** @test */
+    public function it_deletes_a_single_command()
+    {
+        $commands = $this->SUT->getSequence();
+
+        $this->SUT->delete($commands[0]);
+
+        $expected = $this
+            ->createFlatXMLDataSet(__DIR__ . '/Repository/it_deletes_a_single_command.xml')
+            ->getTable('command_queue');
+        $actual   = $this->getConnection()->createQueryTable('command_queue', 'SELECT id, command FROM command_queue');
+        static::assertTablesEqual($expected, $actual);
     }
 
     /**
