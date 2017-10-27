@@ -9,7 +9,7 @@ use JUIT\GDC\Model\InputPinIdDoorOpened;
 use JUIT\PiFace\OutputPin;
 use JUIT\PiFace\PiFace;
 
-class Door
+class Door implements DoorInterface
 {
     /**
      * @var PiFace
