@@ -3,18 +3,28 @@
 declare(strict_types=1);
 
 return [
-    'pin_id_closed'            => 0,
-    'pin_id_opened'            => 1,
-    'pin_id_motor_trigger'     => 0,
-    'use_hardware'             => false,
-    'mailer_host'              => 'mailhog',
-    'mailer_port'              => 1025,
-    'mailer_encryption'        => null,
-    'mailer_username'          => null,
-    'mailer_password'          => null,
-    'mailer_auth_mode'         => null,
-    'mailer_sender_address'    => 'sender@example.com',
-    'mailer_sender_name'       => 'Sender',
-    'mailer_recipient_address' => 'recipient@example.com',
-    'mailer_recipient_name'    => 'Recipient',
+    'piface'   => [
+        'pin_id_closed'        => 0,
+        'pin_id_opened'        => 1,
+        'pin_id_motor_trigger' => 0,
+        'use_hardware'         => false,
+    ],
+    'database' => [
+        'host'     => 'mysql',
+        'username' => 'dev',
+        'password' => 'dev',
+        'name'     => 'dev',
+    ],
+    'mailer' => [
+        'host'              => 'mailhog',
+        'port'              => 1025,
+        'encryption'        => null,
+        'username'          => null,
+        'password'          => null,
+        'auth_mode'         => null,
+        'sender_address'    => 'sender@example.com',
+        'sender_name'       => 'Sender',
+        'recipient_address' => 'recipient@example.com',
+        'recipient_name'    => 'Recipient',
+    ],
 ];

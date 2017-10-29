@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 $config = require __DIR__ . '/../etc/config.php';
 
-if ($config['use_hardware']) {
+if ($config['piface']['use_hardware']) {
     $piFace                  = new \JUIT\PiFace\Hardware\PiFace();
-    $actorMotor              = new \JUIT\PiFace\Hardware\OutputPin($config['pin_id_motor_trigger']);
+    $actorMotor              = new \JUIT\PiFace\Hardware\OutputPin($config['piface']['pin_id_motor_trigger']);
 } else {
     $emulatorDataFile = new SplFileInfo(__DIR__ . '/../var/emulator/emulator');
     $piFace           = new \JUIT\PiFace\Emulator\PiFace($emulatorDataFile);
@@ -15,30 +15,30 @@ if ($config['use_hardware']) {
 
 $door = new \JUIT\GDC\Door\Door(
     $piFace,
-    new \JUIT\GDC\Model\InputPinIdDoorClosed($config['pin_id_closed']),
-    new \JUIT\GDC\Model\InputPinIdDoorOpened($config['pin_id_opened']),
+    new \JUIT\GDC\Model\InputPinIdDoorClosed($config['piface']['pin_id_closed']),
+    new \JUIT\GDC\Model\InputPinIdDoorOpened($config['piface']['pin_id_opened']),
     $actorMotor
 );
 
-$transport = new Swift_SmtpTransport($config['mailer_host'], $config['mailer_port']);
-if (null !== $config['mailer_encryption']) {
-    $transport->setEncryption($config['mailer_encryption']);
+$transport = new Swift_SmtpTransport($config['mailer']['host'], $config['mailer']['port']);
+if (null !== $config['mailer']['encryption']) {
+    $transport->setEncryption($config['mailer']['encryption']);
 }
-if (null !== $config['mailer_username']) {
-    $transport->setUsername($config['mailer_username']);
+if (null !== $config['mailer']['username']) {
+    $transport->setUsername($config['mailer']['username']);
 }
-if (null !== $config['mailer_password']) {
-    $transport->setPassword($config['mailer_password']);
+if (null !== $config['mailer']['password']) {
+    $transport->setPassword($config['mailer']['password']);
 }
-if (null !== $config['mailer_auth_mode']) {
-    $transport->setAuthMode($config['mailer_auth_mode']);
+if (null !== $config['mailer']['auth_mode']) {
+    $transport->setAuthMode($config['mailer']['auth_mode']);
 }
 
 $swiftMailer      = new Swift_Mailer($transport);
-$senderAddress    = $config['mailer_sender_address'];
-$senderName       = $config['mailer_sender_name'];
-$recipientAddress = $config['mailer_recipient_address'];
-$recipientName    = $config['mailer_recipient_name'];
+$senderAddress    = $config['mailer']['sender_address'];
+$senderName       = $config['mailer']['sender_name'];
+$recipientAddress = $config['mailer']['recipient_address'];
+$recipientName    = $config['mailer']['recipient_name'];
 $messageFactory   = new \JUIT\GDC\WatchDog\MessageFactory(
     $senderAddress, $senderName, $recipientAddress, $recipientName
 );
