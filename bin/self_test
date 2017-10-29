@@ -3,9 +3,14 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/_services.php';
+use JUIT\GDC\ServiceContainer;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
+/** @var ServiceContainer $serviceContainer */
+$serviceContainer = require __DIR__ . '/_services.php';
+
+$piFace = $serviceContainer->getPiFace();
 while (true) {
     /** @var \JUIT\PiFace\PiFace $piFace */
     $state = $piFace->readInputPins();

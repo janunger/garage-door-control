@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JUIT\GDC\WatchDog;
 
-use JUIT\GDC\Door\Door;
+use JUIT\GDC\Door\DoorInterface;
 use JUIT\GDC\Door\State;
 use JUIT\GDC\Event\WatchDogEvents;
 use JUIT\GDC\Event\WatchDogRestartedEvent;
@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class WatchDog
 {
     /**
-     * @var Door
+     * @var DoorInterface
      */
     private $door;
 
@@ -36,7 +36,7 @@ class WatchDog
     private $doorStateWriter;
 
     public function __construct(
-        Door $door,
+        DoorInterface $door,
         Messenger $messenger,
         EventDispatcherInterface $eventDispatcher,
         DoorStateWriter $doorStateWriter
